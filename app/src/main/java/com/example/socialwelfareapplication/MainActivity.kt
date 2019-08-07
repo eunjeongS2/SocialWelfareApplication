@@ -3,6 +3,7 @@ package com.example.socialwelfareapplication
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import com.example.socialwelfareapplication.fragments.MonitoringFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
