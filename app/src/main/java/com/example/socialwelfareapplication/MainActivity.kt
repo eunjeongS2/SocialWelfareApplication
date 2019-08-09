@@ -20,6 +20,11 @@ class MainActivity : AppCompatActivity() {
 
         bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
+                R.id.navigation_home -> {
+                    replaceFragment(MonitoringFragment())
+                    true
+                }
+
                 R.id.navigation_address -> {
                     replaceFragment(MonitoringFragment())
                     true

@@ -16,17 +16,75 @@ class MonitoringFragment : Fragment() {
 
     private lateinit var adapter: MonitoringItemListAdapter
 
+    companion object {
+        const val REQUEST_CODE = 300
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         val view = inflater.inflate(R.layout.fragment_monitoring, container, false)
 
         val monitoringList = listOf(
-            Monitoring("05/20/2019", "도도", "김한다 어르신 댁", "도시락 배달", "부재중", "집에 안계서서 문앞에 두고 감.", 99),
-            Monitoring("05/20/2019", "도도", "강한나 어르신 댁", "서프라이즈 파티", "부재중", "집에 안계서서 문앞에 두고 감.", 199),
-            Monitoring("05/20/2019", "짱나", "김고추참치 어르신 댁", "도시락 배달", "부재중", "집에 안계서서 문앞에 두고 감.", 929),
-            Monitoring("05/19/2019", "짱나", "도참치 어르신 댁", "서프라이즈 파티", "부재중", "집에 안계서서 문앞에 두고 감.", 499),
-            Monitoring("05/19/2019", "참치", "고성준 어르신 댁", "도시락 배달", "부재중", "집에 안계서서 문앞에 두고 감.", 299),
-            Monitoring("05/19/2019", "참치", "도레미마켓 어르신 댁", "서프라이즈 파티", "부재중", "집에 안계서서 문앞에 두고 감.", 299)
+            Monitoring(
+                "05/20/2019",
+                "도도",
+                "https://ssl.pstatic.net/mimgnews/image/112/2018/11/09/201811091110220474475_20181109111030_01_20181109111920216.jpg?type=w540",
+                "김한다 어르신 댁",
+                "도시락 배달",
+                "부재중",
+                "집에 안계서서 문앞에 두고 감.",
+                99
+            ),
+            Monitoring(
+                "05/20/2019",
+                "도도",
+                "https://ssl.pstatic.net/mimgnews/image/112/2018/11/09/201811091110220474475_20181109111030_01_20181109111920216.jpg?type=w540",
+                "강한나 어르신 댁",
+                "서프라이즈 파티",
+                "부재중",
+                "집에 안계서서 문앞에 두고 감.",
+                199
+            ),
+            Monitoring(
+                "05/20/2019",
+                "짱나",
+                "https://ssl.pstatic.net/mimgnews/image/112/2018/11/09/201811091110220474475_20181109111030_01_20181109111920216.jpg?type=w540",
+                "김고추참치 어르신 댁",
+                "도시락 배달",
+                "부재중",
+                "집에 안계서서 문앞에 두고 감.",
+                929
+            ),
+            Monitoring(
+                "05/19/2019",
+                "짱나",
+                "https://ssl.pstatic.net/mimgnews/image/112/2018/11/09/201811091110220474475_20181109111030_01_20181109111920216.jpg?type=w540",
+                "도참치 어르신 댁",
+                "서프라이즈 파티",
+                "부재중",
+                "집에 안계서서 문앞에 두고 감.",
+                499
+            ),
+            Monitoring(
+                "05/19/2019",
+                "참치",
+                "https://ssl.pstatic.net/mimgnews/image/112/2018/11/09/201811091110220474475_20181109111030_01_20181109111920216.jpg?type=w540",
+                "고성준 어르신 댁",
+                "도시락 배달",
+                "부재중",
+                "집에 안계서서 문앞에 두고 감.",
+                299
+            ),
+            Monitoring(
+                "05/19/2019",
+                "참치",
+                "https://ssl.pstatic.net/mimgnews/image/112/2018/11/09/201811091110220474475_20181109111030_01_20181109111920216.jpg?type=w540",
+                "도레미마켓 어르신 댁",
+                "서프라이즈 파티",
+                "부재중",
+                "집에 안계서서 문앞에 두고 감.",
+                299
+            )
 
         )
 
@@ -41,6 +99,17 @@ class MonitoringFragment : Fragment() {
                 view.monitoringSearchView.clearFocus()
 
             return@setOnTouchListener false
+        }
+
+        view.addMonitoringButton.setOnClickListener {
+            val fragment = AddMonitoringFragment()
+            val transaction = fragmentManager?.beginTransaction()
+            fragment.setTargetFragment(this, REQUEST_CODE)
+
+            transaction?.replace(R.id.fragmentContainer, fragment)
+            transaction?.addToBackStack(null)
+            transaction?.commit()
+
         }
 
 

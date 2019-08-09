@@ -1,13 +1,19 @@
 <resources>
     <string name="app_name">SocialWelfareApplication</string>
+
+    <string name="home">홈</string>
     <string name="address_book">주소록</string>
-    <string name="monitoring_diary">관찰일지</string>
+    <string name="monitoring_diary">활동일지</string>
     <string name="map">지도</string>
     <string name="monitoring_calendar">monitoring_calendar</string>
     <string name="edit">수정</string>
     <string name="visit_place">방문장소</string>
     <string name="visit_purpose">방문목적</string>
-    <string name="state">상태</string>
+    <string name="state">방문상태</string>
     <string name="remark">특이사항</string>
     <string name="motoring_image">motoring image</string>
+    <string name="add">추가</string>
+    <string name="back_button">back button</string>
+    <string name="group_icon">group icon</string>
+    <string name="contact_image">contact image</string>
 </resources>

@@ -2,18 +2,23 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+            android:id="@+id/navigation_home"
+            android:icon="@drawable/ic_home"
+            android:title="@string/home" />
+
+    <item
             android:id="@+id/navigation_address"
-            android:icon="@android:drawable/ic_menu_call"
+            android:icon="@drawable/ic_contact"
             android:title="@string/address_book" />
 
     <item
-            android:id="@+id/navigation_map"
-            android:icon="@android:drawable/ic_menu_edit"
-            android:title="@string/map" />
+            android:id="@+id/navigation_monitoring"
+            android:icon="@drawable/ic_pencil"
+            android:title="@string/monitoring_diary" />
 
     <item
-            android:id="@+id/navigation_monitoring"
-            android:icon="@android:drawable/ic_menu_camera"
-            android:title="@string/monitoring_diary" />
+            android:id="@+id/navigation_map"
+            android:icon="@drawable/ic_map"
+            android:title="@string/map" />
 
 </menu>
