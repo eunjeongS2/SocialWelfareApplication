@@ -16,4 +16,13 @@
     <string name="back_button">back button</string>
     <string name="group_icon">group icon</string>
     <string name="contact_image">contact image</string>
+    <string name="write">작성</string>
+    <string name="select_place">방문장소를 선택해 주세요</string>
+    <string name="input_image">사진을 넣어주세요..</string>
+    <string name="input_place">방문장소를 입력해 주세요..</string>
+    <string name="input_purpose">방문목적을 입력해 주세요..</string>
+    <string name="complete">완료</string>
+    <string name="missed">부재중</string>
+    <string name="outing">외출중</string>
+    <string name="input_remark">특이사항 입력해 주세요..</string>
 </resources>

@@ -1,9 +1,7 @@
 package com.example.socialwelfareapplication.viewholders
 
 import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.socialwelfareapplication.R
 import kotlinx.android.synthetic.main.item_contact_group.view.*
@@ -12,6 +10,7 @@ class ContactGroupItemViewHolder(private val view : View) : RecyclerView.ViewHol
 
     fun bind(name: String, isSelected: Boolean) {
         view.groupName.text = name
+        view.isSelected = isSelected
 
         when(name){
             "전체" -> {
@@ -23,23 +22,10 @@ class ContactGroupItemViewHolder(private val view : View) : RecyclerView.ViewHol
             else -> {
                 view.groupIcon.setImageResource(R.drawable.ic_map)
             }
-
         }
 
-        if (isSelected) {
-            view.changeBackgroundColor(R.color.colorAccent)
-            view.groupName.setTextColor(Color.WHITE)
-        }
-        else {
-            view.changeBackgroundColor(R.color.colorWhite)
-            view.groupName.setTextColor(Color.BLACK)
-        }
-
-    }
-
-    private fun View.changeBackgroundColor(color: Int){
-        val gradientDrawable = this.background as GradientDrawable
-        gradientDrawable.setColor(ContextCompat.getColor(this.context, color))
+        val textColor = if (isSelected) { Color.WHITE } else { Color.BLACK }
+        view.groupName.setTextColor(textColor)
 
     }
 

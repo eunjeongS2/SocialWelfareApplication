@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        xmlns:app="http://schemas.android.com/apk/res-auto" android:background="@drawable/background_contact_group"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:background="@drawable/contact_group_selector"
         android:layout_width="62dp"
         android:layout_height="48dp"
         android:elevation="1dp"

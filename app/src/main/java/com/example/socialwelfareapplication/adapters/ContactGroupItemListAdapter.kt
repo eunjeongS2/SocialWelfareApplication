@@ -9,7 +9,7 @@ import com.example.socialwelfareapplication.viewholders.ContactGroupItemViewHold
 class ContactGroupItemListAdapter : RecyclerView.Adapter<ContactGroupItemViewHolder>() {
 
     var contactGroupList: List<String> = listOf()
-    private var selectGroup = 2
+    lateinit var selectGroup : String
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactGroupItemViewHolder {
@@ -27,10 +27,12 @@ class ContactGroupItemListAdapter : RecyclerView.Adapter<ContactGroupItemViewHol
         val groupName = contactGroupList[position]
 
         holder.itemView.setOnClickListener {
-            selectGroup = position
+            selectGroup = contactGroupList[position]
+
+            notifyDataSetChanged()
         }
 
-        val isSelected = selectGroup == position
+        val isSelected = selectGroup == contactGroupList[position]
         holder.bind(groupName, isSelected)
     }
 

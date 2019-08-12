@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <TextView
+            tools:text="05/22/2019"
+            android:textSize="22sp"
+            android:textColor="@color/colorBlack"
+            android:layout_width="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_height="wrap_content"
+            android:id="@+id/date" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/view" android:layout_marginTop="6dp"
+            android:layout_marginBottom="5dp"/>
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_back"
+            android:id="@+id/backButton"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="18dp"
+            app:layout_constraintTop_toTopOf="@+id/date"
+            android:contentDescription="@string/back_button" app:layout_constraintBottom_toBottomOf="@+id/date"/>
+    <TextView
+            android:text="@string/write"
+            android:textSize="18sp"
+            android:textColor="@color/colorBlack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/writeButton" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="18dp" app:layout_constraintTop_toTopOf="@+id/date"
+            app:layout_constraintBottom_toBottomOf="@+id/date"/>
+    <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:id="@+id/view"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="3dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="3dp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="46dp"/>
+
+    <TextView
+            android:text="@string/select_place"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/textView"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="22dp"
+            app:layout_constraintTop_toBottomOf="@+id/view" android:layout_marginTop="8dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/selectContactRecyclerView"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/item_contact_select"
+            app:layout_constraintTop_toBottomOf="@+id/textView" android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="18dp"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="18dp">
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <EditText
+            android:layout_width="284dp"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:hint="@string/input_image"
+            android:theme="@style/EditText"
+            android:id="@+id/image" android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@+id/selectContactRecyclerView" android:layout_marginStart="22dp"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="Autofill"/>
+
+    <EditText
+            android:layout_width="284dp"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:hint="@string/input_place"
+            android:theme="@style/EditText"
+            android:id="@+id/visitPlace" android:layout_marginTop="40dp"
+            app:layout_constraintTop_toBottomOf="@+id/image" android:layout_marginStart="22dp"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="Autofill"
+    />
+
+    <EditText
+            android:layout_width="284dp"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:hint="@string/input_purpose"
+            android:theme="@style/EditText"
+            android:id="@+id/visitPurpose" android:layout_marginTop="40dp"
+            app:layout_constraintTop_toBottomOf="@+id/visitPlace" android:layout_marginStart="22dp"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="Autofill"
+    />
+
+    <EditText
+            android:layout_width="284dp"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:hint="@string/input_remark"
+            android:theme="@style/EditText"
+            android:id="@+id/remark" android:layout_marginTop="40dp"
+            app:layout_constraintTop_toBottomOf="@+id/visitPurpose" android:layout_marginStart="22dp"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="Autofill"
+    />
+
+    <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="22dp" android:layout_marginTop="40dp"
+            app:layout_constraintTop_toBottomOf="@+id/remark"
+    >
+        <RadioButton
+                android:text="@string/complete"
+                android:paddingStart="6dp"
+                android:paddingEnd="0dp"
+                android:button="@drawable/state_check_selector"
+                android:layoutDirection="rtl"
+                android:textSize="20sp"
+                android:textColor="#c6c6c6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/stateComplete" android:layout_weight="1"
+                style="@style/Widget.AppCompat.CompoundButton.RadioButton"/>
+        <RadioButton
+                android:text="@string/missed"
+                android:paddingStart="6dp"
+                android:paddingEnd="26dp"
+                android:button="@drawable/state_check_selector"
+                android:layoutDirection="rtl"
+                android:textSize="20sp"
+                android:textColor="#c6c6c6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/stateMissed" android:layout_weight="1"/>
+        <RadioButton
+                android:text="@string/outing"
+                android:paddingStart="6dp"
+                android:paddingEnd="26dp"
+                android:button="@drawable/state_check_selector"
+                android:layoutDirection="rtl"
+                android:textSize="20sp"
+                android:textColor="#c6c6c6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/stateOuting" android:layout_weight="1"/>
+    </RadioGroup>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

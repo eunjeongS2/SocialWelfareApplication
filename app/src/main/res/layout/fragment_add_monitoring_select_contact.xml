@@ -16,7 +16,7 @@
             android:id="@+id/selectGroup" app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp" app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/searchView" android:layout_marginTop="4dp"
+            app:layout_constraintBottom_toTopOf="@+id/view" android:layout_marginTop="6dp"
             android:layout_marginBottom="5dp"/>
     <ImageView
             android:layout_width="wrap_content"
@@ -24,8 +24,8 @@
             app:srcCompat="@drawable/ic_back"
             android:id="@+id/backButton"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="18dp"
-            app:layout_constraintTop_toTopOf="@+id/selectGroup" android:layout_marginTop="4dp"
-            android:contentDescription="@string/back_button"/>
+            app:layout_constraintTop_toTopOf="@+id/selectGroup"
+            android:contentDescription="@string/back_button" app:layout_constraintBottom_toBottomOf="@+id/selectGroup"/>
     <TextView
             android:text="@string/add"
             android:textSize="18sp"
@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/addButton" app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="18dp" app:layout_constraintTop_toTopOf="@+id/selectGroup"
-            android:layout_marginTop="3dp"/>
+            app:layout_constraintBottom_toBottomOf="@+id/selectGroup"/>
 
 
     <View

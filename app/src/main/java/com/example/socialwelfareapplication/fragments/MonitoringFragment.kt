@@ -102,7 +102,7 @@ class MonitoringFragment : Fragment() {
         }
 
         view.addMonitoringButton.setOnClickListener {
-            val fragment = AddMonitoringFragment()
+            val fragment = AddMonitoringSelectContactFragment()
             val transaction = fragmentManager?.beginTransaction()
             fragment.setTargetFragment(this, REQUEST_CODE)
 

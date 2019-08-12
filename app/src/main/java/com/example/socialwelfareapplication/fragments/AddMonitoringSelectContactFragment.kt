@@ -11,16 +11,19 @@ import com.example.socialwelfareapplication.R
 import com.example.socialwelfareapplication.adapters.ContactGroupItemListAdapter
 import com.example.socialwelfareapplication.adapters.ContactItemListAdapter
 import com.example.socialwelfareapplication.models.Contact
-import kotlinx.android.synthetic.main.fragment_add_monitoring.view.*
+import kotlinx.android.synthetic.main.fragment_add_monitoring_select_contact.view.*
 
-class AddMonitoringFragment : Fragment() {
+class AddMonitoringSelectContactFragment : Fragment() {
 
     private lateinit var groupAdapter: ContactGroupItemListAdapter
     private lateinit var contactAdapter: ContactItemListAdapter
 
+    companion object {
+        const val REQUEST_CODE = 400
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_add_monitoring, container, false)
+        val view = inflater.inflate(R.layout.fragment_add_monitoring_select_contact, container, false)
 
         val groupList = listOf(
             "전체",
@@ -76,19 +79,32 @@ class AddMonitoringFragment : Fragment() {
             )
         )
 
-
         groupAdapter = ContactGroupItemListAdapter()
-        contactAdapter = ContactItemListAdapter()
-
         setupRecyclerView(view.groupRecyclerView, groupAdapter)
         groupAdapter.contactGroupList = groupList
+        groupAdapter.selectGroup = groupList[2]
         groupAdapter.notifyDataSetChanged()
 
+
+        contactAdapter = ContactItemListAdapter(R.layout.item_contact)
         setupRecyclerView(view.contactRecyclerView, contactAdapter)
         contactAdapter.contactList = contactList
         contactAdapter.notifyDataSetChanged()
 
+
+        val selectGroupText = "${groupAdapter.selectGroup}(${contactAdapter.itemCount})"
+        view.selectGroup.text = selectGroupText
+
         view.backButton.setOnClickListener { fragmentManager?.popBackStackImmediate() }
+
+        view.addButton.setOnClickListener {
+            val fragment = AddMonitoringDescriptionFragment()
+            val transaction = fragmentManager?.beginTransaction()
+            fragment.setTargetFragment(this, REQUEST_CODE)
+            transaction?.replace(R.id.fragmentContainer, fragment)
+            transaction?.addToBackStack(null)
+            transaction?.commit()
+        }
 
         return view
 
