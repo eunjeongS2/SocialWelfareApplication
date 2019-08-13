@@ -101,6 +101,7 @@ class AddMonitoringSelectContactFragment : Fragment() {
             val fragment = AddMonitoringDescriptionFragment()
             val transaction = fragmentManager?.beginTransaction()
             fragment.setTargetFragment(this, REQUEST_CODE)
+
             transaction?.replace(R.id.fragmentContainer, fragment)
             transaction?.addToBackStack(null)
             transaction?.commit()

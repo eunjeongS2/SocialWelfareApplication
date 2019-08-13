@@ -75,15 +75,17 @@ class AddMonitoringDescriptionFragment : Fragment() {
         adapter.notifyDataSetChanged()
 
         view.backButton.setOnClickListener {
-            fragmentManager?.popBackStackImmediate() }
+            fragmentManager?.popBackStackImmediate()
+        }
+
         view.writeButton.setOnClickListener {
+            fragmentManager?.popBackStack()
 
             val fragment = MonitoringFragment()
             val transaction = fragmentManager?.beginTransaction()
 
-            transaction?.replace(R.id.fragmentContainer, fragment)
-            transaction?.addToBackStack(null)
-            transaction?.commit()
+            transaction?.replace(R.id.fragmentContainer, fragment)?.commit()
+            fragmentManager?.popBackStack()
         }
 
         val currentDate = LocalDate.now()
