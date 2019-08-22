@@ -17,10 +17,10 @@ class ContactGroupItemViewHolder(private val view : View) : RecyclerView.ViewHol
                 view.groupIcon.visibility = View.GONE
             }
             "중요" -> {
-                view.groupIcon.setImageResource(R.drawable.ic_home)
+                view.groupIcon.setImageResource(R.drawable.ic_star)
             }
             else -> {
-                view.groupIcon.setImageResource(R.drawable.ic_map)
+                view.groupIcon.setImageResource(R.drawable.ic_group)
             }
         }
 

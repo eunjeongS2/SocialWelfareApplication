@@ -3,7 +3,7 @@ package com.example.socialwelfareapplication
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import com.example.socialwelfareapplication.fragments.AddMonitoringDescriptionFragment
+import com.example.socialwelfareapplication.fragments.ContactFragment
 import com.example.socialwelfareapplication.fragments.MonitoringFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.navigation_address -> {
-                    replaceFragment(AddMonitoringDescriptionFragment())
+                    replaceFragment(ContactFragment())
                     true
                 }
 

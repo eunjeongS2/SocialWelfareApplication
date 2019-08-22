@@ -27,10 +27,10 @@ class ContactItemListAdapter(private val layout: Int) : RecyclerView.Adapter<Con
         holder.bind(item)
 
         when(layout) {
-            R.layout.item_contact -> {
+            R.layout.item_contact_select -> {
 
             }
-            R.layout.item_contact_select -> {
+            R.layout.item_contact_simple -> {
 
                 holder.itemView.setOnClickListener {
                     selectVisitPlace = position

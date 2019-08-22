@@ -8,7 +8,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.socialwelfareapplication.R
 import com.example.socialwelfareapplication.models.Contact
-import kotlinx.android.synthetic.main.item_contact.view.*
+import kotlinx.android.synthetic.main.item_contact_select.view.*
 
 class ContactItemViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
 
