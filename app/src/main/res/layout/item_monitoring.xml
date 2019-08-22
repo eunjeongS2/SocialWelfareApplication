@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <View
+            android:layout_width="match_parent"
+            android:background="@color/colorDarkGray"
+            android:layout_height="0.5dp" android:id="@+id/view" android:layout_marginTop="22dp"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="2dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="2dp"/>
+    <TextView
+            tools:text="05/20/2019"
+            android:textColor="@color/colorDarkGray"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:id="@+id/monitoringDate"
+            android:textSize="17sp"
+            android:background="?android:colorBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/view"
+            android:layout_marginStart="30dp"
+            app:layout_constraintTop_toTopOf="@+id/view"
+            app:layout_constraintBottom_toBottomOf="@+id/view"/>
+    <TextView
+            android:text="@string/edit"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:textSize="15sp"
+            android:textColor="#8d8787"
+            android:background="?android:colorBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/editMonitoring"
+            app:layout_constraintEnd_toEndOf="@+id/view"
+            android:layout_marginEnd="22dp"
+            app:layout_constraintTop_toTopOf="@+id/view"
+            app:layout_constraintBottom_toBottomOf="@+id/view"/>
+    <ImageView
+            android:layout_width="219dp"
+            android:layout_height="219dp"
+            tools:srcCompat="@tools:sample/avatars[3]"
+            android:id="@+id/monitoringImage" app:layout_constraintTop_toBottomOf="@+id/view"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+            android:layout_marginTop="26dp"
+            android:contentDescription="@string/motoring_image"/>
+    <TextView
+            android:text="@string/visit_place"
+            android:textColor="@color/colorAccent"
+            android:textSize="12sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/visitPlaceText"
+            app:layout_constraintTop_toBottomOf="@+id/monitoringImage" android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="20dp"/>
+    <TextView
+            tools:text="김한다 어르신 댁"
+            android:textColor="@color/colorDarkGray"
+            android:textSize="14sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/visitPlace"
+            app:layout_constraintTop_toBottomOf="@+id/visitPlaceText" app:layout_constraintStart_toStartOf="@+id/visitPlaceText"
+            android:layout_marginTop="4dp"/>
+    <TextView
+            android:text="@string/visit_purpose"
+            android:textColor="@color/colorAccent"
+            android:textSize="12sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/visitPurposeText"
+            app:layout_constraintTop_toBottomOf="@+id/visitPlace" android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="20dp"/>
+    <TextView
+            tools:text="도시락 배달"
+            android:textColor="@color/colorDarkGray"
+            android:textSize="14sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/visitPurpose"
+            app:layout_constraintTop_toBottomOf="@+id/visitPurposeText" app:layout_constraintStart_toStartOf="@+id/visitPurposeText"
+            android:layout_marginTop="4dp"/>
+    <TextView
+            android:text="@string/state"
+            android:textColor="@color/colorAccent"
+            android:textSize="12sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/stateText" android:layout_marginStart="20dp"
+            app:layout_constraintTop_toBottomOf="@+id/visitPurpose" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="16dp"/>
+    <TextView
+            tools:text="부재중"
+            android:textColor="@color/colorDarkGray"
+            android:textSize="14sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/state"
+            app:layout_constraintTop_toBottomOf="@+id/stateText" app:layout_constraintStart_toStartOf="@+id/stateText"
+            android:layout_marginTop="4dp"/>
+    <TextView
+            android:text="@string/remark"
+            android:textColor="@color/colorAccent"
+            android:textSize="12sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/remarkText"
+            app:layout_constraintTop_toBottomOf="@+id/state" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="20dp" android:layout_marginTop="16dp"/>
+    <TextView
+            tools:text="집에 안계서서 문앞에 두고 감."
+            android:textColor="@color/colorDarkGray"
+            android:textSize="14sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/remark"
+            app:layout_constraintStart_toStartOf="@+id/remarkText"
+            app:layout_constraintTop_toBottomOf="@+id/remarkText" android:layout_marginTop="4dp"/>
+    <TextView
+            tools:text="댓글 199개 모두 보기"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/commentButton"
+            app:layout_constraintTop_toBottomOf="@+id/remark" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="20dp" android:layout_marginTop="22dp"
+            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="16dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
