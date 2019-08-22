@@ -40,6 +40,9 @@ class ContactItemListAdapter(private val layout: Int) : RecyclerView.Adapter<Con
                 val isSelected = selectVisitPlace == position
                 holder.selectVisitPlace(isSelected)
             }
+            R.layout.item_contact -> {
+
+            }
         }
     }
 

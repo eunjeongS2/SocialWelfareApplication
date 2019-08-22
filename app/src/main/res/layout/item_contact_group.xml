@@ -13,14 +13,13 @@
 >
 
     <ImageView
-            android:layout_width="16dp"
-            android:layout_height="16dp" app:srcCompat="@android:drawable/btn_star_big_on"
-            android:id="@+id/groupIcon" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+            android:layout_width="0dp"
+            android:layout_height="10dp" app:srcCompat="@android:drawable/btn_star_big_on"
+            android:id="@+id/groupIcon" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintHorizontal_bias="0.5" app:layout_constraintBottom_toTopOf="@+id/groupName"
-            android:layout_marginTop="8dp"
-            android:contentDescription="@string/group_icon"/>
+            android:contentDescription="@string/group_icon" android:layout_marginTop="8dp"/>
     <TextView
             tools:text="전체"
             android:textStyle="bold"
@@ -34,6 +33,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/groupIcon"
-            app:layout_constraintHorizontal_bias="0.5" android:layout_marginBottom="8dp"/>
+            app:layout_constraintHorizontal_bias="0.5" android:layout_marginBottom="8dp"
+            android:layout_marginStart="2dp" android:layout_marginEnd="2dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
