@@ -5,23 +5,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.socialwelfareapplication.R
 import com.example.socialwelfareapplication.adapters.ContactGroupItemListAdapter
 import com.example.socialwelfareapplication.adapters.ContactItemListAdapter
 import com.example.socialwelfareapplication.models.Contact
+import kotlinx.android.synthetic.main.fragment_add_monitoring_description.view.backButton
 import kotlinx.android.synthetic.main.fragment_contact.view.*
 
-class AddMonitoringSelectContactFragment : Fragment() {
+class ContactFragment : Fragment() {
 
     private lateinit var groupAdapter: ContactGroupItemListAdapter
     private lateinit var contactAdapter: ContactItemListAdapter
 
-    companion object {
-        const val REQUEST_CODE = 400
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_contact, container, false)
+
+        view.backButton.visibility = View.GONE
 
         val groupList = listOf(
             "전체",
@@ -89,10 +90,6 @@ class AddMonitoringSelectContactFragment : Fragment() {
             )
         )
 
-        view.groupAddButton.visibility = View.GONE
-        view.groupSettingButton.visibility = View.GONE
-        view.editButton.visibility = View.GONE
-
         groupAdapter = ContactGroupItemListAdapter()
         setupRecyclerView(view.groupRecyclerView, groupAdapter)
         groupAdapter.contactGroupList = groupList
@@ -100,28 +97,20 @@ class AddMonitoringSelectContactFragment : Fragment() {
         groupAdapter.notifyDataSetChanged()
 
 
-        contactAdapter = ContactItemListAdapter(R.layout.item_contact_select)
+        contactAdapter = ContactItemListAdapter(R.layout.item_contact)
         setupRecyclerView(view.contactRecyclerView, contactAdapter)
         contactAdapter.contactList = contactList
         contactAdapter.notifyDataSetChanged()
 
-
         val selectGroupText = "${groupAdapter.selectGroup}(${contactAdapter.itemCount})"
         view.selectGroup.text = selectGroupText
 
-        view.backButton.setOnClickListener { fragmentManager?.popBackStackImmediate() }
-
-        view.addButton.setOnClickListener {
-            val fragment = AddMonitoringDescriptionFragment()
-            val transaction = fragmentManager?.beginTransaction()
-            fragment.setTargetFragment(this, REQUEST_CODE)
-
-            transaction?.replace(R.id.fragmentContainer, fragment)
-            transaction?.addToBackStack(null)
-            transaction?.commit()
-        }
-
         return view
-
     }
+}
+
+fun setupRecyclerView(recyclerView: RecyclerView, adapter: RecyclerView.Adapter<*>) {
+    recyclerView.adapter = adapter
+    recyclerView.layoutManager = LinearLayoutManager(recyclerView.context, RecyclerView.VERTICAL, false)
+
 }
