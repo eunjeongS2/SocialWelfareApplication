@@ -58,6 +58,17 @@
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="46dp"/>
 
+    <View
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:id="@+id/view2"
+            android:background="#d8d8d8"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="66dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="46dp" app:layout_constraintHorizontal_bias="0.0"/>
+
 
     <androidx.recyclerview.widget.RecyclerView
             android:layout_width="68dp"
@@ -65,7 +76,6 @@
             app:layout_constraintTop_toBottomOf="@+id/view"
             android:id="@+id/groupRecyclerView"
             app:layout_constraintStart_toStartOf="parent"
-            android:background="@drawable/border_right"
             tools:listitem="@layout/item_contact_group"
     >
     </androidx.recyclerview.widget.RecyclerView>
