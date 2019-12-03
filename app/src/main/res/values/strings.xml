@@ -32,4 +32,7 @@
     <string name="cancel">취소</string>
     <string name="apply">적용</string>
     <string name="range">구간설정</string>
+    <string name="email">이메일</string>
+    <string name="password">비밀번호</string>
+    <string name="login">로그인</string>
 </resources>

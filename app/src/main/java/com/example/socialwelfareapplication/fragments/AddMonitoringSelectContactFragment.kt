@@ -109,16 +109,16 @@ class AddMonitoringSelectContactFragment : Fragment() {
         val selectGroupText = "${groupAdapter.selectGroup}(${contactAdapter.itemCount})"
         view.selectGroup.text = selectGroupText
 
-        view.backButton.setOnClickListener { fragmentManager?.popBackStackImmediate() }
+        view.backButton.setOnClickListener { parentFragmentManager.popBackStackImmediate() }
 
         view.addButton.setOnClickListener {
             val fragment = AddMonitoringDescriptionFragment()
-            val transaction = fragmentManager?.beginTransaction()
+            val transaction = parentFragmentManager.beginTransaction()
             fragment.setTargetFragment(this, REQUEST_CODE)
 
-            transaction?.replace(R.id.fragmentContainer, fragment)
-            transaction?.addToBackStack(null)
-            transaction?.commit()
+            transaction.replace(R.id.fragmentContainer, fragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
         }
 
         return view
