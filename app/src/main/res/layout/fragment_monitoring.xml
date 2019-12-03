@@ -36,7 +36,7 @@
 
     <ImageView
             android:layout_width="30dp"
-            android:layout_height="wrap_content" app:srcCompat="@drawable/ic_calendar"
+            android:layout_height="wrap_content" app:srcCompat="@drawable/calendar_selector"
             android:id="@+id/calendarImageView"
             app:layout_constraintStart_toEndOf="@+id/monitoringSearchView"
             app:layout_constraintEnd_toEndOf="parent"

@@ -29,4 +29,7 @@
     <string name="group_setting">group setting</string>
     <string name="call_button">call button</string>
     <string name="message_button">message button</string>
+    <string name="cancel">취소</string>
+    <string name="apply">적용</string>
+    <string name="range">구간설정</string>
 </resources>

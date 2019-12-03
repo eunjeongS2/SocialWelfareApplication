@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#00B4E4"
+>
+
+    <EditText
+            tools:text="abcd@gmail.com"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:background="@color/colorWhite"
+            android:ems="10"
+            android:id="@+id/email"
+            android:theme="@style/LoginText"
+            android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="8dp" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintVertical_bias="0.51"/>
+
+    <EditText
+            tools:text="111abcd!!"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:background="@color/colorWhite"
+            android:ems="10"
+            android:id="@+id/password"
+            android:theme="@style/LoginText"
+            app:layout_constraintTop_toBottomOf="@+id/email" app:layout_constraintEnd_toEndOf="@+id/editText"
+            app:layout_constraintStart_toStartOf="@+id/email" android:layout_marginTop="24dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

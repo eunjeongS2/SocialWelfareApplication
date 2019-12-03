@@ -21,5 +21,35 @@
         <item name="android:textSize">22sp</item>
         <!--<item name="android:textColorHighlight">@color/purple500</item>-->
     </style>
+    
+    <style name="CalendarHeaderText" parent="TextAppearance.MaterialCalendarWidget.Header" >
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textStyle">normal</item>
+
+    </style>
+
+    <style name="CalendarWeekText" parent="TextAppearance.MaterialCalendarWidget.WeekDay" >
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">#c8c9cc</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:background">@drawable/border_bottom</item>
+
+    </style>
+
+    <style name="CalendarDateText" parent="TextAppearance.MaterialCalendarWidget.Date" >
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#111111</item>
+        <item name="android:textStyle">normal</item>
+
+    </style>
+
+    <style name="LoginText" parent="Widget.AppCompat.EditText">
+        <item name="android:textSize">20sp</item>
+        <item name="android:background">@drawable/border</item>
+
+    </style>
+
+
 
 </resources>

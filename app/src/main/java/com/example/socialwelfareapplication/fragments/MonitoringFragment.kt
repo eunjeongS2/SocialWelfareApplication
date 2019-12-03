@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -90,31 +91,57 @@ class MonitoringFragment : Fragment() {
 
         setupRecyclerView(view.recyclerView, monitoringList)
 
+        val monitoringCalendarFragment = MonitoringCalendarFragment()
+
         view.calendarImageView.setOnClickListener {
             view.monitoringSearchView.clearFocus()
+
+            view.calendarImageView.calendarIsSelected(!view.calendarImageView.isSelected, monitoringCalendarFragment)
+
         }
 
         view.recyclerView.setOnTouchListener { _, _ ->
             if (view.monitoringSearchView.hasFocus())
                 view.monitoringSearchView.clearFocus()
+            else
+                view.calendarImageView.calendarIsSelected(false, monitoringCalendarFragment)
 
             return@setOnTouchListener false
         }
 
-        view.addMonitoringButton.setOnClickListener {
-            val fragment = AddMonitoringSelectContactFragment()
-            val transaction = fragmentManager?.beginTransaction()
-            fragment.setTargetFragment(this, REQUEST_CODE)
 
-            transaction?.replace(R.id.fragmentContainer, fragment)
+        val addMonitoringFragment = AddMonitoringSelectContactFragment()
+
+        view.addMonitoringButton.setOnClickListener {
+            val transaction = fragmentManager?.beginTransaction()
+            addMonitoringFragment.setTargetFragment(this, REQUEST_CODE)
+
+            transaction?.replace(R.id.fragmentContainer, addMonitoringFragment)
             transaction?.addToBackStack(null)
             transaction?.commit()
 
         }
 
-
         return view
     }
+
+    private fun ImageView.calendarIsSelected(isSelected: Boolean, fragment: Fragment) {
+        this.isSelected = isSelected
+
+        val transaction = fragmentManager?.beginTransaction()
+        fragment.setTargetFragment(this@MonitoringFragment, REQUEST_CODE)
+
+        if (isSelected) {
+            transaction?.add(R.id.fragmentContainer, fragment)
+
+        } else {
+            transaction?.remove(fragment)
+        }
+
+        transaction?.commit()
+
+    }
+
 
     private fun setupRecyclerView(recyclerView: RecyclerView, itemList: List<Monitoring>) {
         adapter = MonitoringItemListAdapter()
