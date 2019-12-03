@@ -1,95 +1,68 @@
 package com.example.socialwelfareapplication.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.socialwelfareapplication.models.Monitoring
 import com.example.socialwelfareapplication.R
 import com.example.socialwelfareapplication.adapters.MonitoringItemListAdapter
+import com.example.socialwelfareapplication.viewmodels.MonitoringViewModel
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_monitoring.view.*
 
 class MonitoringFragment : Fragment() {
 
-    private lateinit var adapter: MonitoringItemListAdapter
+    private lateinit var viewModel: MonitoringViewModel
+    private val disposeBag = CompositeDisposable()
+
 
     companion object {
         const val REQUEST_CODE = 300
+        const val TAG = "MonitoringFragment"
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        activity?.let {
+            viewModel = ViewModelProvider(it).get(MonitoringViewModel::class.java)
+            viewModel.getData()
+        }
+
+        val adapter = MonitoringItemListAdapter()
+        view?.recyclerView?.adapter = adapter
+
+        if (viewModel.monitoringList.isNotEmpty()) {
+            setupItems(adapter, viewModel.monitoringList)
+        }
+
+        view?.recyclerView?.let { setupRecyclerView(it) }
+
+        viewModel.monitoringPublisher.observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ monitoringList ->
+                setupItems(adapter, monitoringList)
+
+                view?.let {
+                }
+
+            }, { e ->
+                Log.d(TAG, "e : ", e)
+
+            })
+            .addTo(disposeBag)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
         val view = inflater.inflate(R.layout.fragment_monitoring, container, false)
-
-        val monitoringList = listOf(
-            Monitoring(
-                "05/20/2019",
-                "도도",
-                "https://ssl.pstatic.net/mimgnews/image/112/2018/11/09/201811091110220474475_20181109111030_01_20181109111920216.jpg?type=w540",
-                "김한다 어르신 댁",
-                "도시락 배달",
-                "부재중",
-                "집에 안계서서 문앞에 두고 감.",
-                99
-            ),
-            Monitoring(
-                "05/20/2019",
-                "도도",
-                "https://ssl.pstatic.net/mimgnews/image/112/2018/11/09/201811091110220474475_20181109111030_01_20181109111920216.jpg?type=w540",
-                "강한나 어르신 댁",
-                "서프라이즈 파티",
-                "부재중",
-                "집에 안계서서 문앞에 두고 감.",
-                199
-            ),
-            Monitoring(
-                "05/20/2019",
-                "짱나",
-                "https://ssl.pstatic.net/mimgnews/image/112/2018/11/09/201811091110220474475_20181109111030_01_20181109111920216.jpg?type=w540",
-                "김고추참치 어르신 댁",
-                "도시락 배달",
-                "부재중",
-                "집에 안계서서 문앞에 두고 감.",
-                929
-            ),
-            Monitoring(
-                "05/19/2019",
-                "짱나",
-                "https://ssl.pstatic.net/mimgnews/image/112/2018/11/09/201811091110220474475_20181109111030_01_20181109111920216.jpg?type=w540",
-                "도참치 어르신 댁",
-                "서프라이즈 파티",
-                "부재중",
-                "집에 안계서서 문앞에 두고 감.",
-                499
-            ),
-            Monitoring(
-                "05/19/2019",
-                "참치",
-                "https://ssl.pstatic.net/mimgnews/image/112/2018/11/09/201811091110220474475_20181109111030_01_20181109111920216.jpg?type=w540",
-                "고성준 어르신 댁",
-                "도시락 배달",
-                "부재중",
-                "집에 안계서서 문앞에 두고 감.",
-                299
-            ),
-            Monitoring(
-                "05/19/2019",
-                "참치",
-                "https://ssl.pstatic.net/mimgnews/image/112/2018/11/09/201811091110220474475_20181109111030_01_20181109111920216.jpg?type=w540",
-                "도레미마켓 어르신 댁",
-                "서프라이즈 파티",
-                "부재중",
-                "집에 안계서서 문앞에 두고 감.",
-                299
-            )
-
-        )
-
-        setupRecyclerView(view.recyclerView, monitoringList)
 
         val monitoringCalendarFragment = MonitoringCalendarFragment()
 
@@ -113,12 +86,12 @@ class MonitoringFragment : Fragment() {
         val addMonitoringFragment = AddMonitoringSelectContactFragment()
 
         view.addMonitoringButton.setOnClickListener {
-            val transaction = fragmentManager?.beginTransaction()
+            val transaction = parentFragmentManager.beginTransaction()
             addMonitoringFragment.setTargetFragment(this, REQUEST_CODE)
 
-            transaction?.replace(R.id.fragmentContainer, addMonitoringFragment)
-            transaction?.addToBackStack(null)
-            transaction?.commit()
+            transaction.replace(R.id.fragmentContainer, addMonitoringFragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
 
         }
 
@@ -128,27 +101,27 @@ class MonitoringFragment : Fragment() {
     private fun ImageView.calendarIsSelected(isSelected: Boolean, fragment: Fragment) {
         this.isSelected = isSelected
 
-        val transaction = fragmentManager?.beginTransaction()
+        val transaction = parentFragmentManager.beginTransaction()
         fragment.setTargetFragment(this@MonitoringFragment, REQUEST_CODE)
 
         if (isSelected) {
-            transaction?.add(R.id.fragmentContainer, fragment)
+            transaction.add(R.id.fragmentContainer, fragment)
 
         } else {
-            transaction?.remove(fragment)
+            transaction.remove(fragment)
         }
 
-        transaction?.commit()
+        transaction.commit()
 
     }
 
-
-    private fun setupRecyclerView(recyclerView: RecyclerView, itemList: List<Monitoring>) {
-        adapter = MonitoringItemListAdapter()
-        recyclerView.adapter = adapter
-
+    private fun setupItems(adapter: MonitoringItemListAdapter, itemList: List<Monitoring>) {
         adapter.monitoringList = itemList
         adapter.notifyDataSetChanged()
+    }
+
+
+    private fun setupRecyclerView(recyclerView: RecyclerView) {
 
         recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
 

@@ -9,28 +9,39 @@
 >
 
     <EditText
+            tools:ignore="AutoFill"
             tools:text="abcd@gmail.com"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
-            android:background="@color/colorWhite"
             android:ems="10"
+            android:hint="@string/email"
+            android:background="@drawable/border"
             android:id="@+id/email"
             android:theme="@style/LoginText"
-            android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginStart="8dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginEnd="32dp" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="32dp" app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" android:layout_marginTop="8dp"
-            app:layout_constraintTop_toTopOf="parent" app:layout_constraintVertical_bias="0.51"/>
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintVertical_bias="0.44"/>
 
     <EditText
+            tools:ignore="AutoFill"
             tools:text="111abcd!!"
-            android:layout_width="wrap_content"
+            android:background="@drawable/border"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
-            android:background="@color/colorWhite"
             android:ems="10"
+            android:hint="@string/password"
             android:id="@+id/password"
             android:theme="@style/LoginText"
-            app:layout_constraintTop_toBottomOf="@+id/email" app:layout_constraintEnd_toEndOf="@+id/editText"
+            app:layout_constraintTop_toBottomOf="@+id/email" app:layout_constraintEnd_toEndOf="@+id/email"
             app:layout_constraintStart_toStartOf="@+id/email" android:layout_marginTop="24dp"/>
+    <Button
+            android:text="@string/login"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/loginButton"
+            app:layout_constraintStart_toStartOf="@+id/password" app:layout_constraintEnd_toEndOf="@+id/password"
+            app:layout_constraintTop_toBottomOf="@+id/password" android:layout_marginTop="32dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
