@@ -51,10 +51,11 @@ dependencies {
     implementation 'com.jakewharton.rxbinding3:rxbinding:3.0.0-alpha2'
 
     // firebase
-    implementation 'com.google.firebase:firebase-firestore-ktx:21.3.0'
+    implementation 'com.google.firebase:firebase-firestore-ktx:21.3.1'
     implementation 'com.google.firebase:firebase-analytics:17.2.1'
+    implementation 'com.google.firebase:firebase-auth:19.2.0'
 
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0-rc02'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0-rc03'
 
 }
 

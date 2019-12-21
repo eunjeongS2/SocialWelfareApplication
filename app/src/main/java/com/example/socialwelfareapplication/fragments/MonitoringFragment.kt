@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.socialwelfareapplication.models.Monitoring
 import com.example.socialwelfareapplication.R
@@ -45,7 +44,7 @@ class MonitoringFragment : Fragment() {
             setupItems(adapter, viewModel.monitoringList)
         }
 
-        view?.recyclerView?.let { setupRecyclerView(it) }
+        view?.recyclerView?.let { setupRecyclerView(it, adapter, RecyclerView.VERTICAL) }
 
         viewModel.monitoringPublisher.observeOn(AndroidSchedulers.mainThread())
             .subscribe({ monitoringList ->
@@ -120,10 +119,9 @@ class MonitoringFragment : Fragment() {
         adapter.notifyDataSetChanged()
     }
 
-
-    private fun setupRecyclerView(recyclerView: RecyclerView) {
-
-        recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-
+    override fun onDestroy() {
+        disposeBag.dispose()
+        super.onDestroy()
     }
+
 }
