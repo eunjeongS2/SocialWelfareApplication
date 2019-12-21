@@ -39,6 +39,13 @@ class MonitoringViewModel(application: Application) : AndroidViewModel(applicati
 
     fun getData(onSubscribe: (() -> Unit)? = null) {
 
+//        println(FirebaseProvider().getData("monitoring"))
+//
+//        FirebaseProvider().getData("monitoring")?.let {
+//            monitoringList = it.toObjects(Monitoring::class.java)
+//        }
+
+
         db.collection("monitoring")
             .get()
             .addOnSuccessListener { result ->

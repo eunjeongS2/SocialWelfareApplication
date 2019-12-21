@@ -5,16 +5,25 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.socialwelfareapplication.R
 import com.example.socialwelfareapplication.viewholders.ContactGroupItemViewHolder
+import com.example.socialwelfareapplication.viewmodels.UserViewModel
 
-class ContactGroupItemListAdapter : RecyclerView.Adapter<ContactGroupItemViewHolder>() {
+class ContactGroupItemListAdapter(private val viewModel: UserViewModel) : RecyclerView.Adapter<ContactGroupItemViewHolder>() {
 
-    var contactGroupList: List<String> = listOf()
-    lateinit var selectGroup : String
+    var contactGroupList: List<String> = listOf(
+        "전체",
+        "중요",
+        "어르신",
+        "광교복지관"
+    )
+
+    var selectGroup : String = contactGroupList[2]
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactGroupItemViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_contact_group, parent, false)
+
+        viewModel.group = selectGroup
 
         return ContactGroupItemViewHolder(view)
     }
@@ -28,6 +37,7 @@ class ContactGroupItemListAdapter : RecyclerView.Adapter<ContactGroupItemViewHol
 
         holder.itemView.setOnClickListener {
             selectGroup = contactGroupList[position]
+            viewModel.group = selectGroup
 
             notifyDataSetChanged()
         }
