@@ -71,7 +71,7 @@
             android:inputType="textPersonName"
             android:hint="@string/input_image"
             android:theme="@style/EditText"
-            android:id="@+id/image" android:layout_marginTop="20dp"
+            android:id="@+id/visitImage" android:layout_marginTop="20dp"
             app:layout_constraintTop_toBottomOf="@+id/selectContactRecyclerView" android:layout_marginStart="22dp"
             app:layout_constraintStart_toStartOf="parent"
             tools:ignore="AutoFill"/>
@@ -83,7 +83,7 @@
             android:hint="@string/input_place"
             android:theme="@style/EditText"
             android:id="@+id/visitPlace" android:layout_marginTop="40dp"
-            app:layout_constraintTop_toBottomOf="@+id/image" android:layout_marginStart="22dp"
+            app:layout_constraintTop_toBottomOf="@+id/visitImage" android:layout_marginStart="22dp"
             app:layout_constraintStart_toStartOf="parent"
             tools:ignore="AutoFill"
     />
@@ -113,11 +113,13 @@
     />
 
     <RadioGroup
+            android:id="@+id/radioGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal" app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="22dp" android:layout_marginTop="40dp"
             app:layout_constraintTop_toBottomOf="@+id/remark"
+            android:checkedButton="@id/stateComplete"
     >
         <RadioButton
                 android:text="@string/complete"

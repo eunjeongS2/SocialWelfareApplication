@@ -6,11 +6,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.socialwelfareapplication.R
 import com.example.socialwelfareapplication.models.Contact
 import com.example.socialwelfareapplication.viewholders.ContactItemViewHolder
+import com.example.socialwelfareapplication.viewmodels.UserViewModel
+import kotlinx.android.synthetic.main.item_contact_select.view.*
 
-class ContactItemListAdapter(private val layout: Int) : RecyclerView.Adapter<ContactItemViewHolder>() {
+class ContactItemListAdapter(private val viewModel: UserViewModel, private val layout: Int) : RecyclerView.Adapter<ContactItemViewHolder>() {
 
     var contactList: List<Contact> = emptyList()
-    private var selectVisitPlace = 0
+    var selectVisitPlace = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactItemViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -29,6 +31,10 @@ class ContactItemListAdapter(private val layout: Int) : RecyclerView.Adapter<Con
         when(layout) {
             R.layout.item_contact_select -> {
 
+                holder.itemView.checkBox.setOnCheckedChangeListener { _, b ->
+                    if (b) { viewModel.selectList.add(item) }
+                    else { viewModel.selectList.remove(item) }
+                }
             }
             R.layout.item_contact_simple -> {
 
