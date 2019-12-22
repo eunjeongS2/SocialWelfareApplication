@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
@@ -36,19 +37,16 @@ class AddMonitoringSelectContactFragment : Fragment() {
 
         activity?.let {
             viewModel = ViewModelProvider(it).get(UserViewModel::class.java)
-
         }
 
         groupAdapter = ContactGroupItemListAdapter(viewModel)
-        contactAdapter = ContactItemListAdapter(R.layout.item_contact_select)
+        contactAdapter = ContactItemListAdapter(viewModel, R.layout.item_contact_select)
 
 
         view?.let {
             setupRecyclerView(it.groupRecyclerView, groupAdapter, RecyclerView.VERTICAL)
             setupRecyclerView(it.contactRecyclerView, contactAdapter, RecyclerView.VERTICAL)
-
         }
-
 
         viewModel.userPublisher.observeOn(AndroidSchedulers.mainThread())
             .subscribe({ contactList ->
@@ -69,16 +67,18 @@ class AddMonitoringSelectContactFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_contact, container, false)
 
-
         view.groupAddButton.visibility = View.GONE
         view.groupSettingButton.visibility = View.GONE
         view.editButton.visibility = View.GONE
 
-
         view.backButton.setOnClickListener { parentFragmentManager.popBackStackImmediate() }
 
         view.addButton.setOnClickListener {
-            val fragment = AddMonitoringDescriptionFragment()
+            if (viewModel.selectList.size == 0) {
+                Toast.makeText(context, "대상자를 선택해주세요 ~", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            val fragment = AddMonitoringDescriptionFragment(viewModel)
             val transaction = parentFragmentManager.beginTransaction()
             fragment.setTargetFragment(this, REQUEST_CODE)
 

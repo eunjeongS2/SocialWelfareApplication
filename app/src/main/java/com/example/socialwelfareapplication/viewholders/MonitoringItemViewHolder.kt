@@ -7,9 +7,12 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.socialwelfareapplication.models.Monitoring
 import kotlinx.android.synthetic.main.item_monitoring.view.*
 
-class MonitoringItemViewHolder(private val view : View) : RecyclerView.ViewHolder(view) {
+class MonitoringItemViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
     fun bind(item: Monitoring) {
-        view.monitoringDate.text = item.date
+
+        val date = "${item.date.split("/")[1]}/${item.date.split("/")[2]}/${item.date.split("/")[0]}"
+
+        view.monitoringDate.text = date
         view.visitPlace.text = item.place
         view.visitPurpose.text = item.purpose
         view.state.text = item.state

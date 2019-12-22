@@ -4,6 +4,7 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import com.example.socialwelfareapplication.models.Monitoring
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import io.reactivex.subjects.PublishSubject
@@ -24,15 +25,17 @@ class MonitoringViewModel(application: Application) : AndroidViewModel(applicati
 
     private val db = Firebase.firestore
 
-    fun addData(monitoring: Monitoring) {
+    fun addData(monitoring: Monitoring, onSubscribe: (() -> Unit)? = null) {
 
         db.collection("monitoring")
             .add(monitoring)
             .addOnSuccessListener { documentReference ->
                 Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
+                onSubscribe?.invoke()
             }
             .addOnFailureListener { e ->
                 Log.w(TAG, "Error adding document", e)
+                onSubscribe?.invoke()
             }
     }
 
@@ -46,7 +49,7 @@ class MonitoringViewModel(application: Application) : AndroidViewModel(applicati
 //        }
 
 
-        db.collection("monitoring")
+        db.collection("monitoring").orderBy("date", Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener { result ->
                 monitoringList = result.toObjects(Monitoring::class.java)

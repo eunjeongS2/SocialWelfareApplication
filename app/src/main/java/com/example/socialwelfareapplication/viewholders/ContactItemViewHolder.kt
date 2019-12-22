@@ -1,13 +1,11 @@
 package com.example.socialwelfareapplication.viewholders
 
 import android.graphics.Color
-import android.net.Uri
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.engine.Resource
 import com.example.socialwelfareapplication.R
 import com.example.socialwelfareapplication.models.Contact
 import kotlinx.android.synthetic.main.item_contact.view.*
@@ -48,4 +46,5 @@ class ContactItemViewHolder(private val view: View) : RecyclerView.ViewHolder(vi
         view.name.setTextColor(textColor)
 
     }
+
 }

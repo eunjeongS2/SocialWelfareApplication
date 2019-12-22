@@ -22,8 +22,10 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
 
     var group: String = "어르신"
         set(value) {
-           getData(value)
+            getData(value)
         }
+
+    var selectList: MutableList<Contact> = mutableListOf()
 
     var userPublisher = PublishSubject.create<List<Contact>>()
 
@@ -33,27 +35,56 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
         db.collection(path).document(contact.phoneNumber)
             .set(contact)
             .addOnSuccessListener { documentReference ->
-                Log.d(MonitoringViewModel.TAG, "DocumentSnapshot added with ID: $documentReference")
+                Log.d(TAG, "DocumentSnapshot added with ID: $documentReference")
             }
             .addOnFailureListener { e ->
-                Log.w(MonitoringViewModel.TAG, "Error adding document", e)
+                Log.w(TAG, "Error adding document", e)
             }
     }
 
 
-    fun getData(path: String) {
+    private fun getData(path: String) {
 
-        db.collection(path)
-            .get()
-            .addOnSuccessListener { result ->
-                userList = result.toObjects(Contact::class.java)
+        if (path == "전체") {
+            val list = mutableListOf<Contact>()
+            db.collection("어르신")
+                .get()
+                .addOnSuccessListener { result ->
+                    list.addAll(result.toObjects(Contact::class.java))
+                    userList = list
+
+                }
+                .addOnFailureListener { e ->
+                    Log.w(TAG, "Error getting documents.", e)
+
+                }
+
+            db.collection("광교복지관")
+                .get()
+                .addOnSuccessListener { result ->
+                    list.addAll(result.toObjects(Contact::class.java))
+                    userList = list
+
+                }
+                .addOnFailureListener { e ->
+                    Log.w(TAG, "Error getting documents.", e)
+
+                }
 
 
-            }
-            .addOnFailureListener { e ->
-                Log.w(MonitoringViewModel.TAG, "Error getting documents.", e)
+        } else {
+            db.collection(path)
+                .get()
+                .addOnSuccessListener { result ->
+                    userList = result.toObjects(Contact::class.java)
 
-            }
+
+                }
+                .addOnFailureListener { e ->
+                    Log.w(TAG, "Error getting documents.", e)
+
+                }
+        }
 
     }
 }

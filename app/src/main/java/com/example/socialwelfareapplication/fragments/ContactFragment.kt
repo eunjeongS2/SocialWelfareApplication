@@ -41,7 +41,7 @@ class ContactFragment : Fragment() {
         }
 
         groupAdapter = ContactGroupItemListAdapter(viewModel)
-        contactAdapter = ContactItemListAdapter(R.layout.item_contact)
+        contactAdapter = ContactItemListAdapter(viewModel, R.layout.item_contact)
 
         view?.let {
             setupRecyclerView(it.contactRecyclerView, contactAdapter, RecyclerView.VERTICAL)
@@ -78,8 +78,6 @@ class ContactFragment : Fragment() {
         disposeBag.dispose()
         super.onDestroy()
     }
-
-
 
 }
 
