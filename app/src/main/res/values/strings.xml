@@ -39,4 +39,5 @@
     <string name="message">문자 메세지</string>
     <string name="button_message_send">button_message_send</string>
     <string name="button_message_camera">button_message_camera</string>
+    <string name="notice">광교종합사회복지관 공지사항</string>
 </resources>

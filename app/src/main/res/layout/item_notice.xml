@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        app:cardUseCompatPadding="true"
+        app:cardElevation="4dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/notice"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="10dp"
+>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp">
+
+        <TextView
+                tools:text="[실습] 2019년 하계방학"
+                android:textSize="16sp"
+                android:textColor="#4a4a4a"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintVertical_bias="0.0"/>
+        <TextView
+                tools:text="2019. 05. 13"
+                android:textSize="12sp"
+                android:textColor="#8d8787"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/date"
+                app:layout_constraintTop_toBottomOf="@+id/title" app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="2dp"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
