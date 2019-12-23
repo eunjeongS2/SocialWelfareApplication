@@ -35,7 +35,9 @@ class AddMonitoringDescriptionFragment(private val viewModel: UserViewModel) : F
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_add_monitoring_description, container, false)
 
-        adapter = ContactItemListAdapter(viewModel, R.layout.item_contact_simple)
+        context?.let {
+            adapter = ContactItemListAdapter(it, viewModel, R.layout.item_contact_simple)
+        }
 
         setupRecyclerView(view.selectContactRecyclerView, adapter, RecyclerView.HORIZONTAL)
 
@@ -55,11 +57,15 @@ class AddMonitoringDescriptionFragment(private val viewModel: UserViewModel) : F
         view.writeButton.setOnClickListener {
             val date = "${currentDate.year}/${currentDate.monthValue}/${currentDate.dayOfMonth}"
 
-            monitoringViewModel.addData(Monitoring(date, auth.currentUser?.uid ?: "",
-                visitImage.toString(),
-                viewModel.selectList[adapter.selectVisitPlace].name, visitPurpose.toString(),
-                (view.findViewById(radioGroup.checkedRadioButtonId) as RadioButton).text.toString(),
-                remark.toString(), 0)) {
+            monitoringViewModel.addData(
+                Monitoring(
+                    date, auth.currentUser?.uid ?: "",
+                    visitImage.toString(),
+                    viewModel.selectList[adapter.selectVisitPlace].name, visitPurpose.toString(),
+                    (view.findViewById(radioGroup.checkedRadioButtonId) as RadioButton).text.toString(),
+                    remark.toString(), 0
+                )
+            ) {
 
                 viewModel.selectList.removeAt(adapter.selectVisitPlace)
                 adapter.notifyDataSetChanged()

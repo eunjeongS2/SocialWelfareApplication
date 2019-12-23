@@ -41,12 +41,14 @@ class ContactFragment : Fragment() {
         }
 
         groupAdapter = ContactGroupItemListAdapter(viewModel)
-        contactAdapter = ContactItemListAdapter(viewModel, R.layout.item_contact)
+
+        context?.let {
+            contactAdapter = ContactItemListAdapter(it, viewModel, R.layout.item_contact)
+        }
 
         view?.let {
             setupRecyclerView(it.contactRecyclerView, contactAdapter, RecyclerView.VERTICAL)
             setupRecyclerView(it.groupRecyclerView, groupAdapter, RecyclerView.VERTICAL)
-
         }
 
         viewModel.userPublisher.observeOn(AndroidSchedulers.mainThread())

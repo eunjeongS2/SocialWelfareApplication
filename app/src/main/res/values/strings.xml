@@ -35,4 +35,8 @@
     <string name="email">이메일</string>
     <string name="password">비밀번호</string>
     <string name="login">로그인</string>
+    <string name="new_message">새로운 메세지</string>
+    <string name="message">문자 메세지</string>
+    <string name="button_message_send">button_message_send</string>
+    <string name="button_message_camera">button_message_camera</string>
 </resources>
