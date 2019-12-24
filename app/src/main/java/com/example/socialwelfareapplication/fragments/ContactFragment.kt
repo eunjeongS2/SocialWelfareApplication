@@ -42,9 +42,7 @@ class ContactFragment : Fragment() {
 
         groupAdapter = ContactGroupItemListAdapter(viewModel)
 
-        context?.let {
-            contactAdapter = ContactItemListAdapter(it, viewModel, R.layout.item_contact)
-        }
+        contactAdapter = ContactItemListAdapter(viewModel, R.layout.item_contact)
 
         view?.let {
             setupRecyclerView(it.contactRecyclerView, contactAdapter, RecyclerView.VERTICAL)

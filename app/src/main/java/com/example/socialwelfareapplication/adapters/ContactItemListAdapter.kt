@@ -1,6 +1,5 @@
 package com.example.socialwelfareapplication.adapters
 
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
@@ -13,7 +12,7 @@ import com.example.socialwelfareapplication.viewmodels.UserViewModel
 import kotlinx.android.synthetic.main.item_contact.view.*
 import kotlinx.android.synthetic.main.item_contact_select.view.*
 
-class ContactItemListAdapter(private val context: Context, private val viewModel: UserViewModel, private val layout: Int) : RecyclerView.Adapter<ContactItemViewHolder>() {
+class ContactItemListAdapter(private val viewModel: UserViewModel, private val layout: Int) : RecyclerView.Adapter<ContactItemViewHolder>() {
 
     var contactList: List<Contact> = emptyList()
     var selectVisitPlace = 0
@@ -59,8 +58,8 @@ class ContactItemListAdapter(private val context: Context, private val viewModel
                         data = Uri.parse("tel:${item.phoneNumber}")
                     }
 
-                    if (intent.resolveActivity(context.packageManager) != null) {
-                        context.startActivity(intent)
+                    if (intent.resolveActivity(it.context.packageManager) != null) {
+                        it.context.startActivity(intent)
                     }
                 }
 
@@ -71,8 +70,8 @@ class ContactItemListAdapter(private val context: Context, private val viewModel
                         data = Uri.parse("sms:${item.phoneNumber}")
                     }
 
-                    if (intent.resolveActivity(context.packageManager) != null) {
-                        context.startActivity(intent)
+                    if (intent.resolveActivity(it.context.packageManager) != null) {
+                        it.context.startActivity(intent)
                     }
 
                 }

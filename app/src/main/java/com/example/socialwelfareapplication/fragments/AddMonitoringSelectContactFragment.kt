@@ -41,9 +41,7 @@ class AddMonitoringSelectContactFragment : Fragment() {
 
         groupAdapter = ContactGroupItemListAdapter(viewModel)
 
-        context?.let {
-            contactAdapter = ContactItemListAdapter(it, viewModel, R.layout.item_contact_select)
-        }
+        contactAdapter = ContactItemListAdapter(viewModel, R.layout.item_contact_select)
 
         view?.let {
             setupRecyclerView(it.groupRecyclerView, groupAdapter, RecyclerView.VERTICAL)
