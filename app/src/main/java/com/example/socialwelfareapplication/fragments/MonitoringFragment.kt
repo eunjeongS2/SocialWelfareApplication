@@ -22,7 +22,7 @@ class MonitoringFragment : Fragment() {
 
     private lateinit var viewModel: MonitoringViewModel
     private val disposeBag = CompositeDisposable()
-
+    private val monitoringCalendarFragment = MonitoringCalendarFragment()
 
     companion object {
         const val REQUEST_CODE = 300
@@ -50,20 +50,20 @@ class MonitoringFragment : Fragment() {
             .subscribe({ monitoringList ->
                 setupItems(adapter, monitoringList)
 
-                view?.let {
-                }
+                monitoringCalendarFragment.dateList = monitoringList.map { it.date }
 
             }, { e ->
                 Log.d(TAG, "e : ", e)
 
             })
             .addTo(disposeBag)
+
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_monitoring, container, false)
 
-        val monitoringCalendarFragment = MonitoringCalendarFragment()
 
         view.calendarImageView.setOnClickListener {
             view.monitoringSearchView.clearFocus()

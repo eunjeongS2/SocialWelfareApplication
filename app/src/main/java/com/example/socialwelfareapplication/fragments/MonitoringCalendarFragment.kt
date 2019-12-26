@@ -21,6 +21,8 @@ import kotlin.collections.HashSet
 
 class MonitoringCalendarFragment : Fragment() {
 
+    var dateList: List<String> = emptyList()
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_monitoring_calendar, container, false)
 
@@ -33,10 +35,11 @@ class MonitoringCalendarFragment : Fragment() {
 
 
         val set: HashSet<CalendarDay> = hashSetOf()
-        set.add(CalendarDay.from(2019, 4, 20))
-        set.add(CalendarDay.from(2019, 4, 19))
-        set.add(CalendarDay.from(2019, 4, 17))
-        set.add(CalendarDay.from(2019, 10, 17))
+
+        dateList.forEach {
+            val date = it.split("/")
+            set.add(CalendarDay.from(Integer.parseInt(date[0]),Integer.parseInt(date[1]), Integer.parseInt(date[2])))
+        }
 
         view.calendar.addDecorator(
             EventDecorator(
