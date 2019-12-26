@@ -22,7 +22,7 @@ class MonitoringFragment : Fragment() {
 
     private lateinit var viewModel: MonitoringViewModel
     private val disposeBag = CompositeDisposable()
-    private val monitoringCalendarFragment = MonitoringCalendarFragment()
+    private lateinit var monitoringCalendarFragment: MonitoringCalendarFragment
 
     companion object {
         const val REQUEST_CODE = 300
@@ -35,22 +35,21 @@ class MonitoringFragment : Fragment() {
         activity?.let {
             viewModel = ViewModelProvider(it).get(MonitoringViewModel::class.java)
             viewModel.getData()
+
+            monitoringCalendarFragment = MonitoringCalendarFragment(viewModel)
+
         }
 
         val adapter = MonitoringItemListAdapter()
         view?.recyclerView?.adapter = adapter
-
-        if (viewModel.monitoringList.isNotEmpty()) {
-            setupItems(adapter, viewModel.monitoringList)
-        }
-
         view?.recyclerView?.let { setupRecyclerView(it, adapter, RecyclerView.VERTICAL) }
 
         viewModel.monitoringPublisher.observeOn(AndroidSchedulers.mainThread())
             .subscribe({ monitoringList ->
                 setupItems(adapter, monitoringList)
+                view?.calendarImageView?.calendarIsSelected(false, monitoringCalendarFragment)
 
-                monitoringCalendarFragment.dateList = monitoringList.map { it.date }
+                monitoringCalendarFragment.dateList = viewModel.dateList
 
             }, { e ->
                 Log.d(TAG, "e : ", e)
@@ -64,6 +63,7 @@ class MonitoringFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_monitoring, container, false)
 
+        viewModel = ViewModelProvider(this).get(MonitoringViewModel::class.java)
 
         view.calendarImageView.setOnClickListener {
             view.monitoringSearchView.clearFocus()

@@ -7,24 +7,26 @@ import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import com.example.socialwelfareapplication.R
+import com.example.socialwelfareapplication.viewmodels.MonitoringViewModel
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.CalendarMode
 import com.prolificinteractive.materialcalendarview.DayViewDecorator
 import com.prolificinteractive.materialcalendarview.DayViewFacade
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView.SELECTION_MODE_RANGE
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView.SELECTION_MODE_SINGLE
-
 import com.prolificinteractive.materialcalendarview.spans.DotSpan
 import kotlinx.android.synthetic.main.fragment_monitoring_calendar.view.*
 import java.util.*
 import kotlin.collections.HashSet
 
-class MonitoringCalendarFragment : Fragment() {
+class MonitoringCalendarFragment(private val viewModel: MonitoringViewModel) : Fragment() {
 
     var dateList: List<String> = emptyList()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_monitoring_calendar, container, false)
+
+        var filterList: List<String> = emptyList()
 
         view.calendar.state().edit()
             .setFirstDayOfWeek(Calendar.MONDAY)
@@ -38,7 +40,7 @@ class MonitoringCalendarFragment : Fragment() {
 
         dateList.forEach {
             val date = it.split("/")
-            set.add(CalendarDay.from(Integer.parseInt(date[0]),Integer.parseInt(date[1]), Integer.parseInt(date[2])))
+            set.add(CalendarDay.from(Integer.parseInt(date[0]),Integer.parseInt(date[1])-1, Integer.parseInt(date[2])))
         }
 
         view.calendar.addDecorator(
@@ -54,6 +56,25 @@ class MonitoringCalendarFragment : Fragment() {
             } else {
                 view.calendar.selectionMode = SELECTION_MODE_SINGLE
             }
+        }
+
+        view.calendar.setOnDateChangedListener { _, date, _ ->
+            if (view.calendar.selectionMode == SELECTION_MODE_SINGLE) {
+                filterList = listOf( "${date.year}/${date.month+1}/${date.day}")
+            }
+        }
+
+        view.calendar.setOnRangeSelectedListener { _, dates ->
+
+            if (view.calendar.selectionMode == SELECTION_MODE_RANGE) {
+                filterList = dates.map { "${it.year}/${it.month+1}/${it.day}" }
+
+            }
+
+        }
+
+        view.applyButton.setOnClickListener {
+            viewModel.filter(filterList)
         }
 
         return view
