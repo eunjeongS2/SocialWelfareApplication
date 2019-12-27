@@ -1,18 +1,24 @@
 package com.example.socialwelfareapplication.adapters
 
 import android.content.Intent
-import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.socialwelfareapplication.R
+import com.example.socialwelfareapplication.fragments.ContactDetailFragment
+import com.example.socialwelfareapplication.fragments.intent
 import com.example.socialwelfareapplication.models.Contact
 import com.example.socialwelfareapplication.viewholders.ContactItemViewHolder
 import com.example.socialwelfareapplication.viewmodels.UserViewModel
+import com.jakewharton.rxbinding3.view.clicks
 import kotlinx.android.synthetic.main.item_contact.view.*
 import kotlinx.android.synthetic.main.item_contact_select.view.*
+import java.util.concurrent.TimeUnit
 
-class ContactItemListAdapter(private val viewModel: UserViewModel, private val layout: Int) : RecyclerView.Adapter<ContactItemViewHolder>() {
+class ContactItemListAdapter(private val viewModel: UserViewModel, private val layout: Int) :
+    RecyclerView.Adapter<ContactItemViewHolder>() {
 
     var contactList: List<Contact> = emptyList()
     var selectVisitPlace = 0
@@ -32,12 +38,15 @@ class ContactItemListAdapter(private val viewModel: UserViewModel, private val l
         val item = contactList[position]
         holder.bind(item)
 
-        when(layout) {
+        when (layout) {
             R.layout.item_contact_select -> {
 
                 holder.itemView.checkBox.setOnCheckedChangeListener { _, b ->
-                    if (b) { viewModel.selectList.add(item) }
-                    else { viewModel.selectList.remove(item) }
+                    if (b) {
+                        viewModel.selectList.add(item)
+                    } else {
+                        viewModel.selectList.remove(item)
+                    }
                 }
             }
 
@@ -53,26 +62,29 @@ class ContactItemListAdapter(private val viewModel: UserViewModel, private val l
 
             R.layout.item_contact -> {
 
-                holder.itemView.callButton.setOnClickListener {
-                    val intent = Intent(Intent.ACTION_DIAL).apply {
-                        data = Uri.parse("tel:${item.phoneNumber}")
-                    }
+                val detailFragment = ContactDetailFragment(item)
 
-                    if (intent.resolveActivity(it.context.packageManager) != null) {
-                        it.context.startActivity(intent)
-                    }
+                holder.itemView.clicks()
+                    .throttleFirst(600, TimeUnit.MILLISECONDS)
+                    .subscribe({
+                        val transaction =
+                            (holder.itemView.context as AppCompatActivity).supportFragmentManager.beginTransaction()
+
+                        transaction.add(R.id.fragmentContainer, detailFragment)
+                        transaction.commit()
+
+                    }, { e ->
+                        Log.d(ContactItemListAdapter::class.java.name, "view click failed : ", e)
+
+                    })
+
+
+                holder.itemView.callButton.setOnClickListener {
+                    intent(Intent.ACTION_DIAL, "tel:${item.phoneNumber}", it.context)
                 }
 
-
                 holder.itemView.messageButton.setOnClickListener {
-
-                    val intent = Intent(Intent.ACTION_SENDTO).apply {
-                        data = Uri.parse("sms:${item.phoneNumber}")
-                    }
-
-                    if (intent.resolveActivity(it.context.packageManager) != null) {
-                        it.context.startActivity(intent)
-                    }
+                    intent(Intent.ACTION_SENDTO, "sms:${item.phoneNumber}", it.context)
 
                 }
 
