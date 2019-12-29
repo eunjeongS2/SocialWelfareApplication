@@ -1,16 +1,14 @@
 package com.example.socialwelfareapplication.viewmodels
 
-import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import com.example.socialwelfareapplication.models.Notice
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import io.reactivex.subjects.PublishSubject
 
-class NoticeViewModel(application: Application) : AndroidViewModel(application) {
+class NoticeViewModel : ViewModel() {
 
     companion object {
         const val TAG = "NoticeViewModel"

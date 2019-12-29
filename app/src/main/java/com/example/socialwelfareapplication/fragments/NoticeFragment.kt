@@ -29,29 +29,15 @@ class NoticeFragment : Fragment() {
             viewModel = ViewModelProvider(it).get(NoticeViewModel::class.java)
             viewModel.getData()
 
-//            viewModel.addData(Notice("도시락", "2019/05/16", "5월 16일 도시락 메뉴", "5월 16일 도시락 메뉴", "https://ssl.pstatic.net/mimgnews/image/112/2018/11/09/201811091110220474475_20181109111030_01_20181109111920216.jpg?type=w540"))
-//            viewModel.addData(Notice("실습", "2019/05/16", "2019년 하계방학 사회복지실습", "2019년 하계방학 사회복지실습", "https://ssl.pstatic.net/mimgnews/image/112/2018/11/09/201811091110220474475_20181109111030_01_20181109111920216.jpg?type=w540"))
-//            viewModel.addData(Notice("도시락", "2019/05/15", "5월 15일 도시락 메뉴", "5월 15일 도시락 메뉴", "https://ssl.pstatic.net/mimgnews/image/112/2018/11/09/201811091110220474475_20181109111030_01_20181109111920216.jpg?type=w540"))
-//            viewModel.addData(Notice("도시락", "2019/05/14", "5월 14일 도시락 메뉴", "5월 14일 도시락 메뉴", "https://ssl.pstatic.net/mimgnews/image/112/2018/11/09/201811091110220474475_20181109111030_01_20181109111920216.jpg?type=w540"))
-//            viewModel.addData(Notice("도시락", "2019/05/13", "5월 13일 도시락 메뉴", "5월 13일 도시락 메뉴", "https://ssl.pstatic.net/mimgnews/image/112/2018/11/09/201811091110220474475_20181109111030_01_20181109111920216.jpg?type=w540"))
-
         }
 
         val adapter = NoticeItemListAdapter()
         view?.noticeRecyclerView?.adapter = adapter
-
-        if (viewModel.noticeList.isNotEmpty()) {
-            setupItems(adapter, viewModel.noticeList)
-        }
-
         view?.noticeRecyclerView?.let { setupRecyclerView(it, adapter, RecyclerView.VERTICAL) }
 
         viewModel.noticePublisher.observeOn(AndroidSchedulers.mainThread())
             .subscribe({ noticeList ->
                 setupItems(adapter, noticeList)
-
-                view?.let {
-                }
 
             }, { e ->
                 Log.d(MonitoringFragment.TAG, "e : ", e)

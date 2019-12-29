@@ -7,6 +7,10 @@ import com.example.socialwelfareapplication.models.Monitoring
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
 import io.reactivex.subjects.PublishSubject
 
 
@@ -16,10 +20,14 @@ class MonitoringViewModel(application: Application) : AndroidViewModel(applicati
         const val TAG = "MonitoringViewModel"
     }
 
+    private val disposeBag = CompositeDisposable()
+
     var monitoringList: List<Monitoring> = emptyList()
         set(value) {
             monitoringPublisher.onNext(value)
         }
+
+    var dateList: List<String> = emptyList()
 
     var monitoringPublisher = PublishSubject.create<List<Monitoring>>()
 
@@ -40,19 +48,15 @@ class MonitoringViewModel(application: Application) : AndroidViewModel(applicati
     }
 
 
-    fun getData(onSubscribe: (() -> Unit)? = null) {
-
-//        println(FirebaseProvider().getData("monitoring"))
-//
-//        FirebaseProvider().getData("monitoring")?.let {
-//            monitoringList = it.toObjects(Monitoring::class.java)
-//        }
-
+    fun getData(onSubscribe: ((List<Monitoring>) -> Unit)? = null) {
 
         db.collection("monitoring").orderBy("date", Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener { result ->
                 monitoringList = result.toObjects(Monitoring::class.java)
+                dateList = result.toObjects(Monitoring::class.java).map { it.date }
+
+                onSubscribe?.invoke(result.toObjects(Monitoring::class.java))
 
             }
             .addOnFailureListener { e ->
@@ -60,6 +64,20 @@ class MonitoringViewModel(application: Application) : AndroidViewModel(applicati
 
             }
 
+    }
+
+    fun filter(date: List<String>) {
+        if (date.isEmpty()) getData()
+        else getData {
+            monitoringList = it.filter {monitoring ->
+                date.toSet().contains(monitoring.date)
+            }
+        }
+    }
+
+    override fun onCleared() {
+        disposeBag.dispose()
+        super.onCleared()
     }
 
 }
