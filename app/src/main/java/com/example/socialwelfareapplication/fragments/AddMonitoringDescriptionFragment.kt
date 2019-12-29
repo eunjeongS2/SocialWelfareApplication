@@ -43,7 +43,15 @@ class AddMonitoringDescriptionFragment(private val viewModel: UserViewModel) : F
         adapter.notifyDataSetChanged()
 
         val currentDate = LocalDate.now()
-        val dateText = "${currentDate.monthValue}/${currentDate.dayOfMonth}/${currentDate.year}"
+
+        var currentMonth = currentDate.dayOfMonth.toString()
+        var currentDay = currentDate.monthValue.toString()
+
+        if(currentMonth.length == 1) currentMonth = "0$currentMonth"
+        if(currentDay.length == 1) currentDay = "0$currentDay"
+
+
+        val dateText = "${currentDate.monthValue}/$currentMonth/$currentDay"
 
         view.date.text = dateText
 
@@ -53,7 +61,7 @@ class AddMonitoringDescriptionFragment(private val viewModel: UserViewModel) : F
         }
 
         view.writeButton.setOnClickListener {
-            val date = "${currentDate.year}/${currentDate.monthValue}/${currentDate.dayOfMonth}"
+            val date = "${currentDate.year}/$currentMonth/$currentDay"
 
             monitoringViewModel.addData(
                 Monitoring(

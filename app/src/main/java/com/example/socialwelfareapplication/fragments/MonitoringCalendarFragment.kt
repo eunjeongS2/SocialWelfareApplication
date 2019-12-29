@@ -59,15 +59,24 @@ class MonitoringCalendarFragment(private val viewModel: MonitoringViewModel) : F
         }
 
         view.calendar.setOnDateChangedListener { _, date, _ ->
+
             if (view.calendar.selectionMode == SELECTION_MODE_SINGLE) {
-                filterList = listOf( "${date.year}/${date.month+1}/${date.day}")
+                val month = (date.month+1).toString().checkDate()
+                val day = date.day.toString().checkDate()
+
+                filterList = listOf( "${date.year}/$month/$day")
             }
         }
 
         view.calendar.setOnRangeSelectedListener { _, dates ->
 
             if (view.calendar.selectionMode == SELECTION_MODE_RANGE) {
-                filterList = dates.map { "${it.year}/${it.month+1}/${it.day}" }
+                filterList = dates.map {
+                    val month = (it.month+1).toString().checkDate()
+                    val day = it.day.toString().checkDate()
+
+                    "${it.year}/$month/$day"
+                }
 
             }
 
@@ -78,6 +87,14 @@ class MonitoringCalendarFragment(private val viewModel: MonitoringViewModel) : F
         }
 
         return view
+    }
+
+    private fun String.checkDate(): String {
+
+        return if (this.length == 1) {
+            "0$this"
+        } else this
+
     }
 
     class EventDecorator(private val color: Int, private val dates: HashSet<CalendarDay>) : DayViewDecorator {

@@ -69,7 +69,7 @@ class MonitoringViewModel(application: Application) : AndroidViewModel(applicati
     fun filter(date: List<String>) {
         if (date.isEmpty()) getData()
         else getData {
-            monitoringList = it.filter {monitoring ->
+            monitoringList = it.filter { monitoring ->
                 date.toSet().contains(monitoring.date)
             }
         }

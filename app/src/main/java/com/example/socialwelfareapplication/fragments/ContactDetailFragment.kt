@@ -13,6 +13,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.socialwelfareapplication.R
 import com.example.socialwelfareapplication.models.Contact
 import kotlinx.android.synthetic.main.fragment_contact_detail.view.*
+import kotlinx.android.synthetic.main.fragment_contact_detail.view.image
+import kotlinx.android.synthetic.main.item_contact_select.view.*
 
 
 class ContactDetailFragment(private val item: Contact?) : Fragment() {
@@ -26,8 +28,8 @@ class ContactDetailFragment(private val item: Contact?) : Fragment() {
             transaction.commit()
         }
 
-        item?.let {item ->
-            view.isFocusable = false
+        item?.let { item ->
+//            view. = false
             view.call.setOnClickListener {
                 intent(Intent.ACTION_DIAL, "tel:${item.phoneNumber}", it.context)
             }
@@ -44,11 +46,15 @@ class ContactDetailFragment(private val item: Contact?) : Fragment() {
             val monitoring = "2019.05.20 집에 안계서서 문앞에 두고 감. \n2019.02.14 십분동안 담소를 나눴다."
             view.monitoringEditText.text = monitoring
 
-            Glide.with(view.context).load(item.image)
-                .centerCrop()
-                .skipMemoryCache(true)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .into(view.image)
+            if (item.image == "") {
+                view.image.setImageResource(R.drawable.ic_contact)
+            } else {
+                Glide.with(view.context).load(item.image)
+                    .centerCrop()
+                    .skipMemoryCache(true)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .into(view.image)
+            }
         }
 
 
