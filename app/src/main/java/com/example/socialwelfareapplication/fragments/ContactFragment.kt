@@ -55,8 +55,6 @@ class ContactFragment : Fragment() {
 
         viewModel.userPublisher.observeOn(AndroidSchedulers.mainThread())
             .subscribe({ contactList ->
-                println("reeeeeeee")
-
                 view?.let {
                     setupItems(contactAdapter, contactList)
                     val selectGroupText = "${groupAdapter.selectGroup}(${contactAdapter.itemCount})"

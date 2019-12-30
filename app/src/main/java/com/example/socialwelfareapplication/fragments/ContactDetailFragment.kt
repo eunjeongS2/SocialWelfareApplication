@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +14,9 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.socialwelfareapplication.R
 import com.example.socialwelfareapplication.models.Contact
 import com.example.socialwelfareapplication.viewmodels.UserViewModel
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_contact_detail.view.*
 
 
@@ -23,6 +26,19 @@ class ContactDetailFragment(private val item: Contact, private val viewModel: Us
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_contact_detail, container, false)
 
+        var editFragment = AddContactFragment(item, "", viewModel)
+
+        viewModel.userPublisher.observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ contactList ->
+                val current = contactList.find { c: Contact -> c.key == item.key }
+                setText(view, current?:item)
+
+                editFragment = AddContactFragment(current?:item, "", viewModel)
+
+            }, { e ->
+                Log.d(ContactFragment.TAG, "e : ", e)
+
+            }).addTo(disposeBag)
 
         view.backButton.setOnClickListener {
             val transaction = parentFragmentManager.beginTransaction()
@@ -39,7 +55,6 @@ class ContactDetailFragment(private val item: Contact, private val viewModel: Us
             }
 
             editButton.setOnClickListener {
-                val editFragment = AddContactFragment(item, "", viewModel)
                     if (editFragment.isAdded) {
                         return@setOnClickListener
                     }
@@ -47,13 +62,7 @@ class ContactDetailFragment(private val item: Contact, private val viewModel: Us
                     transaction.add(R.id.fragmentContainer, editFragment).commit()
             }
 
-
-            nameText.text = item.name
-            phoneEditText.text = item.phoneNumber
-            emergencyEditText.text = item.emergencyNumber
-            addressEditText.text = item.address
-            star.isSelected = item.star
-
+            setText(view, item)
 
             val monitoring = "2019.05.20 집에 안계서서 문앞에 두고 감. \n2019.02.14 십분동안 담소를 나눴다."
             monitoringEditText.text = monitoring
@@ -76,6 +85,14 @@ class ContactDetailFragment(private val item: Contact, private val viewModel: Us
     override fun onDestroy() {
         disposeBag.dispose()
         super.onDestroy()
+    }
+
+    private fun setText(view: View, item: Contact) {
+        view.nameText.text = item.name
+        view.phoneEditText.text = item.phoneNumber
+        view.emergencyEditText.text = item.emergencyNumber
+        view.addressEditText.text = item.address
+        view.star.isSelected = item.star
     }
 
 }
