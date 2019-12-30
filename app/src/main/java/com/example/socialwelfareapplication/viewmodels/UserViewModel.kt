@@ -44,11 +44,12 @@ class UserViewModel : ViewModel() {
 
     }
 
-    fun updateDate(key: String, item: Map<String, Any>) {
+    fun updateDate(key: String, group: String, item: Map<String, Any>) {
         db.collection("contact").document(key)
             .update(item)
             .addOnSuccessListener { documentReference ->
                 Log.d(TAG, "DocumentSnapshot added with ID: $documentReference")
+                getData(group)
 
             }
             .addOnFailureListener { e ->
