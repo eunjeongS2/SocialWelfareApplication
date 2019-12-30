@@ -62,7 +62,7 @@ class ContactItemListAdapter(private val viewModel: UserViewModel, private val l
 
             R.layout.item_contact -> {
 
-                val detailFragment = ContactDetailFragment(item)
+                val detailFragment = ContactDetailFragment(item, viewModel)
 
                 holder.itemView.clicks()
                     .throttleFirst(600, TimeUnit.MILLISECONDS)

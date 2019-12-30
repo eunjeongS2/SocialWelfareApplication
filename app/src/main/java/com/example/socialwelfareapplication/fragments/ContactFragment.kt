@@ -61,7 +61,7 @@ class ContactFragment : Fragment() {
                     setupItems(contactAdapter, contactList)
                     val selectGroupText = "${groupAdapter.selectGroup}(${contactAdapter.itemCount})"
                     it.selectGroup.text = selectGroupText
-                    contactDetailFragment = AddContactFragment(null, groupAdapter.selectGroup)
+                    contactDetailFragment = AddContactFragment(null, groupAdapter.selectGroup, viewModel)
 
                 }
 

@@ -12,11 +12,12 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.socialwelfareapplication.R
 import com.example.socialwelfareapplication.models.Contact
+import com.example.socialwelfareapplication.viewmodels.UserViewModel
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_contact_detail.view.*
 
 
-class ContactDetailFragment(private val item: Contact) : Fragment() {
+class ContactDetailFragment(private val item: Contact, private val viewModel: UserViewModel) : Fragment() {
     private val disposeBag = CompositeDisposable()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -38,7 +39,7 @@ class ContactDetailFragment(private val item: Contact) : Fragment() {
             }
 
             editButton.setOnClickListener {
-                val editFragment = AddContactFragment(item, "")
+                val editFragment = AddContactFragment(item, "", viewModel)
                     if (editFragment.isAdded) {
                         return@setOnClickListener
                     }

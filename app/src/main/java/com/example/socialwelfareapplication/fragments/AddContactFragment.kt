@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.fragment_add_contact.view.nameText
 import kotlinx.android.synthetic.main.fragment_add_contact.view.phoneEditText
 import kotlinx.android.synthetic.main.fragment_add_contact.view.star
 
-class AddContactFragment(private val item: Contact?, private val group: String) : Fragment() {
+class AddContactFragment(private val item: Contact?, private val group: String, private val viewModel: UserViewModel) : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_add_contact, container, false)
 
@@ -43,7 +43,7 @@ class AddContactFragment(private val item: Contact?, private val group: String) 
             }
 
             if(item == null) {
-                UserViewModel().addData(
+                viewModel.addData(
                     Contact(
                         group = group,
                         name = nameText.text.toString(),
@@ -58,7 +58,7 @@ class AddContactFragment(private val item: Contact?, private val group: String) 
                 )
 
             } else {
-                UserViewModel().updateDate(
+                viewModel.updateDate(
                     item.key, mapOf(
                         "group" to item.group,
                         "name" to nameText.text.toString(),
