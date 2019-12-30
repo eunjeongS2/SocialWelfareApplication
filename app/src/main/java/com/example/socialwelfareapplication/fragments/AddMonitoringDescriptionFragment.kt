@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.socialwelfareapplication.R
 import com.example.socialwelfareapplication.adapters.ContactItemListAdapter
+import com.example.socialwelfareapplication.checkDate
 import com.example.socialwelfareapplication.models.Monitoring
 import com.example.socialwelfareapplication.models.auth
 import com.example.socialwelfareapplication.viewmodels.MonitoringViewModel
@@ -43,7 +44,11 @@ class AddMonitoringDescriptionFragment(private val viewModel: UserViewModel) : F
         adapter.notifyDataSetChanged()
 
         val currentDate = LocalDate.now()
-        val dateText = "${currentDate.monthValue}/${currentDate.dayOfMonth}/${currentDate.year}"
+
+        val currentMonth = currentDate.monthValue.toString().checkDate()
+        val currentDay = currentDate.dayOfMonth.toString().checkDate()
+
+        val dateText = "$currentMonth/$currentDay/${currentDate.year}"
 
         view.date.text = dateText
 
@@ -53,10 +58,11 @@ class AddMonitoringDescriptionFragment(private val viewModel: UserViewModel) : F
         }
 
         view.writeButton.setOnClickListener {
-            val date = "${currentDate.year}/${currentDate.monthValue}/${currentDate.dayOfMonth}"
+            val date = "${currentDate.year}/$currentMonth/$currentDay"
 
             monitoringViewModel.addData(
                 Monitoring(
+                    viewModel.selectList[adapter.selectVisitPlace].phoneNumber,
                     date, auth.currentUser?.uid ?: "",
                     visitImage.toString(),
                     viewModel.selectList[adapter.selectVisitPlace].name, visitPurpose.toString(),

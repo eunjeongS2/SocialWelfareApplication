@@ -67,11 +67,14 @@ class ContactItemListAdapter(private val viewModel: UserViewModel, private val l
                 holder.itemView.clicks()
                     .throttleFirst(600, TimeUnit.MILLISECONDS)
                     .subscribe({
+                        if (detailFragment.isAdded) {
+                            return@subscribe
+                        }
+
                         val transaction =
                             (holder.itemView.context as AppCompatActivity).supportFragmentManager.beginTransaction()
 
-                        transaction.add(R.id.fragmentContainer, detailFragment)
-                        transaction.commit()
+                        transaction.add(R.id.fragmentContainer, detailFragment).commit()
 
                     }, { e ->
                         Log.d(ContactItemListAdapter::class.java.name, "view click failed : ", e)

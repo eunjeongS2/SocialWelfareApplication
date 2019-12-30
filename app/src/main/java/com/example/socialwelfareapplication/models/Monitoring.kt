@@ -1,6 +1,7 @@
 package com.example.socialwelfareapplication.models
 
 data class Monitoring(
+    val key: String = "",
     val date: String = "",
     val writer: String = "",
     val image: String = "",
