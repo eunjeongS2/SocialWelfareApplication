@@ -7,10 +7,7 @@ import com.example.socialwelfareapplication.models.Monitoring
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.rxkotlin.addTo
 import io.reactivex.subjects.PublishSubject
 
 
@@ -22,7 +19,7 @@ class MonitoringViewModel(application: Application) : AndroidViewModel(applicati
 
     private val disposeBag = CompositeDisposable()
 
-    var monitoringList: List<Monitoring> = emptyList()
+    private var monitoringList: List<Monitoring> = emptyList()
         set(value) {
             monitoringPublisher.onNext(value)
         }

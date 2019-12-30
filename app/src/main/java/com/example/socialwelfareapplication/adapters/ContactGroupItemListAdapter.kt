@@ -9,7 +9,7 @@ import com.example.socialwelfareapplication.viewmodels.UserViewModel
 
 class ContactGroupItemListAdapter(private val viewModel: UserViewModel) : RecyclerView.Adapter<ContactGroupItemViewHolder>() {
 
-    var contactGroupList: List<String> = listOf(
+    private var contactGroupList: List<String> = listOf(
         "전체",
         "중요",
         "어르신",

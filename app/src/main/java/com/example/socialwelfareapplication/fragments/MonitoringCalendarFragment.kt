@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import com.example.socialwelfareapplication.R
+import com.example.socialwelfareapplication.checkDate
 import com.example.socialwelfareapplication.viewmodels.MonitoringViewModel
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.CalendarMode
@@ -89,13 +90,7 @@ class MonitoringCalendarFragment(private val viewModel: MonitoringViewModel) : F
         return view
     }
 
-    private fun String.checkDate(): String {
 
-        return if (this.length == 1) {
-            "0$this"
-        } else this
-
-    }
 
     class EventDecorator(private val color: Int, private val dates: HashSet<CalendarDay>) : DayViewDecorator {
 
@@ -109,3 +104,5 @@ class MonitoringCalendarFragment(private val viewModel: MonitoringViewModel) : F
 
     }
 }
+
+

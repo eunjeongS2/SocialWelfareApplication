@@ -12,55 +12,71 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.socialwelfareapplication.R
 import com.example.socialwelfareapplication.models.Contact
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_contact_detail.view.*
-import kotlinx.android.synthetic.main.fragment_contact_detail.view.image
-import kotlinx.android.synthetic.main.item_contact_select.view.*
 
 
-class ContactDetailFragment(private val item: Contact?) : Fragment() {
+class ContactDetailFragment(private val item: Contact) : Fragment() {
+    private val disposeBag = CompositeDisposable()
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_contact_detail, container, false)
 
-        val transaction = parentFragmentManager.beginTransaction()
 
         view.backButton.setOnClickListener {
-            transaction.remove(this)
-            transaction.commit()
+            val transaction = parentFragmentManager.beginTransaction()
+            transaction.remove(this).commit()
         }
 
-        item?.let { item ->
-//            view. = false
-            view.call.setOnClickListener {
+        with(view) {
+            call.setOnClickListener {
                 intent(Intent.ACTION_DIAL, "tel:${item.phoneNumber}", it.context)
             }
 
-            view.message.setOnClickListener {
+            message.setOnClickListener {
                 intent(Intent.ACTION_SENDTO, "sms:${item.phoneNumber}", it.context)
             }
 
-            view.nameText.setText(item.name)
-            view.phoneEditText.setText(item.phoneNumber)
-            view.emergencyEditText.setText(item.emergencyNumber)
-            view.addressEditText.setText(item.address)
+            editButton.setOnClickListener {
+                val editFragment = AddContactFragment(item, "")
+                    if (editFragment.isAdded) {
+                        return@setOnClickListener
+                    }
+                    val transaction = parentFragmentManager.beginTransaction()
+                    transaction.add(R.id.fragmentContainer, editFragment).commit()
+            }
+
+
+            nameText.text = item.name
+            phoneEditText.text = item.phoneNumber
+            emergencyEditText.text = item.emergencyNumber
+            addressEditText.text = item.address
+            star.isSelected = item.star
+
 
             val monitoring = "2019.05.20 집에 안계서서 문앞에 두고 감. \n2019.02.14 십분동안 담소를 나눴다."
-            view.monitoringEditText.text = monitoring
+            monitoringEditText.text = monitoring
 
             if (item.image == "") {
-                view.image.setImageResource(R.drawable.ic_contact)
+                image.setImageResource(R.drawable.ic_contact)
             } else {
                 Glide.with(view.context).load(item.image)
                     .centerCrop()
                     .skipMemoryCache(true)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .into(view.image)
+                    .into(image)
             }
         }
 
 
-
         return view
     }
+
+    override fun onDestroy() {
+        disposeBag.dispose()
+        super.onDestroy()
+    }
+
 }
 
 fun intent (action: String, uriString: String, context: Context) {

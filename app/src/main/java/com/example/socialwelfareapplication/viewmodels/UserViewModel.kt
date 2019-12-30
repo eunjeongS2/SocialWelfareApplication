@@ -14,7 +14,7 @@ class UserViewModel : ViewModel() {
 
     private val db = Firebase.firestore
 
-    var userList: List<Contact> = emptyList()
+    private var userList: List<Contact> = emptyList()
         set(value) {
             userPublisher.onNext(value)
         }
@@ -29,50 +29,65 @@ class UserViewModel : ViewModel() {
     var userPublisher = PublishSubject.create<List<Contact>>()
 
 
-    fun addData(path: String, contact: Contact) {
+    fun addData(contact: Contact) {
 
-        db.collection(path).document(contact.phoneNumber)
-            .set(contact)
+        val ref = db.collection("contact").document()
+        contact.key = ref.id
+        ref.set(contact)
             .addOnSuccessListener { documentReference ->
                 Log.d(TAG, "DocumentSnapshot added with ID: $documentReference")
+                getData(contact.group)
             }
             .addOnFailureListener { e ->
                 Log.w(TAG, "Error adding document", e)
             }
+
     }
 
+    fun updateDate(key: String, item: Map<String, Any>) {
+        db.collection("contact").document(key)
+            .update(item)
+            .addOnSuccessListener { documentReference ->
+                Log.d(TAG, "DocumentSnapshot added with ID: $documentReference")
+
+            }
+            .addOnFailureListener { e ->
+                Log.w(TAG, "Error adding document", e)
+            }
+
+    }
 
     private fun getData(path: String) {
 
-        if (path == "전체") {
-            val list = mutableListOf<Contact>()
-            db.collection("어르신")
-                .get()
-                .addOnSuccessListener { result ->
-                    list.addAll(result.toObjects(Contact::class.java))
-                    userList = list
+        when (path) {
+            "전체" -> {
+                db.collection("contact")
+                    .get()
+                    .addOnSuccessListener { result ->
+                        userList = result.toObjects(Contact::class.java)
 
-                }
-                .addOnFailureListener { e ->
-                    Log.w(TAG, "Error getting documents.", e)
+                    }
+                    .addOnFailureListener { e ->
+                        Log.w(TAG, "Error getting documents.", e)
 
-                }
+                    }
 
-            db.collection("광교복지관")
-                .get()
-                .addOnSuccessListener { result ->
-                    list.addAll(result.toObjects(Contact::class.java))
-                    userList = list
+            }
+            "중요" -> {
+                db.collection("contact")
+                    .whereEqualTo("star", true)
+                    .get()
+                    .addOnSuccessListener { result ->
+                        userList = result.toObjects(Contact::class.java)
 
-                }
-                .addOnFailureListener { e ->
-                    Log.w(TAG, "Error getting documents.", e)
+                    }
+                    .addOnFailureListener { e ->
+                        Log.w(TAG, "Error getting documents.", e)
 
-                }
+                    }
 
-
-        } else {
-            db.collection(path)
+            }
+            else -> db.collection("contact").whereEqualTo("group", path)
                 .get()
                 .addOnSuccessListener { result ->
                     userList = result.toObjects(Contact::class.java)

@@ -69,7 +69,7 @@ class AddMonitoringSelectContactFragment : Fragment() {
 
         view.groupAddButton.visibility = View.GONE
         view.groupSettingButton.visibility = View.GONE
-        view.editButton.visibility = View.GONE
+        view.saveButton.visibility = View.GONE
 
         view.backButton.setOnClickListener { parentFragmentManager.popBackStackImmediate() }
 

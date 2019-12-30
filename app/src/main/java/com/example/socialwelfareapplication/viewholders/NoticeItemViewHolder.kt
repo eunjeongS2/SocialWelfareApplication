@@ -1,12 +1,10 @@
 package com.example.socialwelfareapplication.viewholders
 
-import android.content.Intent
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.socialwelfareapplication.R
-import com.example.socialwelfareapplication.fragments.MonitoringFragment
 import com.example.socialwelfareapplication.fragments.NoticeDetailFragment
 import com.example.socialwelfareapplication.models.Notice
 import com.jakewharton.rxbinding3.view.clicks
@@ -27,10 +25,13 @@ class NoticeItemViewHolder(private val view: View) : RecyclerView.ViewHolder(vie
             this.clicks()
                 .throttleFirst(600, TimeUnit.MILLISECONDS)
                 .subscribe({
+                    if (detailFragment.isAdded) {
+                        return@subscribe
+                    }
+
                     val transaction = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
 
-                    transaction.add(R.id.fragmentContainer, detailFragment)
-                    transaction.commit()
+                    transaction.add(R.id.fragmentContainer, detailFragment).commit()
 
                 }, {e->
                     Log.d(NoticeItemViewHolder::class.java.name, "view click failed : ", e)

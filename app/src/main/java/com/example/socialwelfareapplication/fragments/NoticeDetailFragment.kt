@@ -17,14 +17,11 @@ class NoticeDetailFragment(private val item: Notice) : Fragment() {
 
         val transaction = parentFragmentManager.beginTransaction()
 
-        view.detailBackButton.setOnClickListener {
-            transaction.remove(this)
-            transaction.commit()
-        }
+        view.detailBackButton.setOnClickListener { transaction.remove(this).commit() }
 
         val titleText = "[${item.group}] ${item.title}"
         view.titleTextView.text = titleText
-        view.dateTextView.text = item.date.toString()
+        view.dateTextView.text = item.date
         view.descriptionTextView.text = item.body
 
         Glide.with(view.context).load(item.image)

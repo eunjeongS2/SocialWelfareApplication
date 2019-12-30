@@ -47,9 +47,12 @@
     <string name="input_name">이름을 입력해주세요</string>
     <string name="phone">전화번호</string>
     <string name="input_phone_number">전화번호를 입력하세요</string>
-    <string name="more_monitoring">관찰일지 더보기 ∨</string>
+    <string name="more_monitoring">활동일지 더보기 ∨</string>
     <string name="star">star</string>
     <string name="contact_emergency">비상연락처</string>
     <string name="address">주소</string>
     <string name="input_address">주소를 입력하세요</string>
+    <string name="save">저장</string>
+    <string name="no_monitoring">최근 활동일지 없음</string>
+
 </resources>
