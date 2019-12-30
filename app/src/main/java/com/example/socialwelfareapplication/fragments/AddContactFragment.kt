@@ -40,8 +40,8 @@ class AddContactFragment(private val item: Contact?, private val group: String, 
 
             }, { e ->
                 Log.d(ContactFragment.TAG, "e : ", e)
-
             }).addTo(disposeBag)
+
 
         view.star.setOnClickListener { it.isSelected = !it.isSelected }
 

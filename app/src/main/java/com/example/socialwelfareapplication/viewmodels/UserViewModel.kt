@@ -3,6 +3,8 @@ package com.example.socialwelfareapplication.viewmodels
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.socialwelfareapplication.models.Contact
+import com.example.socialwelfareapplication.models.Monitoring
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import io.reactivex.subjects.PublishSubject
@@ -25,8 +27,13 @@ class UserViewModel : ViewModel() {
         }
 
     var selectList: MutableList<Contact> = mutableListOf()
+    private var monitoringList: List<Monitoring> = emptyList()
+        set(value) {
+            monitoringPublisher.onNext(value)
+        }
 
     var userPublisher = PublishSubject.create<List<Contact>>()
+    var monitoringPublisher = PublishSubject.create<List<Monitoring>>()
 
 
     fun addData(contact: Contact) {
@@ -101,5 +108,36 @@ class UserViewModel : ViewModel() {
                 }
         }
 
+    }
+
+    fun getMonitoringString(key: String) {
+        db.collection("monitoring")
+            .whereEqualTo("key", key)
+            .orderBy("date", Query.Direction.DESCENDING)
+            .limit(2)
+            .get()
+            .addOnSuccessListener { result ->
+                monitoringList = result.toObjects(Monitoring::class.java)
+
+            }
+            .addOnFailureListener { e ->
+                Log.w(TAG, "Error getting documents.", e)
+
+            }
+    }
+
+    fun getMonitoringList(key: String) {
+        db.collection("monitoring")
+            .whereEqualTo("key", key)
+            .orderBy("date", Query.Direction.DESCENDING)
+            .get()
+            .addOnSuccessListener { result ->
+                monitoringList = result.toObjects(Monitoring::class.java)
+
+            }
+            .addOnFailureListener { e ->
+                Log.w(TAG, "Error getting documents.", e)
+
+            }
     }
 }

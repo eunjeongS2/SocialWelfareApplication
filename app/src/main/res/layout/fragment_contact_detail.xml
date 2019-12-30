@@ -246,7 +246,6 @@
                 android:hint="@string/no_monitoring"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLines="2"
                 tools:text="2019.05.20 집에 안계서서 문앞에 두고 감. \n2019.02.14 십분동안 담소를 나눴다."
                 android:id="@+id/monitoringEditText" app:layout_constraintTop_toBottomOf="@+id/monitoringTextView"
                 android:layout_marginStart="8dp" app:layout_constraintStart_toStartOf="parent"

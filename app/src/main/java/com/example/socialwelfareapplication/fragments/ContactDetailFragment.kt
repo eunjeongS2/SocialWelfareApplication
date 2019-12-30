@@ -31,14 +31,42 @@ class ContactDetailFragment(private val item: Contact, private val viewModel: Us
         viewModel.userPublisher.observeOn(AndroidSchedulers.mainThread())
             .subscribe({ contactList ->
                 val current = contactList.find { c: Contact -> c.key == item.key }
-                setText(view, current?:item)
-
-                editFragment = AddContactFragment(current?:item, "", viewModel)
+                setText(view, current ?: item)
+                editFragment = AddContactFragment(current ?: item, "", viewModel)
 
             }, { e ->
                 Log.d(ContactFragment.TAG, "e : ", e)
 
             }).addTo(disposeBag)
+
+
+        if (item.group != "광교복지관") {
+            viewModel.getMonitoringString(item.key)
+            viewModel.monitoringPublisher.observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ monitoringList ->
+                    var monitoring = ""
+
+                    monitoringList.forEach {
+                        monitoring += it.date.replace("/", ".") + " "+ monitoringList[0].remark + "\n"
+                    }
+
+                    if(monitoringList.size > 2) {
+                        view.monitoringButton.visibility = View.GONE
+                    }
+                    view.monitoringEditText.text = monitoring.substring(0, monitoring.length-1)
+
+                }, {
+
+                }).addTo(disposeBag)
+
+            view.monitoringButton.setOnClickListener { viewModel.getMonitoringList(item.key) }
+
+        } else {
+            view.monitoringTextView.visibility = View.GONE
+            view.monitoringEditText.visibility = View.GONE
+            view.monitoringButton.visibility = View.GONE
+        }
+
 
         view.backButton.setOnClickListener {
             val transaction = parentFragmentManager.beginTransaction()
@@ -55,17 +83,14 @@ class ContactDetailFragment(private val item: Contact, private val viewModel: Us
             }
 
             editButton.setOnClickListener {
-                    if (editFragment.isAdded) {
-                        return@setOnClickListener
-                    }
-                    val transaction = parentFragmentManager.beginTransaction()
-                    transaction.add(R.id.fragmentContainer, editFragment).commit()
+                if (editFragment.isAdded) {
+                    return@setOnClickListener
+                }
+                val transaction = parentFragmentManager.beginTransaction()
+                transaction.add(R.id.fragmentContainer, editFragment).commit()
             }
 
             setText(view, item)
-
-            val monitoring = "2019.05.20 집에 안계서서 문앞에 두고 감. \n2019.02.14 십분동안 담소를 나눴다."
-            monitoringEditText.text = monitoring
 
             if (item.image == "") {
                 image.setImageResource(R.drawable.ic_contact)
@@ -97,7 +122,7 @@ class ContactDetailFragment(private val item: Contact, private val viewModel: Us
 
 }
 
-fun intent (action: String, uriString: String, context: Context) {
+fun intent(action: String, uriString: String, context: Context) {
     val intent = Intent(action).apply {
         data = Uri.parse(uriString)
     }
