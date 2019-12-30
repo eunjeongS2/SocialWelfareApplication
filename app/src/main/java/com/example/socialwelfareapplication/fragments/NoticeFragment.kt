@@ -57,6 +57,15 @@ class NoticeFragment : Fragment() {
             return@setOnTouchListener false
         }
 
+        view.addNoticeButton.setOnClickListener {
+            val noticeFragment = AddNoticeFragment()
+            if (noticeFragment.isAdded) {
+                return@setOnClickListener
+            }
+            val transaction = parentFragmentManager.beginTransaction()
+            transaction.add(R.id.fragmentContainer, noticeFragment).commit()
+        }
+
         return view
     }
 

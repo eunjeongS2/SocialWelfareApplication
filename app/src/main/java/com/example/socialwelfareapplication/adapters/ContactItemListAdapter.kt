@@ -20,10 +20,8 @@ import java.util.concurrent.TimeUnit
 class ContactItemListAdapter(private val viewModel: UserViewModel, private val layout: Int) :
     RecyclerView.Adapter<ContactItemViewHolder>() {
 
-
     var contactList: List<Contact> = emptyList()
     var selectVisitPlace = 0
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactItemViewHolder {
         val view = LayoutInflater.from(parent.context)
