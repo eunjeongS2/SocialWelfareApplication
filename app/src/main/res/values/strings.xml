@@ -61,5 +61,11 @@
     <string name="gallery">gallery</string>
     <string name="camera">camera</string>
 
+    <string-array name="notice_group">
+        <item>"공지사항"</item>
+        <item>"도시락"</item>
+        <item>"게시판 선택"</item>
+    </string-array>
+
 
 </resources>

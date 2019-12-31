@@ -24,11 +24,14 @@ class NoticeDetailFragment(private val item: Notice) : Fragment() {
         view.dateTextView.text = item.date
         view.descriptionTextView.text = item.body
 
-        Glide.with(view.context).load(item.image)
-            .skipMemoryCache(true)
-            .diskCacheStrategy(DiskCacheStrategy.NONE)
-            .into(view.itemImageView)
-
+        if (item.image == "") {
+            view.itemImageView.visibility = View.GONE
+        } else {
+            Glide.with(view.context).load(item.image)
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(view.itemImageView)
+        }
         return view
     }
 
