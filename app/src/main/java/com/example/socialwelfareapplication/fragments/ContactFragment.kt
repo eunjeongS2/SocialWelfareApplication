@@ -26,8 +26,6 @@ class ContactFragment : Fragment() {
 
     private lateinit var groupAdapter: ContactGroupItemListAdapter
     private lateinit var contactAdapter: ContactItemListAdapter
-    private lateinit var contactDetailFragment: AddContactFragment
-
 
     private lateinit var viewModel: UserViewModel
     private val disposeBag = CompositeDisposable()
@@ -41,11 +39,9 @@ class ContactFragment : Fragment() {
 
         activity?.let {
             viewModel = ViewModelProvider(it).get(UserViewModel::class.java)
-
         }
 
         groupAdapter = ContactGroupItemListAdapter(viewModel)
-
         contactAdapter = ContactItemListAdapter(viewModel, R.layout.item_contact)
 
         view?.let {
@@ -59,8 +55,8 @@ class ContactFragment : Fragment() {
                     setupItems(contactAdapter, contactList)
                     val selectGroupText = "${groupAdapter.selectGroup}(${contactAdapter.itemCount})"
                     it.selectGroup.text = selectGroupText
-                    contactDetailFragment = AddContactFragment(null, groupAdapter.selectGroup, viewModel)
 
+                    setView(it, groupAdapter.selectGroup)
                 }
 
             }, { e ->
@@ -74,10 +70,13 @@ class ContactFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_contact, container, false)
 
         view.backButton.visibility = View.GONE
+        view.saveButton.visibility = View.GONE
 
         view.addButton.clicks()
             .throttleFirst(600, TimeUnit.MILLISECONDS)
             .subscribe({
+                val contactDetailFragment = AddContactFragment(null, groupAdapter.selectGroup, viewModel)
+
                 if (contactDetailFragment.isAdded) {
                     return@subscribe
                 }
@@ -96,6 +95,14 @@ class ContactFragment : Fragment() {
     override fun onDestroy() {
         disposeBag.dispose()
         super.onDestroy()
+    }
+
+    private fun setView(view: View, group: String) {
+        if (group == "전체" || group == "중요") {
+            view.addButton.visibility = View.INVISIBLE
+        } else {
+            view.addButton.visibility = View.VISIBLE
+        }
     }
 
 }

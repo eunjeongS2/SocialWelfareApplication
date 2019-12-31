@@ -20,8 +20,8 @@ import kotlinx.android.synthetic.main.fragment_notice.view.*
 class NoticeFragment : Fragment() {
 
     private lateinit var viewModel: NoticeViewModel
+    private lateinit var adapter: NoticeItemListAdapter
     private val disposeBag = CompositeDisposable()
-    private lateinit var addNoticeFragment: AddNoticeFragment
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -29,13 +29,13 @@ class NoticeFragment : Fragment() {
         activity?.let {
             viewModel = ViewModelProvider(it).get(NoticeViewModel::class.java)
             viewModel.getData()
-            addNoticeFragment = AddNoticeFragment(viewModel)
+
+            adapter = NoticeItemListAdapter(viewModel)
+            view?.noticeRecyclerView?.let { recyclerView ->
+                setupRecyclerView(recyclerView, adapter, RecyclerView.VERTICAL) }
 
         }
 
-        val adapter = NoticeItemListAdapter()
-        view?.noticeRecyclerView?.adapter = adapter
-        view?.noticeRecyclerView?.let { setupRecyclerView(it, adapter, RecyclerView.VERTICAL) }
 
         viewModel.noticePublisher.observeOn(AndroidSchedulers.mainThread())
             .subscribe({ noticeList ->
@@ -60,6 +60,8 @@ class NoticeFragment : Fragment() {
         }
 
         view.addNoticeButton.setOnClickListener {
+            val addNoticeFragment = AddNoticeFragment(viewModel)
+
             if (addNoticeFragment.isAdded) {
                 return@setOnClickListener
             }

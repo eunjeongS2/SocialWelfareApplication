@@ -60,6 +60,7 @@
     <string name="body">내용</string>
     <string name="gallery">gallery</string>
     <string name="camera">camera</string>
+    <string name="remove_image_button">remove image button</string>
 
     <string-array name="notice_group">
         <item>"공지사항"</item>

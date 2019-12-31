@@ -42,6 +42,7 @@ class MonitoringViewModel(application: Application) : AndroidViewModel(applicati
                 Log.w(TAG, "Error adding document", e)
                 onSubscribe?.invoke()
             }
+
     }
 
 
