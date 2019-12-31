@@ -21,6 +21,7 @@ class NoticeFragment : Fragment() {
 
     private lateinit var viewModel: NoticeViewModel
     private val disposeBag = CompositeDisposable()
+    private lateinit var addNoticeFragment: AddNoticeFragment
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -28,6 +29,7 @@ class NoticeFragment : Fragment() {
         activity?.let {
             viewModel = ViewModelProvider(it).get(NoticeViewModel::class.java)
             viewModel.getData()
+            addNoticeFragment = AddNoticeFragment(viewModel)
 
         }
 
@@ -55,6 +57,14 @@ class NoticeFragment : Fragment() {
                 view.noticeSearchView.clearFocus()
 
             return@setOnTouchListener false
+        }
+
+        view.addNoticeButton.setOnClickListener {
+            if (addNoticeFragment.isAdded) {
+                return@setOnClickListener
+            }
+            val transaction = parentFragmentManager.beginTransaction()
+            transaction.add(R.id.fragmentContainer, addNoticeFragment).commit()
         }
 
         return view

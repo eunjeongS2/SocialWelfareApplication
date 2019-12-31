@@ -54,5 +54,18 @@
     <string name="input_address">주소를 입력하세요</string>
     <string name="save">저장</string>
     <string name="no_monitoring">최근 활동일지 없음</string>
+    <string name="register">등록</string>
+    <string name="writing">글쓰기</string>
+    <string name="title">제목</string>
+    <string name="body">내용</string>
+    <string name="gallery">gallery</string>
+    <string name="camera">camera</string>
+
+    <string-array name="notice_group">
+        <item>"공지사항"</item>
+        <item>"도시락"</item>
+        <item>"게시판 선택"</item>
+    </string-array>
+
 
 </resources>

@@ -14,7 +14,7 @@ class NoticeViewModel : ViewModel() {
         const val TAG = "NoticeViewModel"
     }
 
-    var noticeList: List<Notice> = emptyList()
+    private var noticeList: List<Notice> = emptyList()
         set(value) {
             noticePublisher.onNext(value)
         }
@@ -29,11 +29,10 @@ class NoticeViewModel : ViewModel() {
             .add(notice)
             .addOnSuccessListener { documentReference ->
                 Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
-                onSubscribe?.invoke()
+                getData(onSubscribe)
             }
             .addOnFailureListener { e ->
                 Log.w(TAG, "Error adding document", e)
-                onSubscribe?.invoke()
             }
     }
 
@@ -44,6 +43,7 @@ class NoticeViewModel : ViewModel() {
             .get()
             .addOnSuccessListener { result ->
                 noticeList = result.toObjects(Notice::class.java)
+                onSubscribe?.invoke()
 
             }
             .addOnFailureListener { e ->
