@@ -5,6 +5,16 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+    <ProgressBar
+            android:visibility="gone"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/progressBar" app:layout_constraintTop_toTopOf="@+id/selectContactRecyclerView"
+            app:layout_constraintEnd_toEndOf="@+id/selectContactRecyclerView"
+            app:layout_constraintStart_toStartOf="@+id/selectContactRecyclerView"
+            app:layout_constraintBottom_toBottomOf="@+id/selectContactRecyclerView"/>
     <TextView
             tools:text="05/22/2019"
             android:textSize="22sp"

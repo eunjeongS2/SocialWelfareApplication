@@ -40,7 +40,7 @@ class AddMonitoringDescriptionFragment(private val viewModel: UserViewModel) : F
 
         setupRecyclerView(view.selectContactRecyclerView, adapter, RecyclerView.HORIZONTAL)
 
-        adapter.contactList = viewModel.selectList.toList()
+        adapter.contactList = viewModel.selectList
         adapter.notifyDataSetChanged()
 
         val currentDate = LocalDate.now()
@@ -59,6 +59,7 @@ class AddMonitoringDescriptionFragment(private val viewModel: UserViewModel) : F
 
         view.writeButton.setOnClickListener {
             val date = "${currentDate.year}/$currentMonth/$currentDay"
+            view.progressBar.visibility = View.VISIBLE
 
             monitoringViewModel.addData(
                 Monitoring(
@@ -73,6 +74,8 @@ class AddMonitoringDescriptionFragment(private val viewModel: UserViewModel) : F
 
                 viewModel.selectList.removeAt(adapter.selectVisitPlace)
                 adapter.notifyDataSetChanged()
+
+                view.progressBar.visibility = View.GONE
 
                 if (viewModel.selectList.size == 0) {
                     parentFragmentManager.popBackStack()
