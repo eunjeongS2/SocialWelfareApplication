@@ -40,6 +40,8 @@ class ContactItemListAdapter(private val viewModel: UserViewModel, private val l
 
         when (layout) {
             R.layout.item_contact_select -> {
+                holder.itemView.checkBox.setOnCheckedChangeListener(null)
+                holder.itemView.checkBox.isChecked = viewModel.selectList.contains(item)
 
                 holder.itemView.checkBox.setOnCheckedChangeListener { _, b ->
                     if (b) {

@@ -14,6 +14,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.socialwelfareapplication.R
 import com.example.socialwelfareapplication.checkDate
 import com.example.socialwelfareapplication.models.Notice
+import com.example.socialwelfareapplication.removeImage
 import com.example.socialwelfareapplication.viewmodels.NoticeViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mlsdev.rximagepicker.RxImagePicker
@@ -30,12 +31,18 @@ import java.util.*
 class AddNoticeFragment(private val viewModel: NoticeViewModel) : Fragment() {
 
     private val disposeBag = CompositeDisposable()
-    private var image: Uri? = null
+    private var image: Pair<Sources, Uri>? = null
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_add_notice, container, false)
 
         view.cancelButton.setOnClickListener {
+            context?.let {
+                image?.removeImage(it)
+                image = null
+            }
+
             val transaction = parentFragmentManager.beginTransaction()
             transaction.remove(this).commit()
         }
@@ -69,8 +76,13 @@ class AddNoticeFragment(private val viewModel: NoticeViewModel) : Fragment() {
                     view.titleEditText.text.toString(),
                     view.bodyEditText.text.toString(),
                     image?.let { SimpleDateFormat("yyyyMMdd_HHmmss", Locale.KOREA).format(Date()) } ?: ""
-                ), image
-            ) {
+                ), image?.second) {
+
+                context?.let {
+                    image?.removeImage(it)
+                    image = null
+                }
+
                 progressBar.visibility = View.GONE
                 val transaction = parentFragmentManager.beginTransaction()
                 transaction.remove(this).commit()
@@ -92,7 +104,7 @@ class AddNoticeFragment(private val viewModel: NoticeViewModel) : Fragment() {
                 view.removeImageButton.visibility = View.VISIBLE
                 view.noticeImageView.visibility = View.VISIBLE
 
-                Glide.with(this).load(image)
+                Glide.with(this).load(image?.second)
                     .centerCrop()
                     .skipMemoryCache(true)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -101,11 +113,12 @@ class AddNoticeFragment(private val viewModel: NoticeViewModel) : Fragment() {
         }
 
         view.albumButton.setOnClickListener {
+
             getImage(Sources.GALLERY) {
                 view.removeImageButton.visibility = View.VISIBLE
                 view.noticeImageView.visibility = View.VISIBLE
 
-                Glide.with(this).load(image)
+                Glide.with(this).load(image?.second)
                     .centerCrop()
                     .skipMemoryCache(true)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -117,22 +130,31 @@ class AddNoticeFragment(private val viewModel: NoticeViewModel) : Fragment() {
             view.removeImageButton.visibility = View.GONE
             view.noticeImageView.visibility = View.GONE
 
-            image = null
+            context?.let {
+                image?.removeImage(it)
+                image = null
+            }
+
         }
 
         return view
     }
 
     private fun getImage(source: Sources, onSubscribe: (() -> Unit)? = null) {
+
+        context?.let {
+            image?.removeImage(it)
+            image = null
+        }
+
         RxImagePicker.with(parentFragmentManager).requestImage(source)
             .subscribeBy(
                 onNext = {
-                    image = it
+                    image = Pair(source, it)
                     onSubscribe?.invoke()
                 }
             ).addTo(disposeBag)
     }
-
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         activity?.window?.setSoftInputMode(
@@ -153,3 +175,4 @@ class AddNoticeFragment(private val viewModel: NoticeViewModel) : Fragment() {
 
     }
 }
+

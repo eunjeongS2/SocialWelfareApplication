@@ -40,7 +40,7 @@ class AddMonitoringDescriptionFragment(private val viewModel: UserViewModel) : F
 
         setupRecyclerView(view.selectContactRecyclerView, adapter, RecyclerView.HORIZONTAL)
 
-        adapter.contactList = viewModel.selectList
+        adapter.contactList = viewModel.selectList.toList()
         adapter.notifyDataSetChanged()
 
         val currentDate = LocalDate.now()
@@ -62,7 +62,7 @@ class AddMonitoringDescriptionFragment(private val viewModel: UserViewModel) : F
 
             monitoringViewModel.addData(
                 Monitoring(
-                    viewModel.selectList[adapter.selectVisitPlace].phoneNumber,
+                    viewModel.selectList[adapter.selectVisitPlace].key,
                     date, auth.currentUser?.uid ?: "",
                     visitImage.toString(),
                     viewModel.selectList[adapter.selectVisitPlace].name, visitPurpose.toString(),
