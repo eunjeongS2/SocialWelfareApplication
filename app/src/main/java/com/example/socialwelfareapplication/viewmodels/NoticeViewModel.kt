@@ -4,11 +4,10 @@ import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.socialwelfareapplication.models.Notice
-import com.example.socialwelfareapplication.models.storgeRef
+import com.example.socialwelfareapplication.models.saveImage
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.StorageReference
 import io.reactivex.subjects.PublishSubject
 
 class NoticeViewModel : ViewModel() {
@@ -25,8 +24,6 @@ class NoticeViewModel : ViewModel() {
     var noticePublisher = PublishSubject.create<List<Notice>>()
     private val db = Firebase.firestore
 
-    fun image(uri: String): StorageReference { return storgeRef.child("notice/$uri")}
-
     fun addData(notice: Notice, image: Uri?, onSubscribe: (() -> Unit)? = null) {
 
         db.collection("notice")
@@ -39,15 +36,7 @@ class NoticeViewModel : ViewModel() {
                 Log.w(TAG, "Error adding document", e)
             }
 
-        image?.let {
-            storgeRef.child("notice/${notice.image}").putFile(image)
-                .addOnSuccessListener { documentReference->
-                    Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.uploadSessionUri}")
-
-                }.addOnFailureListener { e->
-                    e.printStackTrace()
-                }
-        }
+        image?.let { saveImage("notice/${notice.image}", it) { getData(onSubscribe) } }
 
     }
 

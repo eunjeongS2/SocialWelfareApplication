@@ -141,12 +141,12 @@ class AddNoticeFragment(private val viewModel: NoticeViewModel) : Fragment() {
     }
 
     private fun getImage(source: Sources, onSubscribe: (() -> Unit)? = null) {
-
         context?.let {
             image?.removeImage(it)
             image = null
         }
 
+        disposeBag.clear()
         RxImagePicker.with(parentFragmentManager).requestImage(source)
             .subscribeBy(
                 onNext = {

@@ -11,6 +11,7 @@ import com.example.socialwelfareapplication.R
 import com.example.socialwelfareapplication.fragments.ContactDetailFragment
 import com.example.socialwelfareapplication.fragments.intent
 import com.example.socialwelfareapplication.models.Contact
+import com.example.socialwelfareapplication.models.imageReference
 import com.example.socialwelfareapplication.viewholders.ContactItemViewHolder
 import com.example.socialwelfareapplication.viewmodels.UserViewModel
 import com.jakewharton.rxbinding3.view.clicks
@@ -38,7 +39,7 @@ class ContactItemListAdapter(private val viewModel: UserViewModel, private val l
     override fun onBindViewHolder(holder: ContactItemViewHolder, position: Int) {
 
         val item = contactList[position]
-        holder.bind(item)
+        holder.bind(item, imageReference("user/${item.image}"))
 
         when (layout) {
             R.layout.item_contact_select -> {

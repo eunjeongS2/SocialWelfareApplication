@@ -14,13 +14,11 @@ import com.example.socialwelfareapplication.adapters.ContactGroupItemListAdapter
 import com.example.socialwelfareapplication.adapters.ContactItemListAdapter
 import com.example.socialwelfareapplication.models.Contact
 import com.example.socialwelfareapplication.viewmodels.UserViewModel
-import com.jakewharton.rxbinding3.view.clicks
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_add_monitoring_description.view.backButton
 import kotlinx.android.synthetic.main.fragment_contact.view.*
-import java.util.concurrent.TimeUnit
 
 class ContactFragment : Fragment() {
 
@@ -72,22 +70,17 @@ class ContactFragment : Fragment() {
         view.backButton.visibility = View.GONE
         view.saveButton.visibility = View.GONE
 
-        view.addButton.clicks()
-            .throttleFirst(600, TimeUnit.MILLISECONDS)
-            .subscribe({
-                val contactDetailFragment = AddContactFragment(null, groupAdapter.selectGroup, viewModel)
+        view.addButton.setOnClickListener {
+            val contactDetailFragment = AddContactFragment(null, groupAdapter.selectGroup, viewModel)
 
-                if (contactDetailFragment.isAdded) {
-                    return@subscribe
-                }
+            if (contactDetailFragment.isAdded) {
+                return@setOnClickListener
+            }
 
-                val transaction = parentFragmentManager.beginTransaction()
-                transaction.add(R.id.fragmentContainer, contactDetailFragment).commit()
+            val transaction = parentFragmentManager.beginTransaction()
+            transaction.add(R.id.fragmentContainer, contactDetailFragment).commit()
 
-            }, { e ->
-                Log.d(ContactItemListAdapter::class.java.name, "view click failed : ", e)
-
-            }).addTo(disposeBag)
+        }
 
         return view
     }

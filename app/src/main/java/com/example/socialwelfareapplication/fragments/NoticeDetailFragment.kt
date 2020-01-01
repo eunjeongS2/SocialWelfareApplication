@@ -17,6 +17,7 @@ import com.bumptech.glide.module.AppGlideModule
 import android.content.Context
 import com.bumptech.glide.Registry
 import com.bumptech.glide.annotation.GlideModule
+import com.example.socialwelfareapplication.models.imageReference
 import java.io.InputStream
 
 
@@ -36,7 +37,7 @@ class NoticeDetailFragment(private val item: Notice, private val viewModel: Noti
         if (item.image == "") {
             view.itemImageView.visibility = View.GONE
         } else {
-            Glide.with(view.context).load(viewModel.image(item.image))
+            Glide.with(view.context).load(imageReference("notice/${item.image}"))
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(view.itemImageView)
