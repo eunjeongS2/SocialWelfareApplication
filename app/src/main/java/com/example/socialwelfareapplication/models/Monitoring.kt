@@ -9,5 +9,6 @@ data class Monitoring(
     val purpose: String = "",
     val state: String = "",
     val remark: String = "",
-    val comments: Int = 0
+    val comments: Boolean = false,
+    var monitoringKey: String = ""
 )

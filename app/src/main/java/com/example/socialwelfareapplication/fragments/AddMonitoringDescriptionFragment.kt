@@ -112,7 +112,7 @@ class AddMonitoringDescriptionFragment(private val viewModel: UserViewModel) : F
                     image?.let { SimpleDateFormat("yyyyMMdd_HHmmss", Locale.KOREA).format(Date()) } ?: "",
                     viewModel.selectList[adapter.selectVisitPlace].name, view.visitPurpose.text.toString(),
                     (view.findViewById(radioGroup.checkedRadioButtonId) as RadioButton).text.toString(),
-                    view.remark.text.toString(), 0
+                    view.remark.text.toString(), false
                 ), image?.second
 
             ) {

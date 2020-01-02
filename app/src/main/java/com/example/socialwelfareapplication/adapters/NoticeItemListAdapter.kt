@@ -35,7 +35,6 @@ class NoticeItemListAdapter(private val viewModel: NoticeViewModel) : RecyclerVi
                 return@setOnClickListener
             }
 
-
             val transaction = (holder.itemView.context as AppCompatActivity).supportFragmentManager.beginTransaction()
             transaction.add(R.id.fragmentContainer, detailFragment).commit()
         }
