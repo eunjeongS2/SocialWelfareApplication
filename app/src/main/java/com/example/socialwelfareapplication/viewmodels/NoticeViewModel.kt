@@ -43,7 +43,8 @@ class NoticeViewModel : ViewModel() {
 
     fun getData(onSubscribe: (() -> Unit)? = null) {
 
-        db.collection("notice").orderBy("date", Query.Direction.DESCENDING)
+        db.collection("notice").whereEqualTo("group", "공지사항")
+            .orderBy("date", Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener { result ->
                 noticeList = result.toObjects(Notice::class.java)
@@ -54,7 +55,6 @@ class NoticeViewModel : ViewModel() {
                 Log.w(TAG, "Error getting documents.", e)
 
             }
-
     }
 
 }

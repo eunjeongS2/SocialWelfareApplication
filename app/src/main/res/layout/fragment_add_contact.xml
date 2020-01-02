@@ -96,7 +96,7 @@
             android:background="@android:color/transparent"
             android:textSize="13sp"
             android:textColor="@color/colorAccent"
-            android:hint="@string/input_remark"
+            android:hint="@string/edit_remark"
             tools:text="매주 화요일 방문하여 도시락배달. \n혼자 지내고 계신다."
             android:inputType="textMultiLine"
             android:id="@+id/remarkText" app:layout_constraintTop_toBottomOf="@+id/nameText"
