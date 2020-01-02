@@ -63,15 +63,33 @@ class CommentViewModel : ViewModel() {
 
     private fun addCount(key: String) {
         getCommentCount(key) {
+            val value: String = if(it == "null") {
+                "1"
+            } else {
+                (Integer.parseInt(it)+1).toString()
+            }
+
             db.collection("comment").document(key)
-                .update(mapOf("count" to (Integer.parseInt(it)+1).toString()))
+                .set(mapOf("count" to value))
                 .addOnSuccessListener { documentReference ->
                     Log.d(TAG, "DocumentSnapshot added with ID: $documentReference")
+                    updateMonitoring(key)
 
                 }.addOnFailureListener { e ->
                     Log.w(TAG, "Error getting documents.", e)
                 }
-        }
 
+        }
+    }
+
+    private fun updateMonitoring(key: String) {
+        db.collection("monitoring").document(key)
+            .update(mapOf("comments" to true))
+            .addOnSuccessListener { documentReference ->
+                Log.d(TAG, "DocumentSnapshot added with ID: $documentReference")
+
+            }.addOnFailureListener { e ->
+                Log.w(TAG, "Error getting documents.", e)
+            }
     }
 }

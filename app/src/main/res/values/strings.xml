@@ -66,6 +66,7 @@
     <string name="write_comment">댓글 달기…</string>
     <string name="post">게시</string>
     <string name="today_menu">오늘의 도시락</string>
+    <string name="remove_contact">연락처 삭제</string>
 
     <string-array name="notice_group">
         <item>"공지사항"</item>
