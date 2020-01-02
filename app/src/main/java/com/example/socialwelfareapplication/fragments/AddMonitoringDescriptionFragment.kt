@@ -69,6 +69,11 @@ class AddMonitoringDescriptionFragment(private val viewModel: UserViewModel) : F
         view.backButton.setOnClickListener {
             viewModel.selectList.clear()
             parentFragmentManager.popBackStackImmediate()
+
+            context?.let {
+                image?.removeImage(it)
+                image = null
+            }
         }
 
         view.cameraButton.setOnClickListener {
