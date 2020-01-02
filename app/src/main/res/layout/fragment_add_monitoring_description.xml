@@ -88,7 +88,7 @@
             app:layout_constraintTop_toBottomOf="@+id/selectContactRecyclerView" android:layout_marginStart="22dp"
             app:layout_constraintStart_toStartOf="parent"
             tools:ignore="AutoFill"
-            app:layout_constraintEnd_toStartOf="@+id/albumButton" android:layout_marginEnd="8dp"/>
+            app:layout_constraintEnd_toStartOf="@+id/albumButton"/>
 
     <ImageView
             android:layout_width="18dp"
@@ -97,6 +97,7 @@
             app:layout_constraintTop_toTopOf="@+id/visitImage"
             app:layout_constraintBottom_toBottomOf="@+id/visitImage" android:contentDescription="@string/cancel"/>
     <ImageView
+            android:translationX="14dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" app:srcCompat="@drawable/ic_camera" android:id="@+id/cameraButton"
             app:layout_constraintTop_toTopOf="@+id/albumButton"
@@ -105,6 +106,7 @@
             app:layout_constraintEnd_toEndOf="@+id/visitPurpose"
     />
     <ImageView
+            android:translationX="13dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" app:srcCompat="@drawable/ic_gallery" android:id="@+id/albumButton"
             app:layout_constraintTop_toTopOf="@+id/visitImage"

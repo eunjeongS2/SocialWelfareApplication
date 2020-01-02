@@ -34,10 +34,12 @@ class MonitoringViewModel(application: Application) : AndroidViewModel(applicati
 
     fun addData(monitoring: Monitoring, image: Uri?, onSubscribe: ((List<Monitoring>) -> Unit)? = null) {
 
-        db.collection("monitoring")
-            .add(monitoring)
+        val ref = db.collection("monitoring").document()
+        monitoring.monitoringKey = ref.id
+
+        ref.set(monitoring)
             .addOnSuccessListener { documentReference ->
-                Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
+                Log.d(TAG, "DocumentSnapshot added with ID: $documentReference")
 
                 image?.let { saveImage("monitoring/${monitoring.image}", it) { getData(onSubscribe) } }
                     ?: getData(onSubscribe)

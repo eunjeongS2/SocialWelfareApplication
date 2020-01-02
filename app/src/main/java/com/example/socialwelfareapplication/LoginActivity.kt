@@ -76,4 +76,13 @@ class LoginActivity : AppCompatActivity() {
         finish()
     }
 
+//    private fun setDisplayName() {
+//        val profileUpdate = UserProfileChangeRequest.Builder()
+//            .setDisplayName("도도").build()
+//
+//        auth.currentUser?.updateProfile(profileUpdate)
+//            ?.addOnSuccessListener {
+//            }
+//    }
+
 }
