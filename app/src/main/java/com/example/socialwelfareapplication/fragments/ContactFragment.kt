@@ -37,10 +37,10 @@ class ContactFragment : Fragment() {
 
         activity?.let {
             viewModel = ViewModelProvider(it).get(UserViewModel::class.java)
-        }
 
-        groupAdapter = ContactGroupItemListAdapter(viewModel)
-        contactAdapter = ContactItemListAdapter(viewModel, R.layout.item_contact)
+            groupAdapter = ContactGroupItemListAdapter(viewModel)
+            contactAdapter = ContactItemListAdapter(viewModel, R.layout.item_contact)
+        }
 
         view?.let {
             setupRecyclerView(it.contactRecyclerView, contactAdapter, RecyclerView.VERTICAL)

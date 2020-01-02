@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.socialwelfareapplication.models.Monitoring
+import com.example.socialwelfareapplication.models.imageReference
 import kotlinx.android.synthetic.main.item_monitoring.view.*
 
 class MonitoringItemViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
@@ -21,11 +22,15 @@ class MonitoringItemViewHolder(private val view: View) : RecyclerView.ViewHolder
         val comments = "댓글 ${item.comments}개 모두 보기"
         view.commentButton.text = comments
 
-        Glide.with(view.context).load(item.image)
-            .centerCrop()
-            .skipMemoryCache(true)
-            .diskCacheStrategy(DiskCacheStrategy.NONE)
-            .into(view.monitoringImage)
-
+        if(item.image == "") {
+            view.monitoringImage.visibility = View.GONE
+        } else {
+            view.monitoringImage.visibility = View.VISIBLE
+            Glide.with(view.context).load(imageReference("monitoring/${item.image}"))
+                .centerCrop()
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(view.monitoringImage)
+        }
     }
 }

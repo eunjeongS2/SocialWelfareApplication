@@ -18,7 +18,18 @@
         <!--<item name="android:textCursorDrawable">@color/indigo500</item>-->
         <!--<item name="android:textColor">@color/orange500</item>-->
         <item name="android:textColorHint">#c6c6c6</item>
-        <item name="android:textSize">22sp</item>
+        <item name="android:textSize">18sp</item>
+        <!--<item name="android:textColorHighlight">@color/purple500</item>-->
+    </style>
+
+    <style name="ImageEditText" parent="Widget.AppCompat.EditText">
+        <item name="colorControlNormal">#d8d8d8</item>
+        <item name="colorControlActivated">#d8d8d8</item>
+        <item name="android:hint">@string/input_image</item>
+        <!--<item name="android:textCursorDrawable">@color/indigo500</item>-->
+        <!--<item name="android:textColor">@color/orange500</item>-->
+        <item name="android:textColorHint">#c6c6c6</item>
+        <item name="android:textSize">14sp</item>
         <!--<item name="android:textColorHighlight">@color/purple500</item>-->
     </style>
     

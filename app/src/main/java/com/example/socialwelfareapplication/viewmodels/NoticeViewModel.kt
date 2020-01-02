@@ -30,13 +30,13 @@ class NoticeViewModel : ViewModel() {
             .add(notice)
             .addOnSuccessListener { documentReference ->
                 Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
-                getData(onSubscribe)
+                image?.let { saveImage("notice/${notice.image}", it) { getData(onSubscribe) } }
+                    ?: getData(onSubscribe)
             }
             .addOnFailureListener { e ->
                 Log.w(TAG, "Error adding document", e)
             }
 
-        image?.let { saveImage("notice/${notice.image}", it) { getData(onSubscribe) } }
 
     }
 

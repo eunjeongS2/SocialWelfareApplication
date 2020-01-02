@@ -22,7 +22,6 @@ import com.mlsdev.rximagepicker.Sources
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
-import kotlinx.android.synthetic.main.fragment_add_notice.*
 import kotlinx.android.synthetic.main.fragment_add_notice.view.*
 import org.threeten.bp.LocalDate
 import java.text.SimpleDateFormat
@@ -67,7 +66,7 @@ class AddNoticeFragment(private val viewModel: NoticeViewModel) : Fragment() {
 
             val date = "${currentDate.year}/$currentMonth/$currentDay"
 
-            progressBar.visibility = View.VISIBLE
+            view.progressBar.visibility = View.VISIBLE
 
             viewModel.addData(
                 Notice(
@@ -83,7 +82,7 @@ class AddNoticeFragment(private val viewModel: NoticeViewModel) : Fragment() {
                     image = null
                 }
 
-                progressBar.visibility = View.GONE
+                view.progressBar.visibility = View.GONE
                 val transaction = parentFragmentManager.beginTransaction()
                 transaction.remove(this).commit()
             }
@@ -101,28 +100,13 @@ class AddNoticeFragment(private val viewModel: NoticeViewModel) : Fragment() {
 
         view.cameraButton.setOnClickListener {
             getImage(Sources.CAMERA) {
-                view.removeImageButton.visibility = View.VISIBLE
-                view.noticeImageView.visibility = View.VISIBLE
-
-                Glide.with(this).load(image?.second)
-                    .centerCrop()
-                    .skipMemoryCache(true)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .into(view.noticeImageView)
+                setImage(view)
             }
         }
 
         view.albumButton.setOnClickListener {
-
             getImage(Sources.GALLERY) {
-                view.removeImageButton.visibility = View.VISIBLE
-                view.noticeImageView.visibility = View.VISIBLE
-
-                Glide.with(this).load(image?.second)
-                    .centerCrop()
-                    .skipMemoryCache(true)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .into(view.noticeImageView)
+                setImage(view)
             }
         }
 
@@ -134,7 +118,6 @@ class AddNoticeFragment(private val viewModel: NoticeViewModel) : Fragment() {
                 image?.removeImage(it)
                 image = null
             }
-
         }
 
         return view
@@ -156,20 +139,28 @@ class AddNoticeFragment(private val viewModel: NoticeViewModel) : Fragment() {
             ).addTo(disposeBag)
     }
 
+    private fun setImage(view: View) {
+        view.removeImageButton.visibility = View.VISIBLE
+        view.noticeImageView.visibility = View.VISIBLE
+
+        Glide.with(this).load(image?.second)
+            .centerCrop()
+            .skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .into(view.noticeImageView)
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        activity?.window?.setSoftInputMode(
-            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
-        )
+        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
         activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.visibility = View.GONE
         super.onActivityCreated(savedInstanceState)
 
     }
 
     override fun onDestroy() {
-        activity?.window?.setSoftInputMode(
-            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
-        )
+        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.visibility = View.VISIBLE
+
         disposeBag.dispose()
         super.onDestroy()
 

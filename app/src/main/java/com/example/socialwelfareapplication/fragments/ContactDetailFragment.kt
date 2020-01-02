@@ -48,7 +48,7 @@ class ContactDetailFragment(private val item: Contact, private val viewModel: Us
                     var monitoring = ""
 
                     monitoringList.forEach {
-                        monitoring += it.date.replace("/", ".") + " "+ monitoringList[0].remark + "\n"
+                        monitoring += it.date.replace("/", ".") + " "+ it.remark + "\n"
                     }
 
                     if(monitoringList.size > 2) {
