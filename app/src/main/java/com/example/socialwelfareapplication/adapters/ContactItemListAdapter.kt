@@ -4,6 +4,7 @@ import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.socialwelfareapplication.R
@@ -15,6 +16,7 @@ import com.example.socialwelfareapplication.viewmodels.UserViewModel
 import com.jakewharton.rxbinding3.view.clicks
 import kotlinx.android.synthetic.main.item_contact.view.*
 import kotlinx.android.synthetic.main.item_contact_select.view.*
+import kotlinx.android.synthetic.main.item_contact_simple.view.*
 import java.util.concurrent.TimeUnit
 
 class ContactItemListAdapter(private val viewModel: UserViewModel, private val layout: Int) :
@@ -40,6 +42,8 @@ class ContactItemListAdapter(private val viewModel: UserViewModel, private val l
 
         when (layout) {
             R.layout.item_contact_select -> {
+                holder.itemView.checkBox.setOnCheckedChangeListener(null)
+                holder.itemView.checkBox.isChecked = viewModel.selectList.contains(item)
 
                 holder.itemView.checkBox.setOnCheckedChangeListener { _, b ->
                     if (b) {
@@ -58,6 +62,15 @@ class ContactItemListAdapter(private val viewModel: UserViewModel, private val l
                 }
                 val isSelected = selectVisitPlace == position
                 holder.selectVisitPlace(isSelected)
+
+                holder.itemView.cancelButton.setOnClickListener {
+                    if (viewModel.selectList.size <= 1) {
+                        Toast.makeText(holder.itemView.context, "최소 한명은 입력해주세요!", Toast.LENGTH_SHORT).show()
+                        return@setOnClickListener
+                    }
+                    viewModel.selectList.remove(item)
+                    notifyDataSetChanged()
+                }
             }
 
             R.layout.item_contact -> {

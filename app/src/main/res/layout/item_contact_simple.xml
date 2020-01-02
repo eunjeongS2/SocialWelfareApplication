@@ -5,7 +5,12 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:background="@drawable/visit_selector"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:minWidth="60dp"
+        android:layout_height="wrap_content"
+        android:paddingEnd="2dp"
+        android:paddingStart="0dp"
+        android:layout_marginEnd="6dp"
+>
 
     <androidx.cardview.widget.CardView
             android:layout_width="26dp"
@@ -43,7 +48,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginBottom="6dp"
             app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintHorizontal_bias="0.5"
-            android:layout_marginEnd="4dp" android:layout_marginStart="4dp"
+            android:layout_marginEnd="8dp" android:layout_marginStart="6dp"
             tools:ignore="SmallSp"/>
+    <ImageView
+            android:translationX="1.5dp"
+            android:layout_width="18dp"
+            android:layout_height="18dp" app:srcCompat="@drawable/ic_cancel" android:id="@+id/cancelButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/cancel"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

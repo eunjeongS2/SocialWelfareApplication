@@ -1,52 +1,35 @@
 package com.example.socialwelfareapplication.models
 
+import android.net.Uri
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.QuerySnapshot
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.addTo
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
 
 val auth = FirebaseAuth.getInstance()
+val storage = Firebase.storage
+val storageRef = storage.reference
 
-class FirebaseProvider {
+const val TAG = "FirebaseProvider"
 
-    private val db = Firebase.firestore
+fun saveImage(path: String, image: Uri, onSubscribe: (() -> Unit)? = null) {
+    storageRef.child(path).putFile(image)
+        .addOnSuccessListener { documentReference ->
+            Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.uploadSessionUri}")
+            onSubscribe?.invoke()
 
-    companion object {
-        const val TAG = "FirebaseProvider"
-    }
-
-    fun addData(path: String, data: Any) {
-
-        db.collection(path)
-            .add(data)
-            .addOnSuccessListener { documentReference ->
-                Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
-            }
-            .addOnFailureListener { e ->
-                Log.w(TAG, "Error adding document", e)
-            }
-    }
-
-
-    fun getData(path: String) : QuerySnapshot? {
-
-        var value: QuerySnapshot? = null
-
-        db.collection(path)
-            .get()
-            .addOnSuccessListener { result ->
-                value = result
-            }
-            .addOnFailureListener { e ->
-                Log.w(TAG, "Error getting documents.", e)
-
-            }
-
-        return value
-
-    }
+        }.addOnFailureListener { e ->
+            e.printStackTrace()
+        }
 }
+
+fun updateImage(path: String, image: Uri, previous: String, onSubscribe: (() -> Unit)? = null) {
+    saveImage(path, image, onSubscribe.also { storageRef.child(previous).delete() })
+
+}
+
+fun imageReference(uri: String): StorageReference {
+    return storageRef.child(uri)
+}
+

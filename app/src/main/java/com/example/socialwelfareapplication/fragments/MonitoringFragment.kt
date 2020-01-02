@@ -41,7 +41,6 @@ class MonitoringFragment : Fragment() {
         }
 
         val adapter = MonitoringItemListAdapter()
-        view?.recyclerView?.adapter = adapter
         view?.recyclerView?.let { setupRecyclerView(it, adapter, RecyclerView.VERTICAL) }
 
         viewModel.monitoringPublisher.observeOn(AndroidSchedulers.mainThread())

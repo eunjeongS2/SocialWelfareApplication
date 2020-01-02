@@ -17,14 +17,14 @@
     <string name="group_icon">group icon</string>
     <string name="contact_image">contact image</string>
     <string name="write">작성</string>
-    <string name="select_place">방문장소를 선택해 주세요</string>
-    <string name="input_image">사진을 넣어주세요</string>
+    <string name="select_place"><font size="22">방문장소를 선택해 주세요</font></string>
+    <string name="input_image"><font size="22">사진을 넣어주세요</font></string>
     <string name="input_place">방문장소를 입력해 주세요</string>
-    <string name="input_purpose">방문목적을 입력해 주세요</string>
+    <string name="input_purpose"><font size="22">방문목적을 입력해 주세요</font></string>
     <string name="complete">완료</string>
     <string name="missed">부재중</string>
     <string name="outing">외출중</string>
-    <string name="input_remark">특이사항을 입력해 주세요</string>
+    <string name="input_remark"><font size="22">특이사항을 입력해 주세요</font></string>
     <string name="group_add">group add</string>
     <string name="group_setting">group setting</string>
     <string name="call_button">call button</string>
@@ -60,6 +60,7 @@
     <string name="body">내용</string>
     <string name="gallery">gallery</string>
     <string name="camera">camera</string>
+    <string name="remove_image_button">remove image button</string>
 
     <string-array name="notice_group">
         <item>"공지사항"</item>

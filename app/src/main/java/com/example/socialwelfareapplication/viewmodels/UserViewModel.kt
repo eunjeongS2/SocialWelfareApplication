@@ -1,9 +1,9 @@
 package com.example.socialwelfareapplication.viewmodels
 
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.example.socialwelfareapplication.models.Contact
-import com.example.socialwelfareapplication.models.Monitoring
+import com.example.socialwelfareapplication.models.*
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -36,27 +36,36 @@ class UserViewModel : ViewModel() {
     var monitoringPublisher = PublishSubject.create<List<Monitoring>>()
 
 
-    fun addData(contact: Contact) {
+    fun addData(contact: Contact, image: Uri?) {
 
         val ref = db.collection("contact").document()
         contact.key = ref.id
         ref.set(contact)
             .addOnSuccessListener { documentReference ->
                 Log.d(TAG, "DocumentSnapshot added with ID: $documentReference")
-                getData(contact.group)
+
+                image?.let { saveImage("user/${contact.image}", it) { getData(contact.group) } }
+                    ?: getData(contact.group)
+
             }
             .addOnFailureListener { e ->
                 Log.w(TAG, "Error adding document", e)
             }
 
+
     }
 
-    fun updateDate(key: String, group: String, item: Map<String, Any>) {
+    fun updateDate(key: String, group: String, item: Map<String, Any>, image: Uri?, imageName: String, previous: String) {
         db.collection("contact").document(key)
             .update(item)
             .addOnSuccessListener { documentReference ->
                 Log.d(TAG, "DocumentSnapshot added with ID: $documentReference")
-                getData(group)
+
+                image?.let {
+                    if (previous == "") saveImage("user/$imageName", it) { getData(group) }
+                    else updateImage("user/$imageName", it, "user/$previous") { getData(group) }
+
+                } ?: getData(group)
 
             }
             .addOnFailureListener { e ->
@@ -141,3 +150,4 @@ class UserViewModel : ViewModel() {
             }
     }
 }
+

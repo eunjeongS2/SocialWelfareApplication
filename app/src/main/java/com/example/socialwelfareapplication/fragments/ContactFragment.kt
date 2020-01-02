@@ -14,20 +14,16 @@ import com.example.socialwelfareapplication.adapters.ContactGroupItemListAdapter
 import com.example.socialwelfareapplication.adapters.ContactItemListAdapter
 import com.example.socialwelfareapplication.models.Contact
 import com.example.socialwelfareapplication.viewmodels.UserViewModel
-import com.jakewharton.rxbinding3.view.clicks
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_add_monitoring_description.view.backButton
 import kotlinx.android.synthetic.main.fragment_contact.view.*
-import java.util.concurrent.TimeUnit
 
 class ContactFragment : Fragment() {
 
     private lateinit var groupAdapter: ContactGroupItemListAdapter
     private lateinit var contactAdapter: ContactItemListAdapter
-    private lateinit var contactDetailFragment: AddContactFragment
-
 
     private lateinit var viewModel: UserViewModel
     private val disposeBag = CompositeDisposable()
@@ -42,11 +38,9 @@ class ContactFragment : Fragment() {
         activity?.let {
             viewModel = ViewModelProvider(it).get(UserViewModel::class.java)
 
+            groupAdapter = ContactGroupItemListAdapter(viewModel)
+            contactAdapter = ContactItemListAdapter(viewModel, R.layout.item_contact)
         }
-
-        groupAdapter = ContactGroupItemListAdapter(viewModel)
-
-        contactAdapter = ContactItemListAdapter(viewModel, R.layout.item_contact)
 
         view?.let {
             setupRecyclerView(it.contactRecyclerView, contactAdapter, RecyclerView.VERTICAL)
@@ -59,8 +53,8 @@ class ContactFragment : Fragment() {
                     setupItems(contactAdapter, contactList)
                     val selectGroupText = "${groupAdapter.selectGroup}(${contactAdapter.itemCount})"
                     it.selectGroup.text = selectGroupText
-                    contactDetailFragment = AddContactFragment(null, groupAdapter.selectGroup, viewModel)
 
+                    setView(it, groupAdapter.selectGroup)
                 }
 
             }, { e ->
@@ -74,21 +68,19 @@ class ContactFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_contact, container, false)
 
         view.backButton.visibility = View.GONE
+        view.saveButton.visibility = View.GONE
 
-        view.addButton.clicks()
-            .throttleFirst(600, TimeUnit.MILLISECONDS)
-            .subscribe({
-                if (contactDetailFragment.isAdded) {
-                    return@subscribe
-                }
+        view.addButton.setOnClickListener {
+            val contactDetailFragment = AddContactFragment(null, groupAdapter.selectGroup, viewModel)
 
-                val transaction = parentFragmentManager.beginTransaction()
-                transaction.add(R.id.fragmentContainer, contactDetailFragment).commit()
+            if (contactDetailFragment.isAdded) {
+                return@setOnClickListener
+            }
 
-            }, { e ->
-                Log.d(ContactItemListAdapter::class.java.name, "view click failed : ", e)
+            val transaction = parentFragmentManager.beginTransaction()
+            transaction.add(R.id.fragmentContainer, contactDetailFragment).commit()
 
-            }).addTo(disposeBag)
+        }
 
         return view
     }
@@ -96,6 +88,14 @@ class ContactFragment : Fragment() {
     override fun onDestroy() {
         disposeBag.dispose()
         super.onDestroy()
+    }
+
+    private fun setView(view: View, group: String) {
+        if (group == "전체" || group == "중요") {
+            view.addButton.visibility = View.INVISIBLE
+        } else {
+            view.addButton.visibility = View.VISIBLE
+        }
     }
 
 }

@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.socialwelfareapplication.R
 import com.example.socialwelfareapplication.models.Contact
+import com.example.socialwelfareapplication.models.imageReference
 import kotlinx.android.synthetic.main.item_contact.view.*
 import kotlinx.android.synthetic.main.item_contact_select.view.image
 import kotlinx.android.synthetic.main.item_contact_select.view.name
@@ -23,7 +24,7 @@ class ContactItemViewHolder(private val view: View) : RecyclerView.ViewHolder(vi
         if (item.image == "") {
             view.image.setImageResource(R.drawable.ic_contact)
         } else {
-            Glide.with(view.context).load(item.image)
+            Glide.with(view.context).load(imageReference("user/${item.image}"))
                 .centerCrop()
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)

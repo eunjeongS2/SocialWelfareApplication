@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.socialwelfareapplication.R
 import com.example.socialwelfareapplication.models.Contact
+import com.example.socialwelfareapplication.models.imageReference
 import com.example.socialwelfareapplication.viewmodels.UserViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -31,7 +32,7 @@ class ContactDetailFragment(private val item: Contact, private val viewModel: Us
         viewModel.userPublisher.observeOn(AndroidSchedulers.mainThread())
             .subscribe({ contactList ->
                 val current = contactList.find { c: Contact -> c.key == item.key }
-                setText(view, current ?: item)
+                setView(view, current ?: item)
                 editFragment = AddContactFragment(current ?: item, "", viewModel)
 
             }, { e ->
@@ -47,7 +48,7 @@ class ContactDetailFragment(private val item: Contact, private val viewModel: Us
                     var monitoring = ""
 
                     monitoringList.forEach {
-                        monitoring += it.date.replace("/", ".") + " "+ monitoringList[0].remark + "\n"
+                        monitoring += it.date.replace("/", ".") + " "+ it.remark + "\n"
                     }
 
                     if(monitoringList.size > 2) {
@@ -90,17 +91,7 @@ class ContactDetailFragment(private val item: Contact, private val viewModel: Us
                 transaction.add(R.id.fragmentContainer, editFragment).commit()
             }
 
-            setText(view, item)
-
-            if (item.image == "") {
-                image.setImageResource(R.drawable.ic_contact)
-            } else {
-                Glide.with(view.context).load(item.image)
-                    .centerCrop()
-                    .skipMemoryCache(true)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .into(image)
-            }
+            setView(view, item)
         }
 
 
@@ -112,12 +103,22 @@ class ContactDetailFragment(private val item: Contact, private val viewModel: Us
         super.onDestroy()
     }
 
-    private fun setText(view: View, item: Contact) {
+    private fun setView(view: View, item: Contact) {
         view.nameText.text = item.name
         view.phoneEditText.text = item.phoneNumber
         view.emergencyEditText.text = item.emergencyNumber
         view.addressEditText.text = item.address
         view.star.isSelected = item.star
+
+        if (item.image == "") {
+            view.image.setImageResource(R.drawable.ic_contact)
+        } else {
+            Glide.with(view.context).load(imageReference("user/${item.image}"))
+                .centerCrop()
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(view.image)
+        }
     }
 
 }
