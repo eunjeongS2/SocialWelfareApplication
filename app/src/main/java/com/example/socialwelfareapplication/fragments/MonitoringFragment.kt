@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
@@ -13,19 +14,26 @@ import com.example.socialwelfareapplication.models.Monitoring
 import com.example.socialwelfareapplication.R
 import com.example.socialwelfareapplication.adapters.MonitoringItemListAdapter
 import com.example.socialwelfareapplication.viewmodels.MonitoringViewModel
+import com.jakewharton.rxbinding3.widget.queryTextChanges
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_monitoring.view.*
+import java.util.concurrent.TimeUnit
 
 class MonitoringFragment : Fragment() {
 
     private lateinit var viewModel: MonitoringViewModel
     private val disposeBag = CompositeDisposable()
+    private val searchDisposeBag = CompositeDisposable()
+
     private lateinit var monitoringCalendarFragment: MonitoringCalendarFragment
+    private val adapter = MonitoringItemListAdapter()
+
 
     companion object {
         const val REQUEST_CODE = 300
+        const val QUERY_TIMEOUT = 500L
         const val TAG = "MonitoringFragment"
     }
 
@@ -40,7 +48,6 @@ class MonitoringFragment : Fragment() {
 
         }
 
-        val adapter = MonitoringItemListAdapter()
         view?.recyclerView?.let { setupRecyclerView(it, adapter, RecyclerView.VERTICAL) }
 
         viewModel.monitoringPublisher.observeOn(AndroidSchedulers.mainThread())
@@ -49,6 +56,9 @@ class MonitoringFragment : Fragment() {
                 view?.calendarImageView?.calendarIsSelected(false, monitoringCalendarFragment)
 
                 monitoringCalendarFragment.dateList = viewModel.dateList
+
+                view?.monitoringSearchView?.setSearch(monitoringList)
+
 
             }, { e ->
                 Log.d(TAG, "e : ", e)
@@ -111,6 +121,36 @@ class MonitoringFragment : Fragment() {
 
     }
 
+    private fun SearchView.setSearch(monitoringList: List<Monitoring>) {
+        searchDisposeBag.clear()
+        this.queryTextChanges().debounce(QUERY_TIMEOUT, TimeUnit.MILLISECONDS)
+            ?.observeOn(AndroidSchedulers.mainThread())
+            ?.subscribe({ search ->
+                if (search.isBlank()) {
+                    adapter.monitoringList = monitoringList
+                    adapter.notifyDataSetChanged()
+
+                    return@subscribe
+                }
+                val result = query(monitoringList, search.toString())
+
+                adapter.monitoringList = result
+                adapter.notifyDataSetChanged()
+
+            }, { e ->
+                e.printStackTrace()
+            })?.addTo(disposeBag)
+
+    }
+
+    private fun query(monitoringList: List<Monitoring>, search: String): List<Monitoring> {
+        return monitoringList.filter {
+            it.place.contains(search) || it.writer.contains(search) || it.state.contains(search)
+                    || it.purpose.contains(search) || it.remark.contains(search)
+
+        }
+    }
+
     private fun setupItems(adapter: MonitoringItemListAdapter, itemList: List<Monitoring>) {
         adapter.monitoringList = itemList
         adapter.notifyDataSetChanged()
@@ -118,6 +158,7 @@ class MonitoringFragment : Fragment() {
 
     override fun onDestroy() {
         disposeBag.dispose()
+        searchDisposeBag.dispose()
         super.onDestroy()
     }
 
