@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,11 +15,13 @@ import com.example.socialwelfareapplication.adapters.ContactGroupItemListAdapter
 import com.example.socialwelfareapplication.adapters.ContactItemListAdapter
 import com.example.socialwelfareapplication.models.Contact
 import com.example.socialwelfareapplication.viewmodels.UserViewModel
+import com.jakewharton.rxbinding3.widget.queryTextChanges
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_add_monitoring_description.view.backButton
 import kotlinx.android.synthetic.main.fragment_contact.view.*
+import java.util.concurrent.TimeUnit
 
 class ContactFragment : Fragment() {
 
@@ -27,9 +30,12 @@ class ContactFragment : Fragment() {
 
     private lateinit var viewModel: UserViewModel
     private val disposeBag = CompositeDisposable()
+    private val searchDisposeBag = CompositeDisposable()
 
     companion object {
         const val TAG = "ContactFragment"
+        const val QUERY_TIMEOUT = 500L
+
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -55,6 +61,8 @@ class ContactFragment : Fragment() {
                     it.selectGroup.text = selectGroupText
 
                     setView(it, groupAdapter.selectGroup)
+
+                    view?.searchView?.setSearch(contactList)
                 }
 
             }, { e ->
@@ -81,12 +89,12 @@ class ContactFragment : Fragment() {
             transaction.add(R.id.fragmentContainer, contactDetailFragment).commit()
 
         }
-
         return view
     }
 
     override fun onDestroy() {
         disposeBag.dispose()
+        searchDisposeBag.dispose()
         super.onDestroy()
     }
 
@@ -97,6 +105,35 @@ class ContactFragment : Fragment() {
             view.addButton.visibility = View.VISIBLE
         }
     }
+
+    private fun SearchView.setSearch(contactList: List<Contact>) {
+        searchDisposeBag.clear()
+        this.queryTextChanges().debounce(QUERY_TIMEOUT, TimeUnit.MILLISECONDS)
+            ?.observeOn(AndroidSchedulers.mainThread())
+            ?.subscribe({ search ->
+                if (search.isBlank()) {
+                    contactAdapter.contactList = contactList
+                    contactAdapter.notifyDataSetChanged()
+
+                    return@subscribe
+                }
+                val result = query(contactList, search.toString())
+
+                contactAdapter.contactList = result
+                contactAdapter.notifyDataSetChanged()
+
+            }, { e ->
+                e.printStackTrace()
+            })?.addTo(disposeBag)
+
+    }
+
+    private fun query(contactList: List<Contact>, search: String): List<Contact> {
+        return contactList.filter {
+            it.name.contains(search) || it.phoneNumber.contains(search) || it.emergencyNumber.contains(search)
+        }
+    }
+
 
 }
 

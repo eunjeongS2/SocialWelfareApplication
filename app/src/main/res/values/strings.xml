@@ -67,6 +67,8 @@
     <string name="post">게시</string>
     <string name="today_menu">오늘의 도시락</string>
     <string name="remove_contact">연락처 삭제</string>
+    <string name="more">더보기</string>
+    <string name="no_result">결과 없음</string>
 
     <string-array name="notice_group">
         <item>"공지사항"</item>

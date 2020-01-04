@@ -17,6 +17,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_notice.view.*
 
+
 class NoticeFragment : Fragment() {
 
     private lateinit var viewModel: NoticeViewModel
@@ -32,10 +33,9 @@ class NoticeFragment : Fragment() {
 
             adapter = NoticeItemListAdapter(viewModel)
             view?.noticeRecyclerView?.let { recyclerView ->
-                setupRecyclerView(recyclerView, adapter, RecyclerView.VERTICAL) }
-
+                setupRecyclerView(recyclerView, adapter, RecyclerView.VERTICAL)
+            }
         }
-
 
         viewModel.noticePublisher.observeOn(AndroidSchedulers.mainThread())
             .subscribe({ noticeList ->
