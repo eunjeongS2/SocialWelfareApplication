@@ -1,6 +1,8 @@
 package com.example.socialwelfareapplication.fragments
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -50,7 +52,6 @@ class ContactDetailFragment(private val item: Contact, private val viewModel: Us
                     monitoringList.forEach {
                         monitoring += it.date.replace("/", ".") + " "+ it.remark + "\n"
                     }
-
                     if(monitoringList.size > 2) {
                         view.monitoringButton.visibility = View.GONE
                     }
@@ -68,13 +69,28 @@ class ContactDetailFragment(private val item: Contact, private val viewModel: Us
             view.monitoringButton.visibility = View.GONE
         }
 
+        val dialogListener = DialogInterface.OnClickListener { _, p1 ->
+            when(p1) {
+                DialogInterface.BUTTON_POSITIVE -> {
+                    viewModel.removeData(item.key) {
 
-        view.backButton.setOnClickListener {
-            val transaction = parentFragmentManager.beginTransaction()
-            transaction.remove(this).commit()
+                        val transaction = parentFragmentManager.beginTransaction()
+                        transaction.remove(this@ContactDetailFragment).commit()
+                    }
+                }
+                DialogInterface.BUTTON_NEGATIVE -> {
+
+                }
+
+            }
         }
 
         with(view) {
+            backButton.setOnClickListener {
+                val transaction = parentFragmentManager.beginTransaction()
+                transaction.remove(this@ContactDetailFragment).commit()
+            }
+
             call.setOnClickListener {
                 intent(Intent.ACTION_DIAL, "tel:${item.phoneNumber}", it.context)
             }
@@ -89,6 +105,11 @@ class ContactDetailFragment(private val item: Contact, private val viewModel: Us
                 }
                 val transaction = parentFragmentManager.beginTransaction()
                 transaction.add(R.id.fragmentContainer, editFragment).commit()
+            }
+
+            removeButton.setOnClickListener {
+                val builder = AlertDialog.Builder(context)
+                builder.setMessage("연락처 삭제").setPositiveButton("삭제", dialogListener).setNegativeButton("취소", dialogListener).show()
             }
 
             setView(view, item)

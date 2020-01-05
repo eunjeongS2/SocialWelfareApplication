@@ -149,5 +149,19 @@ class UserViewModel : ViewModel() {
 
             }
     }
+
+    fun removeData(key: String, onSubscribe: (() -> (Unit))? = null) {
+        db.collection("contact").document(key)
+            .delete()
+            .addOnSuccessListener {
+                Log.d(TAG, "DocumentSnapshot remove")
+                onSubscribe?.invoke()
+            }
+            .addOnFailureListener { e->
+                Log.w(TAG, "Error getting documents.", e)
+
+            }
+    }
+
 }
 
