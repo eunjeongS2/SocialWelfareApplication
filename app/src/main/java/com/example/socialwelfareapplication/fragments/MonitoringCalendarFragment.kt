@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import com.example.socialwelfareapplication.R
 import com.example.socialwelfareapplication.checkDate
+import com.example.socialwelfareapplication.dialog.ExportCsvDialog
 import com.example.socialwelfareapplication.viewmodels.MonitoringViewModel
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.CalendarMode
@@ -51,6 +53,7 @@ class MonitoringCalendarFragment(private val viewModel: MonitoringViewModel) : F
         )
 
         view.rangeMode.setOnCheckedChangeListener { _, b ->
+            filterList = emptyList()
 
             if (b) {
                 view.calendar.selectionMode = SELECTION_MODE_RANGE
@@ -60,6 +63,7 @@ class MonitoringCalendarFragment(private val viewModel: MonitoringViewModel) : F
         }
 
         view.calendar.setOnDateChangedListener { _, date, _ ->
+            filterList = emptyList()
 
             if (view.calendar.selectionMode == SELECTION_MODE_SINGLE) {
                 val month = (date.month+1).toString().checkDate()
@@ -70,6 +74,7 @@ class MonitoringCalendarFragment(private val viewModel: MonitoringViewModel) : F
         }
 
         view.calendar.setOnRangeSelectedListener { _, dates ->
+            filterList = emptyList()
 
             if (view.calendar.selectionMode == SELECTION_MODE_RANGE) {
                 filterList = dates.map {
@@ -82,6 +87,34 @@ class MonitoringCalendarFragment(private val viewModel: MonitoringViewModel) : F
             }
 
         }
+
+        view.exportFileButton.setOnClickListener {
+            val exportFileDialog = ExportCsvDialog()
+
+            if(exportFileDialog.isAdded) {
+                return@setOnClickListener
+            }
+
+            if(filterList.isNullOrEmpty()) {
+                if (view.calendar.selectionMode == SELECTION_MODE_SINGLE) {
+                    Toast.makeText(context, "날짜를 선택해주세요", Toast.LENGTH_SHORT).show()
+
+                } else {
+                    Toast.makeText(context, "구간을 선택해주세요", Toast.LENGTH_SHORT).show()
+                }
+                return@setOnClickListener
+            }
+
+            val date = "저장할 구간 : ${filterList.first()} - ${filterList.last()}"
+
+
+            viewModel.filter(filterList) {
+                exportFileDialog.date = date
+                exportFileDialog.monitoringList = it
+                exportFileDialog.show(parentFragmentManager, ExportCsvDialog.TAG)
+            }
+        }
+
 
         view.applyButton.setOnClickListener {
             viewModel.filter(filterList)

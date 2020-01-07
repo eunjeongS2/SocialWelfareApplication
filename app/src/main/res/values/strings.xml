@@ -69,6 +69,9 @@
     <string name="remove_contact">연락처 삭제</string>
     <string name="more">더보기</string>
     <string name="no_result">결과 없음</string>
+    <string name="export_csv">export csv</string>
+    <string name="input_email">이메일을 입력해 주세요</string>
+    <string name="send">전송</string>
 
     <string-array name="notice_group">
         <item>"공지사항"</item>

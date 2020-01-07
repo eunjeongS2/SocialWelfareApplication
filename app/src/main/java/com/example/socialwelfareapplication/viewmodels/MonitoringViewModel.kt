@@ -32,7 +32,7 @@ class MonitoringViewModel(application: Application) : AndroidViewModel(applicati
 
     private val db = Firebase.firestore
 
-    fun addData(monitoring: Monitoring, image: Uri?, onSubscribe: ((List<Monitoring>) -> Unit)? = null) {
+    fun addData(monitoring: Monitoring, image: Uri?, onSubscribe: (() -> Unit)? = null) {
 
         val ref = db.collection("monitoring").document()
         monitoring.monitoringKey = ref.id
@@ -41,8 +41,11 @@ class MonitoringViewModel(application: Application) : AndroidViewModel(applicati
             .addOnSuccessListener { documentReference ->
                 Log.d(TAG, "DocumentSnapshot added with ID: $documentReference")
 
-                image?.let { saveImage("monitoring/${monitoring.image}", it) { getData(onSubscribe) } }
-                    ?: getData(onSubscribe)
+//                image?.let { saveImage("monitoring/${monitoring.image}", it) { getData(onSubscribe) } }
+//                    ?: getData(onSubscribe)
+
+                image?.let { saveImage("monitoring/${monitoring.image}", it) { onSubscribe?.invoke() } }
+                    ?: onSubscribe?.invoke()
             }
             .addOnFailureListener { e ->
                 Log.w(TAG, "Error adding document", e)
@@ -55,11 +58,14 @@ class MonitoringViewModel(application: Application) : AndroidViewModel(applicati
         db.collection("monitoring").orderBy("date", Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener { result ->
-                monitoringList = result.toObjects(Monitoring::class.java)
-                dateList = result.toObjects(Monitoring::class.java).map { it.date }
 
-                onSubscribe?.invoke(result.toObjects(Monitoring::class.java))
+                if(onSubscribe == null) {
+                    monitoringList = result.toObjects(Monitoring::class.java)
+                    dateList = result.toObjects(Monitoring::class.java).map { it.date }
+                } else {
+                    onSubscribe.invoke(result.toObjects(Monitoring::class.java))
 
+                }
             }
             .addOnFailureListener { e ->
                 Log.w(TAG, "Error getting documents.", e)
@@ -68,11 +74,18 @@ class MonitoringViewModel(application: Application) : AndroidViewModel(applicati
 
     }
 
-    fun filter(date: List<String>) {
+    fun filter(date: List<String>, onSubscribe: ((List<Monitoring>) -> Unit)? = null) {
         if (date.isEmpty()) getData()
         else getData {
-            monitoringList = it.filter { monitoring ->
+
+            val filterList = it.filter { monitoring ->
                 date.toSet().contains(monitoring.date)
+            }
+
+            if (onSubscribe != null) {
+                onSubscribe.invoke(filterList)
+            } else {
+                monitoringList = filterList
             }
         }
     }

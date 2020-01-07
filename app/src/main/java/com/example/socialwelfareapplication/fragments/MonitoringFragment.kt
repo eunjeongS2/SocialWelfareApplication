@@ -92,6 +92,8 @@ class MonitoringFragment : Fragment() {
         val addMonitoringFragment = AddMonitoringSelectContactFragment()
 
         view.addMonitoringButton.setOnClickListener {
+            view.calendarImageView.calendarIsSelected(false, monitoringCalendarFragment)
+
             val transaction = parentFragmentManager.beginTransaction()
             addMonitoringFragment.setTargetFragment(this, REQUEST_CODE)
 
