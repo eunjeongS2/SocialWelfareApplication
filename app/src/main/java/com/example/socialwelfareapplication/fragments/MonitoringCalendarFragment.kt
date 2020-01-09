@@ -35,7 +35,6 @@ class MonitoringCalendarFragment(private val viewModel: MonitoringViewModel) : F
             .setFirstDayOfWeek(Calendar.MONDAY)
             .setMinimumDate(CalendarDay.from(2019, 0, 1))
             .setCalendarDisplayMode(CalendarMode.MONTHS)
-            .isCacheCalendarPositionEnabled(true)
             .commit()
 
 
@@ -106,7 +105,6 @@ class MonitoringCalendarFragment(private val viewModel: MonitoringViewModel) : F
             }
 
             val date = "저장할 구간 : ${filterList.first()} - ${filterList.last()}"
-
 
             viewModel.filter(filterList) {
                 exportFileDialog.date = date
