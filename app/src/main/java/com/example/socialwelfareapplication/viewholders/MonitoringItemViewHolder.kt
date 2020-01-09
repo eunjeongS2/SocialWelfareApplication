@@ -46,7 +46,8 @@ class MonitoringItemViewHolder(private val view: View) : RecyclerView.ViewHolder
             view.monitoringImage.visibility = View.GONE
         } else {
             view.monitoringImage.visibility = View.VISIBLE
-            Glide.with(view.context).load(imageReference("monitoring/${item.image}"))
+            Glide.with(view.context)
+                .load(imageReference("monitoring/${item.image}"))
                 .centerCrop()
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)

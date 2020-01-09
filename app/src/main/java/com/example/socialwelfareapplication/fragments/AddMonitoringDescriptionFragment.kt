@@ -116,7 +116,6 @@ class AddMonitoringDescriptionFragment(private val viewModel: UserViewModel) : F
                 ), image?.second
 
             ) {
-
                 clearView(view)
                 viewModel.selectList.removeAt(adapter.selectVisitPlace)
                 adapter.notifyDataSetChanged()
@@ -132,6 +131,8 @@ class AddMonitoringDescriptionFragment(private val viewModel: UserViewModel) : F
                     transaction.replace(R.id.fragmentContainer, fragment).commit()
                     parentFragmentManager.popBackStack()
                 }
+
+
             }
 
         }
