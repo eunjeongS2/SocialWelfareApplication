@@ -25,7 +25,7 @@ class ExportCsvDialog : DialogFragment() {
 
     companion object {
         const val TAG = "ExportCsvDialog"
-        const val FILE_NAME = "monitoring.csv"
+        const val FILE_NAME = "활동일지.csv"
         const val REQUEST_CODE = 100
     }
 

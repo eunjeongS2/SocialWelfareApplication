@@ -3,12 +3,12 @@
           package="com.example.socialwelfareapplication">
 
     <uses-feature android:name="android.hardware.camera"
-                  android:required="false" />
+                  android:required="false"/>
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
 
     <application
@@ -19,6 +19,18 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
+
+        <provider
+                android:name="androidx.core.content.FileProvider"
+                android:authorities="com.example.socialwelfareapplication.fileprovider"
+                android:exported="false"
+                android:grantUriPermissions="true">
+            <meta-data
+                    android:name="android.support.FILE_PROVIDER_PATHS"
+                    android:resource="@xml/file_provider_paths"/>
+        </provider>
+
+
         <activity android:name=".MainActivity"
                   android:windowSoftInputMode="adjustPan">
 
@@ -27,7 +39,7 @@
         <activity android:name=".LoginActivity">
 
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.VIEW"/>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
@@ -35,5 +47,6 @@
 
         </activity>
     </application>
+
 
 </manifest>
