@@ -186,6 +186,7 @@ class AddMonitoringDescriptionFragment(private val viewModel: UserViewModel) : F
         view.remark.text.clear()
         view.radioGroup.check(R.id.stateComplete)
         view.purposeRadioGroup.check(R.id.lunchBox)
+        view.visitorRadioGroup.check(R.id.socialWorker)
 
     }
 

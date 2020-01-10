@@ -141,7 +141,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal" app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="22dp"
-            android:checkedButton="@id/lunchBox"
+            android:checkedButton="@id/socialWorker"
             android:layout_marginTop="40dp" app:layout_constraintTop_toBottomOf="@+id/writerEditText">
         <RadioButton
                 android:text="@string/social_worker"
