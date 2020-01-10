@@ -123,6 +123,7 @@
             app:layout_constraintStart_toStartOf="@+id/remarkText"
             app:layout_constraintTop_toBottomOf="@+id/remarkText" android:layout_marginTop="4dp"/>
     <TextView
+            app:layout_goneMarginTop="22dp"
             tools:text="댓글 199개 모두 보기"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

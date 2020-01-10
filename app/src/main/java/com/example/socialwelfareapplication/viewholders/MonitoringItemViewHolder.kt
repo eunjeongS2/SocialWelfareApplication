@@ -21,7 +21,15 @@ class MonitoringItemViewHolder(private val view: View) : RecyclerView.ViewHolder
         view.visitPlace.text = item.place
         view.visitPurpose.text = item.purpose
         view.state.text = item.state
-        view.remark.text = item.remark
+
+        if (item.remark.isBlank()) {
+            view.remarkText.visibility = View.GONE
+            view.remark.visibility = View.GONE
+        } else {
+            view.remarkText.visibility = View.VISIBLE
+            view.remark.visibility = View.VISIBLE
+            view.remark.text = item.remark
+        }
 
         if(item.comments) {
             CommentViewModel().getCommentCount(item.monitoringKey){
