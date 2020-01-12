@@ -61,10 +61,10 @@ class ExportCsvDialog : DialogFragment() {
                     val bw = BufferedWriter(FileWriter("${it.absoluteFile}/$FILE_NAME", false))
 
                     val csvList = list.map { monitoring ->
-                        "${monitoring.place},${monitoring.date},${monitoring.writer},${monitoring.purpose},${monitoring.state},${monitoring.remark}"
+                        "${monitoring.place},${monitoring.date},${monitoring.writer},${monitoring.visitor},${monitoring.purpose},${monitoring.state},${monitoring.remark}"
                     }
 
-                    bw.write("방문장소,방문날짜,작성자,방문목적,방문상태,특이사항")
+                    bw.write("방문장소,방문날짜,작성자,방문자,방문목적,방문상태,특이사항")
                     bw.newLine()
                     csvList.forEach { data ->
                         bw.write(data)
@@ -90,8 +90,8 @@ class ExportCsvDialog : DialogFragment() {
             val path = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", File(it.absolutePath, FILE_NAME))
             val intent = Intent(Intent.ACTION_SEND)
 
-            intent.type = "vnd.android.cursor.dir/email"
-            intent.putExtra(Intent.EXTRA_EMAIL, email)
+            intent.type = "text/html"
+            intent.putExtra(Intent.EXTRA_EMAIL, Array(1){email})
             intent.putExtra(Intent.EXTRA_STREAM, path)
             startActivityForResult(intent, REQUEST_CODE)
 

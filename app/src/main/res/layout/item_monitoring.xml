@@ -26,20 +26,18 @@
             android:layout_marginStart="30dp"
             app:layout_constraintTop_toTopOf="@+id/view"
             app:layout_constraintBottom_toBottomOf="@+id/view"/>
-    <TextView
-            android:text="@string/edit"
+    <ImageView
+            android:background="@color/colorWhite"
+            app:srcCompat="@drawable/ic_delete"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
-            android:textSize="15sp"
-            android:textColor="#8d8787"
-            android:background="@color/colorWhite"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/editMonitoring"
+            android:layout_height="20dp"
+            android:id="@+id/removeMonitoring"
             app:layout_constraintEnd_toEndOf="@+id/view"
             android:layout_marginEnd="22dp"
             app:layout_constraintTop_toTopOf="@+id/view"
-            app:layout_constraintBottom_toBottomOf="@+id/view"/>
+            app:layout_constraintBottom_toBottomOf="@+id/view" android:contentDescription="@string/delete"/>
     <ImageView
             android:layout_width="219dp"
             android:layout_height="219dp"

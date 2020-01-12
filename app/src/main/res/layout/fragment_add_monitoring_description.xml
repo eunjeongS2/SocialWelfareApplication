@@ -236,7 +236,8 @@
                     app:layout_constraintTop_toBottomOf="@+id/radioGroup" android:layout_marginStart="22dp"
                     app:layout_constraintStart_toStartOf="parent"
                     tools:ignore="AutoFill"
-                    app:layout_constraintEnd_toEndOf="@+id/radioGroup"/>
+                    app:layout_constraintEnd_toEndOf="@+id/radioGroup" android:layout_marginBottom="32dp"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
 
             <RadioGroup
                     android:id="@+id/radioGroup"
