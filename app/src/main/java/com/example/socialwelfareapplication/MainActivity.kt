@@ -32,10 +32,10 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
 
-                R.id.navigation_map -> {
-                    replaceFragment(MonitoringFragment())
-                    true
-                }
+//                R.id.navigation_map -> {
+//                    replaceFragment(MonitoringFragment())
+//                    true
+//                }
 
                 R.id.navigation_monitoring -> {
                     replaceFragment(MonitoringFragment())

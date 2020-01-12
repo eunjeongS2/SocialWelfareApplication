@@ -16,9 +16,9 @@
             android:icon="@drawable/ic_pencil"
             android:title="@string/monitoring_diary" />
 
-    <item
-            android:id="@+id/navigation_map"
-            android:icon="@drawable/ic_map"
-            android:title="@string/map" />
+    <!--<item-->
+            <!--android:id="@+id/navigation_map"-->
+            <!--android:icon="@drawable/ic_map"-->
+            <!--android:title="@string/map" />-->
 
 </menu>

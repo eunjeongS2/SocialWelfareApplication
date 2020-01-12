@@ -18,14 +18,14 @@
     <string name="contact_image">contact image</string>
     <string name="write">작성</string>
     <string name="select_place">방문장소를 선택해 주세요</string>
-    <string name="input_image"><font size="22">사진을 넣어주세요</font></string>
+    <string name="input_image"><font size="20">사진을 넣어주세요</font></string>
     <string name="input_place">방문장소를 입력해 주세요</string>
-    <string name="input_purpose"><font size="22">방문목적을 입력해 주세요</font></string>
+    <string name="input_purpose"><font size="20">기타 방문목적을 입력해 주세요</font></string>
     <string name="complete">완료</string>
-    <string name="missed">부재중</string>
-    <string name="outing">외출중</string>
+    <string name="missed">부재</string>
+    <string name="outing">외출</string>
     <string name="edit_remark">특이사항을 입력해 주세요</string>
-    <string name="input_remark"><font size="22">특이사항을 입력해 주세요</font></string>
+    <string name="input_remark"><font size="20">특이사항을 입력해 주세요</font></string>
     <string name="group_add">group add</string>
     <string name="group_setting">group setting</string>
     <string name="call_button">call button</string>
@@ -65,13 +65,20 @@
     <string name="comment">댓글</string>
     <string name="write_comment">댓글 달기…</string>
     <string name="post">게시</string>
-    <string name="today_menu">오늘의 도시락</string>
+    <string name="today_menu">이번 달 도시락</string>
     <string name="remove_contact">연락처 삭제</string>
     <string name="more">더보기</string>
     <string name="no_result">결과 없음</string>
     <string name="export_csv">export csv</string>
     <string name="input_email">이메일을 입력해 주세요</string>
     <string name="send">전송</string>
+    <string name="lunch_box">도시락</string>
+    <string name="consulting">상담</string>
+    <string name="other">기타</string>
+    <string name="social_worker">사회복지사</string>
+    <string name="volunteer">자원봉사자</string>
+    <string name="input_writer"><font size="20">작성자를 입력해 주세요</font></string>
+    <string name="delete">delete</string>
 
     <string-array name="notice_group">
         <item>"공지사항"</item>

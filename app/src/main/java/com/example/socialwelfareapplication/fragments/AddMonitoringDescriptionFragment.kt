@@ -14,7 +14,6 @@ import com.example.socialwelfareapplication.R
 import com.example.socialwelfareapplication.adapters.ContactItemListAdapter
 import com.example.socialwelfareapplication.checkDate
 import com.example.socialwelfareapplication.models.Monitoring
-import com.example.socialwelfareapplication.models.auth
 import com.example.socialwelfareapplication.removeImage
 import com.example.socialwelfareapplication.viewmodels.MonitoringViewModel
 import com.example.socialwelfareapplication.viewmodels.UserViewModel
@@ -79,13 +78,24 @@ class AddMonitoringDescriptionFragment(private val viewModel: UserViewModel) : F
         view.cameraButton.setOnClickListener {
             getImage(Sources.CAMERA) {
                 view.visitImage.setText(image?.second.toString())
+                view.imageCancelButton.visibility = View.VISIBLE
             }
         }
 
         view.albumButton.setOnClickListener {
             getImage(Sources.GALLERY) {
                 view.visitImage.setText(image?.second.toString())
+                view.imageCancelButton.visibility = View.VISIBLE
             }
+        }
+
+        view.purposeRadioGroup.setOnCheckedChangeListener { _, i ->
+            if (i == R.id.other) {
+                view.visitPurpose.visibility = View.VISIBLE
+            } else {
+                view.visitPurpose.visibility = View.GONE
+            }
+
         }
 
         view.imageCancelButton.setOnClickListener {
@@ -94,10 +104,13 @@ class AddMonitoringDescriptionFragment(private val viewModel: UserViewModel) : F
                 image = null
             }
             view.visitImage.text.clear()
+            view.imageCancelButton.visibility = View.INVISIBLE
+
         }
 
         view.writeButton.setOnClickListener {
-            if (visitPurpose.text.isBlank() || remark.text.isBlank()) {
+            if ((view.findViewById(purposeRadioGroup.checkedRadioButtonId) as RadioButton).text.toString() == "기타" &&
+                view.visitPurpose.text.isBlank()) {
                 Toast.makeText(context, "항목을 모두 채워주세요", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -105,14 +118,20 @@ class AddMonitoringDescriptionFragment(private val viewModel: UserViewModel) : F
             val date = "${currentDate.year}/$currentMonth/$currentDay"
             view.progressBar.visibility = View.VISIBLE
 
+            var purpose = (view.findViewById(purposeRadioGroup.checkedRadioButtonId) as RadioButton).text.toString()
+            if(!view.visitPurpose.text.isBlank()) {
+                purpose += " (${view.visitPurpose.text})"
+            }
+
             monitoringViewModel.addData(
                 Monitoring(
                     viewModel.selectList[adapter.selectVisitPlace].key,
-                    date, auth.currentUser?.uid ?: "",
+                    date, view.writerEditText.text.toString(),
                     image?.let { SimpleDateFormat("yyyyMMdd_HHmmss", Locale.KOREA).format(Date()) } ?: "",
-                    viewModel.selectList[adapter.selectVisitPlace].name, view.visitPurpose.text.toString(),
+                    viewModel.selectList[adapter.selectVisitPlace].name,
+                    purpose,
                     (view.findViewById(radioGroup.checkedRadioButtonId) as RadioButton).text.toString(),
-                    view.remark.text.toString(), false
+                    view.remark.text.toString(), false, (view.findViewById(visitorRadioGroup.checkedRadioButtonId) as RadioButton).text.toString()
                 ), image?.second
 
             ) {
@@ -166,6 +185,8 @@ class AddMonitoringDescriptionFragment(private val viewModel: UserViewModel) : F
         view.visitImage.text.clear()
         view.remark.text.clear()
         view.radioGroup.check(R.id.stateComplete)
+        view.purposeRadioGroup.check(R.id.lunchBox)
+        view.visitorRadioGroup.check(R.id.socialWorker)
 
     }
 

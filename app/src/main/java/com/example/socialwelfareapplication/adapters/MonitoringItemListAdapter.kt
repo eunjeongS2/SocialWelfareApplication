@@ -6,10 +6,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.socialwelfareapplication.models.Monitoring
 import com.example.socialwelfareapplication.viewholders.MonitoringItemViewHolder
 import com.example.socialwelfareapplication.R
+import com.example.socialwelfareapplication.viewmodels.MonitoringViewModel
+import kotlinx.android.synthetic.main.item_monitoring.view.*
 
-class MonitoringItemListAdapter : RecyclerView.Adapter<MonitoringItemViewHolder>() {
+class MonitoringItemListAdapter(private val viewModel: MonitoringViewModel) : RecyclerView.Adapter<MonitoringItemViewHolder>() {
 
-    var monitoringList: List<Monitoring> = emptyList()
+    var monitoringList: MutableList<Monitoring> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MonitoringItemViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -24,6 +26,14 @@ class MonitoringItemListAdapter : RecyclerView.Adapter<MonitoringItemViewHolder>
     override fun onBindViewHolder(holder: MonitoringItemViewHolder, position: Int) {
         val item = monitoringList[position]
         holder.bind(item)
+
+        holder.itemView.removeMonitoring.setOnClickListener {
+            viewModel.removeData(item.monitoringKey) {
+                monitoringList.remove(item)
+                notifyDataSetChanged()
+//                viewModel.getData()
+            }
+        }
     }
 
 }

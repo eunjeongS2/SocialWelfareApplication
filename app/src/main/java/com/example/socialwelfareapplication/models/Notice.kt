@@ -5,5 +5,6 @@ class Notice (
     val date: String = "",
     val title: String = "",
     val body: String = "",
-    val image: String = ""
+    val image: String = "",
+    var key: String = ""
 )

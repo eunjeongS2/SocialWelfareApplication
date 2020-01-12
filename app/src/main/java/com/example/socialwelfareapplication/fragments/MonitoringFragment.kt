@@ -28,7 +28,7 @@ class MonitoringFragment : Fragment() {
     private val searchDisposeBag = CompositeDisposable()
 
     private lateinit var monitoringCalendarFragment: MonitoringCalendarFragment
-    private val adapter = MonitoringItemListAdapter()
+    private lateinit var adapter: MonitoringItemListAdapter
 
 
     companion object {
@@ -43,7 +43,7 @@ class MonitoringFragment : Fragment() {
         activity?.let {
             viewModel = ViewModelProvider(it).get(MonitoringViewModel::class.java)
             viewModel.getData()
-
+            adapter = MonitoringItemListAdapter(viewModel)
             monitoringCalendarFragment = MonitoringCalendarFragment(viewModel)
 
         }
@@ -52,7 +52,7 @@ class MonitoringFragment : Fragment() {
 
         viewModel.monitoringPublisher.observeOn(AndroidSchedulers.mainThread())
             .subscribe({ monitoringList ->
-                setupItems(adapter, monitoringList)
+                setupItems(adapter, monitoringList.toMutableList())
                 view?.calendarImageView?.calendarIsSelected(false, monitoringCalendarFragment)
 
                 monitoringCalendarFragment.dateList = viewModel.dateList
@@ -129,14 +129,14 @@ class MonitoringFragment : Fragment() {
             ?.observeOn(AndroidSchedulers.mainThread())
             ?.subscribe({ search ->
                 if (search.isBlank()) {
-                    adapter.monitoringList = monitoringList
+                    adapter.monitoringList = monitoringList.toMutableList()
                     adapter.notifyDataSetChanged()
 
                     return@subscribe
                 }
                 val result = query(monitoringList, search.toString())
 
-                adapter.monitoringList = result
+                adapter.monitoringList = result.toMutableList()
                 adapter.notifyDataSetChanged()
 
             }, { e ->
@@ -153,7 +153,7 @@ class MonitoringFragment : Fragment() {
         }
     }
 
-    private fun setupItems(adapter: MonitoringItemListAdapter, itemList: List<Monitoring>) {
+    private fun setupItems(adapter: MonitoringItemListAdapter, itemList: MutableList<Monitoring>) {
         adapter.monitoringList = itemList
         adapter.notifyDataSetChanged()
     }

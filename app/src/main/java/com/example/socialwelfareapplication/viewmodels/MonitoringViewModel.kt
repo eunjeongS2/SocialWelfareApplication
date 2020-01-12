@@ -41,9 +41,6 @@ class MonitoringViewModel(application: Application) : AndroidViewModel(applicati
             .addOnSuccessListener { documentReference ->
                 Log.d(TAG, "DocumentSnapshot added with ID: $documentReference")
 
-//                image?.let { saveImage("monitoring/${monitoring.image}", it) { getData(onSubscribe) } }
-//                    ?: getData(onSubscribe)
-
                 image?.let { saveImage("monitoring/${monitoring.image}", it) { onSubscribe?.invoke() } }
                     ?: onSubscribe?.invoke()
             }
@@ -75,6 +72,7 @@ class MonitoringViewModel(application: Application) : AndroidViewModel(applicati
     }
 
     fun filter(date: List<String>, onSubscribe: ((List<Monitoring>) -> Unit)? = null) {
+
         if (date.isEmpty()) getData()
         else getData {
 
@@ -88,6 +86,19 @@ class MonitoringViewModel(application: Application) : AndroidViewModel(applicati
                 monitoringList = filterList
             }
         }
+    }
+
+    fun removeData(key: String, onSubscribe: (() -> (Unit))? = null) {
+        db.collection("monitoring").document(key)
+            .delete()
+            .addOnSuccessListener {
+                Log.d(TAG, "DocumentSnapshot remove")
+                onSubscribe?.invoke()
+            }
+            .addOnFailureListener { e ->
+                Log.w(TAG, "Error getting documents.", e)
+
+            }
     }
 
     override fun onCleared() {
