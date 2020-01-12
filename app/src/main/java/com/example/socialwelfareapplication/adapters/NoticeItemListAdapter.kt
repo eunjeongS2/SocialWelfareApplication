@@ -9,14 +9,15 @@ import com.example.socialwelfareapplication.fragments.NoticeDetailFragment
 import com.example.socialwelfareapplication.models.Notice
 import com.example.socialwelfareapplication.viewholders.NoticeItemViewHolder
 import com.example.socialwelfareapplication.viewmodels.NoticeViewModel
+import kotlinx.android.synthetic.main.item_menu.view.*
 
-class NoticeItemListAdapter(private val viewModel: NoticeViewModel) : RecyclerView.Adapter<NoticeItemViewHolder>() {
+class NoticeItemListAdapter(private val viewModel: NoticeViewModel, private val layout: Int) : RecyclerView.Adapter<NoticeItemViewHolder>() {
 
     var noticeList: List<Notice> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoticeItemViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_notice, parent, false)
+            .inflate(layout, parent, false)
         return NoticeItemViewHolder(view)
     }
 
@@ -38,6 +39,15 @@ class NoticeItemListAdapter(private val viewModel: NoticeViewModel) : RecyclerVi
             val transaction = (holder.itemView.context as AppCompatActivity).supportFragmentManager.beginTransaction()
             transaction.add(R.id.fragmentContainer, detailFragment).commit()
         }
+
+        if(layout == R.layout.item_menu) {
+            holder.itemView.deleteButton.setOnClickListener {
+                viewModel.removeData(item.key) {
+                    viewModel.getMenuData()
+                }
+            }
+        }
+
     }
 
 }

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -94,9 +95,28 @@ class AddNoticeFragment(private val viewModel: NoticeViewModel) : Fragment() {
             override fun getCount(): Int {
                 return super.getCount() - 1
             }
+
         }
         view.spinner.adapter = adapter
         view.spinner.setSelection(adapter.count)
+        view.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                println("dd")
+            }
+
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                when(p2) {
+                    0 -> {
+                        println("0")
+                    }
+                    1 -> {
+                        println("1")
+                    }
+                }
+            }
+
+        }
+
 
         view.cameraButton.setOnClickListener {
             getImage(Sources.CAMERA) {

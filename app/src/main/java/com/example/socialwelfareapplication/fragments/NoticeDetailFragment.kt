@@ -19,9 +19,12 @@ import com.bumptech.glide.Registry
 import com.bumptech.glide.annotation.GlideModule
 import com.example.socialwelfareapplication.models.imageReference
 import java.io.InputStream
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class NoticeDetailFragment(private val item: Notice, private val viewModel: NoticeViewModel) : Fragment() {
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_notice_detail, container, false)
 
@@ -42,6 +45,27 @@ class NoticeDetailFragment(private val item: Notice, private val viewModel: Noti
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(view.itemImageView)
         }
+
+        view.deleteButton.setOnClickListener {
+            viewModel.removeData(item.key) {
+                if (targetFragment != null) {
+                    val date = SimpleDateFormat("yyyy/MM", Locale.KOREA).format(Date())
+                    viewModel.getCurrentMenuData(date)
+                } else {
+                    when (item.group) {
+                        "도시락" -> {
+                            viewModel.getMenuData()
+                        }
+                        "공지사항" -> {
+                            viewModel.getData()
+                        }
+                    }
+                }
+                transaction.remove(this).commit()
+            }
+        }
+
+
         return view
     }
 

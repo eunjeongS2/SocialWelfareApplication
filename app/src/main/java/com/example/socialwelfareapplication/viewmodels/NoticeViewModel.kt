@@ -21,15 +21,29 @@ class NoticeViewModel : ViewModel() {
             noticePublisher.onNext(value)
         }
 
+    private var menuList: List<Notice> = emptyList()
+        set(value) {
+            menuListPublisher.onNext(value)
+        }
+
+    private var currentMenu: Notice? = Notice()
+        set(value) {
+            value?.let { currentMenuPublisher.onNext(it) }
+            field = value
+        }
+
     var noticePublisher = PublishSubject.create<List<Notice>>()
+    var menuListPublisher = PublishSubject.create<List<Notice>>()
+    var currentMenuPublisher = PublishSubject.create<Notice>()
     private val db = Firebase.firestore
 
     fun addData(notice: Notice, image: Uri?, onSubscribe: (() -> Unit)? = null) {
 
-        db.collection("notice")
-            .add(notice)
+        val ref = db.collection("notice").document()
+        notice.key = ref.id
+        ref.set(notice)
             .addOnSuccessListener { documentReference ->
-                Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
+                Log.d(TAG, "DocumentSnapshot added with ID: $documentReference")
                 image?.let { saveImage("notice/${notice.image}", it) { getData(onSubscribe) } }
                     ?: getData(onSubscribe)
             }
@@ -50,6 +64,47 @@ class NoticeViewModel : ViewModel() {
                 noticeList = result.toObjects(Notice::class.java)
                 onSubscribe?.invoke()
 
+            }
+            .addOnFailureListener { e ->
+                Log.w(TAG, "Error getting documents.", e)
+
+            }
+    }
+
+    fun getCurrentMenuData(date: String) {
+        db.collection("notice").whereEqualTo("group", "도시락").whereEqualTo("date", date)
+            .limit(1)
+            .get()
+            .addOnSuccessListener { result ->
+                currentMenu = result.toObjects(Notice::class.java).firstOrNull()
+
+            }
+            .addOnFailureListener { e ->
+                Log.w(TAG, "Error getting documents.", e)
+
+            }
+    }
+
+    fun getMenuData() {
+        db.collection("notice").whereEqualTo("group", "도시락")
+            .orderBy("date", Query.Direction.DESCENDING)
+            .get()
+            .addOnSuccessListener { result ->
+                menuList = result.toObjects(Notice::class.java)
+
+            }
+            .addOnFailureListener { e ->
+                Log.w(TAG, "Error getting documents.", e)
+
+            }
+    }
+
+    fun removeData(key: String, onSubscribe: (() -> (Unit))? = null) {
+        db.collection("notice").document(key)
+            .delete()
+            .addOnSuccessListener {
+                Log.d(TAG, "DocumentSnapshot remove")
+                onSubscribe?.invoke()
             }
             .addOnFailureListener { e ->
                 Log.w(TAG, "Error getting documents.", e)
