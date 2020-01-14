@@ -56,10 +56,6 @@ class AddNoticeFragment(private val viewModel: NoticeViewModel) : Fragment() {
                 Toast.makeText(view.context, "제목을 입력해주세요", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            if (view.bodyEditText.text.isBlank()) {
-                Toast.makeText(view.context, "내용을 입력해주세요", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
 
             val currentDate = LocalDate.now()
             val currentMonth = currentDate.monthValue.toString().checkDate()

@@ -44,8 +44,13 @@ class NoticeViewModel : ViewModel() {
         ref.set(notice)
             .addOnSuccessListener { documentReference ->
                 Log.d(TAG, "DocumentSnapshot added with ID: $documentReference")
-                image?.let { saveImage("notice/${notice.image}", it) { getData(onSubscribe) } }
-                    ?: getData(onSubscribe)
+                image?.let { saveImage("notice/${notice.image}", it) {
+                    getData(onSubscribe)
+                    getCurrentMenuData()}
+                }
+                    ?: {getData(onSubscribe)
+                        getCurrentMenuData()
+                    }.invoke()
             }
             .addOnFailureListener { e ->
                 Log.w(TAG, "Error adding document", e)
@@ -71,8 +76,9 @@ class NoticeViewModel : ViewModel() {
             }
     }
 
-    fun getCurrentMenuData(date: String) {
-        db.collection("notice").whereEqualTo("group", "도시락").whereEqualTo("date", date)
+    fun getCurrentMenuData() {
+        db.collection("notice").whereEqualTo("group", "도시락")
+            .orderBy("date", Query.Direction.DESCENDING)
             .limit(1)
             .get()
             .addOnSuccessListener { result ->

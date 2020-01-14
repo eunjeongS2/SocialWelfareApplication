@@ -44,6 +44,7 @@ class NoticeItemListAdapter(private val viewModel: NoticeViewModel, private val 
             holder.itemView.deleteButton.setOnClickListener {
                 viewModel.removeData(item.key) {
                     viewModel.getMenuData()
+                    viewModel.getCurrentMenuData()
                 }
             }
         }

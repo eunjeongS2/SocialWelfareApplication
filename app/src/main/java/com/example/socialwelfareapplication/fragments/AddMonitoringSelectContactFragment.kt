@@ -67,10 +67,7 @@ class AddMonitoringSelectContactFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_contact, container, false)
 
-        view.groupAddButton.visibility = View.GONE
-        view.groupSettingButton.visibility = View.GONE
         view.saveButton.visibility = View.GONE
-
         view.backButton.setOnClickListener { parentFragmentManager.popBackStackImmediate() }
 
         view.addButton.setOnClickListener {

@@ -4,6 +4,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
+        android:background="@color/colorWhite"
         android:layout_height="match_parent">
 
     <ProgressBar
@@ -15,6 +16,13 @@
             app:layout_constraintEnd_toEndOf="@+id/selectContactRecyclerView"
             app:layout_constraintStart_toStartOf="@+id/selectContactRecyclerView"
             app:layout_constraintBottom_toBottomOf="@+id/selectContactRecyclerView"/>
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" app:srcCompat="@drawable/ic_triangle" android:id="@+id/imageView2"
+            app:layout_constraintStart_toEndOf="@+id/date" android:layout_marginStart="8dp"
+            app:layout_constraintTop_toTopOf="@+id/date"
+            app:layout_constraintBottom_toBottomOf="@+id/date" android:layout_marginTop="2dp"
+            android:contentDescription="@string/triangle"/>
     <TextView
             tools:text="05/22/2019"
             android:textSize="22sp"
@@ -23,7 +31,7 @@
             android:gravity="center_horizontal"
             android:layout_height="wrap_content"
             android:id="@+id/date" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginEnd="28dp" app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp" app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/view" android:layout_marginTop="6dp"
             android:layout_marginBottom="5dp"/>
