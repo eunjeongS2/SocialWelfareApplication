@@ -150,11 +150,16 @@ class UserViewModel : ViewModel() {
             }
     }
 
-    fun removeData(key: String, onSubscribe: (() -> (Unit))? = null) {
+    fun removeData(key: String, image:String, onSubscribe: (() -> (Unit))? = null) {
         db.collection("contact").document(key)
             .delete()
             .addOnSuccessListener {
                 Log.d(TAG, "DocumentSnapshot remove")
+
+                if (image != "") {
+                    removeImage("user/$image")
+                }
+
                 onSubscribe?.invoke()
             }
             .addOnFailureListener { e->

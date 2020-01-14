@@ -4,6 +4,7 @@ import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.socialwelfareapplication.models.Notice
+import com.example.socialwelfareapplication.models.removeImage
 import com.example.socialwelfareapplication.models.saveImage
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
@@ -105,17 +106,21 @@ class NoticeViewModel : ViewModel() {
             }
     }
 
-    fun removeData(key: String, onSubscribe: (() -> (Unit))? = null) {
+    fun removeData(key: String, image: String, onSubscribe: (() -> (Unit))? = null) {
         db.collection("notice").document(key)
             .delete()
             .addOnSuccessListener {
                 Log.d(TAG, "DocumentSnapshot remove")
+                if (image != "") {
+                    removeImage("notice/$image")
+                }
                 onSubscribe?.invoke()
             }
             .addOnFailureListener { e ->
                 Log.w(TAG, "Error getting documents.", e)
 
             }
+
     }
 
 }

@@ -5,6 +5,7 @@ import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import com.example.socialwelfareapplication.models.Monitoring
+import com.example.socialwelfareapplication.models.removeImage
 import com.example.socialwelfareapplication.models.saveImage
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
@@ -88,11 +89,16 @@ class MonitoringViewModel(application: Application) : AndroidViewModel(applicati
         }
     }
 
-    fun removeData(key: String, onSubscribe: (() -> (Unit))? = null) {
+    fun removeData(key: String, image:String, onSubscribe: (() -> (Unit))? = null) {
         db.collection("monitoring").document(key)
             .delete()
             .addOnSuccessListener {
                 Log.d(TAG, "DocumentSnapshot remove")
+
+                if (image != "") {
+                    removeImage("monitoring/$image")
+                }
+
                 onSubscribe?.invoke()
             }
             .addOnFailureListener { e ->

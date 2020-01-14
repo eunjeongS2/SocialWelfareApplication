@@ -46,7 +46,7 @@ class NoticeDetailFragment(private val item: Notice, private val viewModel: Noti
         }
 
         view.deleteButton.setOnClickListener {
-            viewModel.removeData(item.key) {
+            viewModel.removeData(item.key, item.image) {
                 if (targetFragment != null) {
                     viewModel.getCurrentMenuData()
                 } else {

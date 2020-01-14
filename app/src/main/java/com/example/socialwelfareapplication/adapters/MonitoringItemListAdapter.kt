@@ -33,7 +33,7 @@ class MonitoringItemListAdapter(private val viewModel: MonitoringViewModel) :
         val dialogListener = DialogInterface.OnClickListener { _, p1 ->
             when (p1) {
                 DialogInterface.BUTTON_POSITIVE -> {
-                    viewModel.removeData(item.monitoringKey) {
+                    viewModel.removeData(item.monitoringKey, item.image) {
                         monitoringList.remove(item)
                         notifyDataSetChanged()
 //                      viewModel.getData()

@@ -72,7 +72,7 @@ class ContactDetailFragment(private val item: Contact, private val viewModel: Us
         val dialogListener = DialogInterface.OnClickListener { _, p1 ->
             when(p1) {
                 DialogInterface.BUTTON_POSITIVE -> {
-                    viewModel.removeData(item.key) {
+                    viewModel.removeData(item.key, item.image) {
 
                         val transaction = parentFragmentManager.beginTransaction()
                         transaction.remove(this@ContactDetailFragment).commit()
