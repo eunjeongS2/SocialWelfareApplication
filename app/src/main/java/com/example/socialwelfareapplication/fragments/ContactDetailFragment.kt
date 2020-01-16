@@ -72,7 +72,7 @@ class ContactDetailFragment(private val item: Contact, private val viewModel: Us
         val dialogListener = DialogInterface.OnClickListener { _, p1 ->
             when(p1) {
                 DialogInterface.BUTTON_POSITIVE -> {
-                    viewModel.removeData(item.key) {
+                    viewModel.removeData(item.key, item.image) {
 
                         val transaction = parentFragmentManager.beginTransaction()
                         transaction.remove(this@ContactDetailFragment).commit()
@@ -110,6 +110,7 @@ class ContactDetailFragment(private val item: Contact, private val viewModel: Us
             removeButton.setOnClickListener {
                 val builder = AlertDialog.Builder(context)
                 builder.setMessage("연락처 삭제").setPositiveButton("삭제", dialogListener).setNegativeButton("취소", dialogListener).show()
+
             }
 
             setView(view, item)

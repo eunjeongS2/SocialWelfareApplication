@@ -21,11 +21,12 @@
             android:contentDescription="@string/back_button"/>
 
     <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" app:srcCompat="@drawable/ic_delete"
+            android:layout_width="24dp"
+            android:layout_height="24dp" app:srcCompat="@drawable/ic_delete"
             android:id="@+id/deleteButton"
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="14dp" android:layout_marginEnd="18dp" android:contentDescription="@string/delete"/>
+            android:layout_marginTop="14dp" android:layout_marginEnd="18dp"
+            android:contentDescription="@string/delete"/>
     <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -74,6 +75,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
+                    android:textColor="@color/colorBlack"
                     android:layout_marginTop="8dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"

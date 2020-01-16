@@ -1,5 +1,6 @@
 package com.example.socialwelfareapplication.fragments
 
+import android.app.AlertDialog
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -22,10 +23,9 @@ import com.mlsdev.rximagepicker.Sources
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
+import kotlinx.android.synthetic.main.dialog_datepicker.view.*
 import kotlinx.android.synthetic.main.fragment_add_monitoring_description.*
 import kotlinx.android.synthetic.main.fragment_add_monitoring_description.view.*
-import kotlinx.android.synthetic.main.fragment_add_monitoring_description.view.remark
-import kotlinx.android.synthetic.main.fragment_add_monitoring_description.view.visitPurpose
 import org.threeten.bp.LocalDate
 import java.text.SimpleDateFormat
 import java.util.*
@@ -115,7 +115,8 @@ class AddMonitoringDescriptionFragment(private val viewModel: UserViewModel) : F
                 return@setOnClickListener
             }
 
-            val date = "${currentDate.year}/$currentMonth/$currentDay"
+            val dateList = view.date.text.split("/")
+            val date = "${dateList[2]}/${dateList[0]}/${dateList[1]}"
             view.progressBar.visibility = View.VISIBLE
 
             var purpose = (view.findViewById(purposeRadioGroup.checkedRadioButtonId) as RadioButton).text.toString()
@@ -153,6 +154,20 @@ class AddMonitoringDescriptionFragment(private val viewModel: UserViewModel) : F
 
 
             }
+
+        }
+
+        val dialogView = inflater.inflate(R.layout.dialog_datepicker, container, false)
+        val builder = AlertDialog.Builder(context).setView(dialogView).create()
+
+        dialogView.save.setOnClickListener {
+            val date = "${(dialogView.datePicker.month+1).toString().checkDate()}/${dialogView.datePicker.dayOfMonth}/${dialogView.datePicker.year}"
+            view.date.text = date
+            builder.dismiss()
+        }
+
+        view.date.setOnClickListener {
+            builder.show()
 
         }
 

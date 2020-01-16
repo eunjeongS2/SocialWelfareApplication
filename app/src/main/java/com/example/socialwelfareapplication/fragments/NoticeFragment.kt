@@ -18,8 +18,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_notice.view.*
-import java.text.SimpleDateFormat
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 
@@ -39,12 +37,10 @@ class NoticeFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val date = SimpleDateFormat("yyyy/MM", Locale.KOREA).format(Date())
-
         activity?.let {
             viewModel = ViewModelProvider(it).get(NoticeViewModel::class.java)
             viewModel.getData()
-            viewModel.getCurrentMenuData(date)
+            viewModel.getCurrentMenuData()
 
             adapter = NoticeItemListAdapter(viewModel, R.layout.item_notice)
             view?.noticeRecyclerView?.let { recyclerView ->
@@ -67,7 +63,8 @@ class NoticeFragment : Fragment() {
 
         viewModel.currentMenuPublisher.observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                view?.title?.text = it.title
+                val title = "[${it.group}] ${it.title}"
+                view?.title?.text = title
                 view?.date?.text = it.date.replace("/", ".")
 
                 val detailFragment = NoticeDetailFragment(it, viewModel)

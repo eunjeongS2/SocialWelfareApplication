@@ -4,6 +4,7 @@ import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.socialwelfareapplication.models.Notice
+import com.example.socialwelfareapplication.models.removeImage
 import com.example.socialwelfareapplication.models.saveImage
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
@@ -44,8 +45,13 @@ class NoticeViewModel : ViewModel() {
         ref.set(notice)
             .addOnSuccessListener { documentReference ->
                 Log.d(TAG, "DocumentSnapshot added with ID: $documentReference")
-                image?.let { saveImage("notice/${notice.image}", it) { getData(onSubscribe) } }
-                    ?: getData(onSubscribe)
+                image?.let { saveImage("notice/${notice.image}", it) {
+                    getData(onSubscribe)
+                    getCurrentMenuData()}
+                }
+                    ?: {getData(onSubscribe)
+                        getCurrentMenuData()
+                    }.invoke()
             }
             .addOnFailureListener { e ->
                 Log.w(TAG, "Error adding document", e)
@@ -71,8 +77,9 @@ class NoticeViewModel : ViewModel() {
             }
     }
 
-    fun getCurrentMenuData(date: String) {
-        db.collection("notice").whereEqualTo("group", "도시락").whereEqualTo("date", date)
+    fun getCurrentMenuData() {
+        db.collection("notice").whereEqualTo("group", "도시락")
+            .orderBy("date", Query.Direction.DESCENDING)
             .limit(1)
             .get()
             .addOnSuccessListener { result ->
@@ -99,17 +106,21 @@ class NoticeViewModel : ViewModel() {
             }
     }
 
-    fun removeData(key: String, onSubscribe: (() -> (Unit))? = null) {
+    fun removeData(key: String, image: String, onSubscribe: (() -> (Unit))? = null) {
         db.collection("notice").document(key)
             .delete()
             .addOnSuccessListener {
                 Log.d(TAG, "DocumentSnapshot remove")
+                if (image != "") {
+                    removeImage("notice/$image")
+                }
                 onSubscribe?.invoke()
             }
             .addOnFailureListener { e ->
                 Log.w(TAG, "Error getting documents.", e)
 
             }
+
     }
 
 }

@@ -19,8 +19,7 @@ import com.bumptech.glide.Registry
 import com.bumptech.glide.annotation.GlideModule
 import com.example.socialwelfareapplication.models.imageReference
 import java.io.InputStream
-import java.text.SimpleDateFormat
-import java.util.*
+
 
 
 class NoticeDetailFragment(private val item: Notice, private val viewModel: NoticeViewModel) : Fragment() {
@@ -47,10 +46,9 @@ class NoticeDetailFragment(private val item: Notice, private val viewModel: Noti
         }
 
         view.deleteButton.setOnClickListener {
-            viewModel.removeData(item.key) {
+            viewModel.removeData(item.key, item.image) {
                 if (targetFragment != null) {
-                    val date = SimpleDateFormat("yyyy/MM", Locale.KOREA).format(Date())
-                    viewModel.getCurrentMenuData(date)
+                    viewModel.getCurrentMenuData()
                 } else {
                     when (item.group) {
                         "도시락" -> {

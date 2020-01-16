@@ -26,11 +26,13 @@
             android:layout_marginStart="30dp"
             app:layout_constraintTop_toTopOf="@+id/view"
             app:layout_constraintBottom_toBottomOf="@+id/view"/>
-    <ImageView
+    <TextView
             android:background="@color/colorWhite"
-            app:srcCompat="@drawable/ic_delete"
+            android:text="@string/remove"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
+            android:textColor="#4a4a4a"
+            android:textSize="15sp"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
             android:id="@+id/removeMonitoring"

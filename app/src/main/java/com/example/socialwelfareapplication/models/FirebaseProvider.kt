@@ -25,11 +25,19 @@ fun saveImage(path: String, image: Uri, onSubscribe: (() -> Unit)? = null) {
 }
 
 fun updateImage(path: String, image: Uri, previous: String, onSubscribe: (() -> Unit)? = null) {
-    saveImage(path, image, onSubscribe.also { storageRef.child(previous).delete() })
+    saveImage(path, image, onSubscribe.also { removeImage(previous) })
 
 }
 
 fun imageReference(uri: String): StorageReference {
     return storageRef.child(uri)
+}
+
+fun removeImage(path: String) {
+    storageRef.child(path).delete().addOnSuccessListener {
+
+    }.addOnFailureListener {e ->
+        e.printStackTrace()
+    }
 }
 

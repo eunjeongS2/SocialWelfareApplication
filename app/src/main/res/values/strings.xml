@@ -79,6 +79,10 @@
     <string name="volunteer">자원봉사자</string>
     <string name="input_writer"><font size="20">작성자를 입력해 주세요</font></string>
     <string name="delete">delete</string>
+    <string name="remove">삭제</string>
+    <string name="confirm">확인</string>
+    <string name="triangle">triangle</string>
+
 
     <string-array name="notice_group">
         <item>"공지사항"</item>
