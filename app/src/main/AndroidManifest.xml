@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.example.socialwelfareapplication">
+          package="com.eunjeong.socialwelfareapplication">
 
     <uses-feature android:name="android.hardware.camera"
                   android:required="false"/>
@@ -14,15 +14,15 @@
     <application
             android:name=".SharedApplication"
             android:allowBackup="false"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@mipmap/ic_launcher_logo"
             android:label="@string/app_name"
-            android:roundIcon="@mipmap/ic_launcher_round"
+            android:roundIcon="@mipmap/ic_launcher_logo_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
 
         <provider
                 android:name="androidx.core.content.FileProvider"
-                android:authorities="com.example.socialwelfareapplication.fileprovider"
+                android:authorities="com.eunjeong.socialwelfareapplication.fileprovider"
                 android:exported="false"
                 android:grantUriPermissions="true">
             <meta-data

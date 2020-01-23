@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SocialWelfareApplication</string>
+    <string name="app_name">일그램</string>
 
     <string name="home">홈</string>
     <string name="address_book">주소록</string>
