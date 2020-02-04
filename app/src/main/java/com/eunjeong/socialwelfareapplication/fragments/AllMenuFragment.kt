@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.eunjeong.socialwelfareapplication.R
@@ -47,6 +48,16 @@ class AllMenuFragment(private val viewModel: NoticeViewModel) : Fragment() {
             .addTo(disposeBag)
 
         return view
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val transaction = parentFragmentManager.beginTransaction()
+                transaction.remove(this@AllMenuFragment).commit()
+            }
+        })
     }
 
     private fun setupItems(adapter: NoticeItemListAdapter, itemList: List<Notice>) {

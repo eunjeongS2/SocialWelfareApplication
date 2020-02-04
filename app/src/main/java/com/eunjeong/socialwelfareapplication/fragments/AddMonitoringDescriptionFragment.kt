@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
@@ -44,6 +45,18 @@ class AddMonitoringDescriptionFragment(private val viewModel: UserViewModel) : F
         activity?.let {
             monitoringViewModel = ViewModelProvider(it).get(MonitoringViewModel::class.java)
         }
+
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                viewModel.selectList.clear()
+                parentFragmentManager.popBackStackImmediate()
+
+                context?.let {
+                    image?.removeImage(it)
+                    image = null
+                }
+            }
+        })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

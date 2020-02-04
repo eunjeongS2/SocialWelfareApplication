@@ -9,6 +9,7 @@ import android.view.WindowManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -169,6 +170,19 @@ class AddNoticeFragment(private val viewModel: NoticeViewModel) : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
         activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.visibility = View.GONE
+
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                context?.let {
+                    image?.removeImage(it)
+                    image = null
+                }
+
+                val transaction = parentFragmentManager.beginTransaction()
+                transaction.remove(this@AddNoticeFragment).commit()
+            }
+        })
+
         super.onActivityCreated(savedInstanceState)
 
     }

@@ -15,6 +15,7 @@ import com.firebase.ui.storage.images.FirebaseImageLoader
 import com.google.firebase.storage.StorageReference
 import com.bumptech.glide.module.AppGlideModule
 import android.content.Context
+import androidx.activity.OnBackPressedCallback
 import com.bumptech.glide.Registry
 import com.bumptech.glide.annotation.GlideModule
 import com.eunjeong.socialwelfareapplication.models.imageReference
@@ -65,6 +66,17 @@ class NoticeDetailFragment(private val item: Notice, private val viewModel: Noti
 
 
         return view
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val transaction = parentFragmentManager.beginTransaction()
+                transaction.remove(this@NoticeDetailFragment).commit()
+            }
+        })
     }
 
 }
