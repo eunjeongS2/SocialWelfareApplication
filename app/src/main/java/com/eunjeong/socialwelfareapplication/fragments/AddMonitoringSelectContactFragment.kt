@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
@@ -38,6 +39,12 @@ class AddMonitoringSelectContactFragment : Fragment() {
         activity?.let {
             viewModel = ViewModelProvider(it).get(UserViewModel::class.java)
         }
+
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                parentFragmentManager.popBackStackImmediate()
+            }
+        })
 
         groupAdapter = ContactGroupItemListAdapter(viewModel)
 

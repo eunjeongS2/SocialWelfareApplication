@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -95,8 +96,9 @@ class ContactDetailFragment(private val item: Contact, private val viewModel: Us
                 intent(Intent.ACTION_DIAL, "tel:${item.phoneNumber}", it.context)
             }
 
+            val numberList = mutableListOf(item.phoneNumber, "01045322244")
             message.setOnClickListener {
-                intent(Intent.ACTION_SENDTO, "sms:${item.phoneNumber}", it.context)
+                intent(Intent.ACTION_SENDTO, "smsto:$numberList", it.context)
             }
 
             editButton.setOnClickListener {
@@ -118,6 +120,17 @@ class ContactDetailFragment(private val item: Contact, private val viewModel: Us
 
 
         return view
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val transaction = parentFragmentManager.beginTransaction()
+                transaction.remove(this@ContactDetailFragment).commit()
+            }
+        })
     }
 
     override fun onDestroy() {
