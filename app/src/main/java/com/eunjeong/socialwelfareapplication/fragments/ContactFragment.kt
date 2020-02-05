@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -60,10 +61,14 @@ class ContactFragment : Fragment() {
                             adapter = checkContactAdapter
                             view.addButton.text = "보내기"
                             view.backButton.visibility = View.VISIBLE
+                            view.selectAllText.visibility = View.VISIBLE
+                            view.selectAllButton.visibility = View.VISIBLE
                         } else {
                             adapter = contactAdapter
                             view.addButton.text = "추가"
                             view.backButton.visibility = View.GONE
+                            view.selectAllButton.visibility = View.GONE
+                            view.selectAllText.visibility = View.GONE
                         }
                         setupRecyclerView(view.contactRecyclerView, adapter, RecyclerView.VERTICAL)
                         setupItems(adapter, contactAdapter.contactList)
@@ -82,6 +87,16 @@ class ContactFragment : Fragment() {
             it.backButton?.setOnClickListener { _ ->
                 contactAdapter.layoutPublisher.onNext("normal")
                 viewModel.selectList.clear()
+            }
+
+            it.selectAllButton.setOnCheckedChangeListener { _, b ->
+                if (b) {
+                    viewModel.selectList = contactAdapter.contactList.toMutableList()
+                    checkContactAdapter.notifyDataSetChanged()
+                } else {
+                    viewModel.selectList.clear()
+                    checkContactAdapter.notifyDataSetChanged()
+                }
             }
         }
 
@@ -115,6 +130,8 @@ class ContactFragment : Fragment() {
 
         view.backButton.visibility = View.GONE
         view.saveButton.visibility = View.GONE
+        view.selectAllButton.visibility = View.GONE
+        view.selectAllText.visibility = View.GONE
 
         view.addButton.setOnClickListener {
 
@@ -133,6 +150,10 @@ class ContactFragment : Fragment() {
                 "보내기" -> {
                     val numberList = viewModel.selectList.map {contact ->
                         contact.phoneNumber
+                    }
+                    if (numberList.isNullOrEmpty()) {
+                        Toast.makeText(context, "연락처를 선택해주세요", Toast.LENGTH_SHORT).show()
+                        return@setOnClickListener
                     }
                     intent(Intent.ACTION_SENDTO, "sms:$numberList", it.context)
                 }

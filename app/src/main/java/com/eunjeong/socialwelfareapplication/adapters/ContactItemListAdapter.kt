@@ -10,6 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.eunjeong.socialwelfareapplication.R
+import com.eunjeong.socialwelfareapplication.dialog.SendMessageDialog
 import com.eunjeong.socialwelfareapplication.fragments.ContactDetailFragment
 import com.eunjeong.socialwelfareapplication.fragments.intent
 import com.eunjeong.socialwelfareapplication.models.Contact
@@ -102,24 +103,33 @@ class ContactItemListAdapter(private val viewModel: UserViewModel, private val l
                     })
 
 
-                val dialogListener = DialogInterface.OnClickListener { _, p1 ->
-                    when (p1) {
-                        DialogInterface.BUTTON_POSITIVE -> {
-                            selectLayout = "check"
-                            viewModel.selectList.add(item)
-                        }
-                        DialogInterface.BUTTON_NEGATIVE -> {
-                            intent(Intent.ACTION_SENDTO, "sms:${item.phoneNumber}", holder.itemView.context)
-                        }
-
-                    }
-                }
+//                val dialogListener = DialogInterface.OnClickListener { _, p1 ->
+//                    when (p1) {
+//                        DialogInterface.BUTTON_POSITIVE -> {
+//                            selectLayout = "check"
+//                            viewModel.selectList.add(item)
+//                        }
+//                        DialogInterface.BUTTON_NEGATIVE -> {
+//                            intent(Intent.ACTION_SENDTO, "sms:${item.phoneNumber}", holder.itemView.context)
+//                        }
+//
+//                    }
+//                }
 
                 holder.itemView.messageButton.setOnClickListener {
 
-                    val builder = AlertDialog.Builder(holder.itemView.context)
-                    builder.setPositiveButton("단체문자", dialogListener)
-                        .setNegativeButton("보내기", dialogListener).show()
+                    val messageDialog = SendMessageDialog()
+
+                    if(messageDialog.isAdded) {
+                        return@setOnClickListener
+                    }
+
+                    messageDialog.sendText = item.name
+                    messageDialog.show((holder.itemView.context as AppCompatActivity).supportFragmentManager, SendMessageDialog.TAG)
+
+//                    val builder = AlertDialog.Builder(holder.itemView.context)
+//                    builder.setPositiveButton("단체문자", dialogListener)
+//                        .setNegativeButton("보내기", dialogListener).show()
 
                 }
 
