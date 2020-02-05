@@ -82,6 +82,11 @@
     <string name="remove">삭제</string>
     <string name="confirm">확인</string>
     <string name="triangle">triangle</string>
+    <string name="select_all">전체선택</string>
+    <string name="message_send"> 보내기</string>
+    <string name="message_group">추가하기</string>
+    <string name="message_to">문자를 보낼까요?</string>
+    <string name="to">에게</string>
 
 
     <string-array name="notice_group">

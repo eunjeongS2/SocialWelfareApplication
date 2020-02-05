@@ -96,9 +96,8 @@ class ContactDetailFragment(private val item: Contact, private val viewModel: Us
                 intent(Intent.ACTION_DIAL, "tel:${item.phoneNumber}", it.context)
             }
 
-            val numberList = mutableListOf(item.phoneNumber, "01045322244")
             message.setOnClickListener {
-                intent(Intent.ACTION_SENDTO, "smsto:$numberList", it.context)
+                intent(Intent.ACTION_SENDTO, "sms:${item.phoneNumber}", it.context)
             }
 
             editButton.setOnClickListener {

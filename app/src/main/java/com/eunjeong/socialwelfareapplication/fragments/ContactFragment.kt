@@ -1,11 +1,13 @@
 package com.eunjeong.socialwelfareapplication.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,10 +29,12 @@ class ContactFragment : Fragment() {
 
     private lateinit var groupAdapter: ContactGroupItemListAdapter
     private lateinit var contactAdapter: ContactItemListAdapter
+    private lateinit var checkContactAdapter: ContactItemListAdapter
 
     private lateinit var viewModel: UserViewModel
     private val disposeBag = CompositeDisposable()
     private val searchDisposeBag = CompositeDisposable()
+    private var selectLayout = "normal"
 
     companion object {
         const val TAG = "ContactFragment"
@@ -46,18 +50,66 @@ class ContactFragment : Fragment() {
 
             groupAdapter = ContactGroupItemListAdapter(viewModel)
             contactAdapter = ContactItemListAdapter(viewModel, R.layout.item_contact)
+            checkContactAdapter = ContactItemListAdapter(viewModel, R.layout.item_contact_select)
+
+            viewModel.layoutPublisher.observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ layout ->
+                    selectLayout = layout
+                    view?.let { view ->
+                        val adapter: ContactItemListAdapter
+                        if (layout == "check") {
+                            adapter = checkContactAdapter
+                            view.addButton.text = "보내기"
+                            view.backButton.visibility = View.VISIBLE
+                            view.selectAllText.visibility = View.VISIBLE
+                            view.selectAllButton.visibility = View.VISIBLE
+                        } else {
+                            adapter = contactAdapter
+                            view.addButton.text = "추가"
+                            view.backButton.visibility = View.GONE
+                            view.selectAllButton.visibility = View.GONE
+                            view.selectAllText.visibility = View.GONE
+                        }
+                        setupRecyclerView(view.contactRecyclerView, adapter, RecyclerView.VERTICAL)
+                        setupItems(adapter, contactAdapter.contactList)
+
+                    }
+
+                }, { e ->
+                    Log.d(TAG, "e : ", e)
+                }).addTo(disposeBag)
         }
 
         view?.let {
             setupRecyclerView(it.contactRecyclerView, contactAdapter, RecyclerView.VERTICAL)
             setupRecyclerView(it.groupRecyclerView, groupAdapter, RecyclerView.VERTICAL)
+
+            it.backButton?.setOnClickListener { _ ->
+                viewModel.layoutPublisher.onNext("normal")
+                viewModel.selectList.clear()
+            }
+
+            it.selectAllButton.setOnCheckedChangeListener { _, b ->
+                if (b) {
+                    viewModel.selectList = contactAdapter.contactList.toMutableList()
+                } else {
+                    viewModel.selectList.clear()
+                }
+                checkContactAdapter.notifyDataSetChanged()
+            }
         }
 
         viewModel.userPublisher.observeOn(AndroidSchedulers.mainThread())
             .subscribe({ contactList ->
                 view?.let {
-                    setupItems(contactAdapter, contactList)
-                    val selectGroupText = "${groupAdapter.selectGroup}(${contactAdapter.itemCount})"
+                    val adapter: ContactItemListAdapter =
+                        if (selectLayout == "normal") {
+                            contactAdapter
+                        } else {
+                            checkContactAdapter
+                        }
+                    setupItems(adapter, contactList)
+                    val selectGroupText = "${groupAdapter.selectGroup}(${adapter.itemCount})"
                     it.selectGroup.text = selectGroupText
 
                     setView(it, groupAdapter.selectGroup)
@@ -77,18 +129,38 @@ class ContactFragment : Fragment() {
 
         view.backButton.visibility = View.GONE
         view.saveButton.visibility = View.GONE
+        view.selectAllButton.visibility = View.GONE
+        view.selectAllText.visibility = View.GONE
 
         view.addButton.setOnClickListener {
-            val contactDetailFragment = AddContactFragment(null, groupAdapter.selectGroup, viewModel)
 
-            if (contactDetailFragment.isAdded) {
-                return@setOnClickListener
+            when(it.addButton.text) {
+                "추가" -> {
+                    val contactDetailFragment = AddContactFragment(null, groupAdapter.selectGroup, viewModel)
+
+                    if (contactDetailFragment.isAdded) {
+                        return@setOnClickListener
+                    }
+
+                    val transaction = parentFragmentManager.beginTransaction()
+                    transaction.add(R.id.fragmentContainer, contactDetailFragment).commit()
+                }
+
+                "보내기" -> {
+                    val numberList = viewModel.selectList.map {contact ->
+                        contact.phoneNumber
+                    }
+                    if (numberList.isNullOrEmpty()) {
+                        Toast.makeText(context, "연락처를 선택해주세요", Toast.LENGTH_SHORT).show()
+                        return@setOnClickListener
+                    }
+                    intent(Intent.ACTION_SENDTO, "sms:$numberList", it.context)
+                }
             }
 
-            val transaction = parentFragmentManager.beginTransaction()
-            transaction.add(R.id.fragmentContainer, contactDetailFragment).commit()
-
         }
+
+
         return view
     }
 
@@ -99,11 +171,17 @@ class ContactFragment : Fragment() {
     }
 
     private fun setView(view: View, group: String) {
-        if (group == "전체" || group == "중요") {
-            view.addButton.visibility = View.INVISIBLE
-        } else {
-            view.addButton.visibility = View.VISIBLE
+        when(selectLayout) {
+            "normal" -> if (group == "전체" || group == "중요") {
+                view.addButton.visibility = View.INVISIBLE
+            } else {
+                view.addButton.visibility = View.VISIBLE
+            }
+
+            "check" ->
+                view.addButton.visibility = View.VISIBLE
         }
+
     }
 
     private fun SearchView.setSearch(contactList: List<Contact>) {

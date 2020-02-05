@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.eunjeong.socialwelfareapplication.R
+import com.eunjeong.socialwelfareapplication.dialog.SendMessageDialog
 import com.eunjeong.socialwelfareapplication.fragments.ContactDetailFragment
 import com.eunjeong.socialwelfareapplication.fragments.intent
 import com.eunjeong.socialwelfareapplication.models.Contact
@@ -93,15 +94,24 @@ class ContactItemListAdapter(private val viewModel: UserViewModel, private val l
 
                     })
 
+                holder.itemView.messageButton.setOnClickListener {
+
+                    val messageDialog = SendMessageDialog(viewModel)
+
+                    if(messageDialog.isAdded) {
+                        return@setOnClickListener
+                    }
+
+                    messageDialog.item = item
+                    messageDialog.show((holder.itemView.context as AppCompatActivity).supportFragmentManager, SendMessageDialog.TAG)
+
+                }
+
 
                 holder.itemView.callButton.setOnClickListener {
                     intent(Intent.ACTION_DIAL, "tel:${item.phoneNumber}", it.context)
                 }
 
-                holder.itemView.messageButton.setOnClickListener {
-                    intent(Intent.ACTION_SENDTO, "sms:${item.phoneNumber}", it.context)
-
-                }
 
             }
         }
