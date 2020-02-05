@@ -21,6 +21,8 @@ class UserViewModel : ViewModel() {
             userPublisher.onNext(value)
         }
 
+    var layoutPublisher = PublishSubject.create<String>()
+
     var group: String = "어르신"
         set(value) {
             getData(value)

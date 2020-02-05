@@ -1,16 +1,20 @@
 package com.eunjeong.socialwelfareapplication.dialog
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.eunjeong.socialwelfareapplication.R
+import com.eunjeong.socialwelfareapplication.fragments.intent
+import com.eunjeong.socialwelfareapplication.models.Contact
+import com.eunjeong.socialwelfareapplication.viewmodels.UserViewModel
 import kotlinx.android.synthetic.main.dialog_message.view.*
 
-class SendMessageDialog : DialogFragment() {
+class SendMessageDialog(private val viewModel: UserViewModel) : DialogFragment() {
 
-    var sendText: String = ""
+    var item: Contact = Contact()
 
     companion object {
         const val TAG = "SendMessageDialog"
@@ -21,7 +25,20 @@ class SendMessageDialog : DialogFragment() {
 
         view.cancelButton.setOnClickListener { dismiss() }
 
-        view.userText.text = sendText
+        view.userText.text = item.name
+        view.sendButton.setOnClickListener {
+            context?.let {
+                intent(Intent.ACTION_SENDTO, "sms:${item.phoneNumber}", it)
+                dismiss()
+            }
+        }
+
+        view.groupButton.setOnClickListener {
+            viewModel.layoutPublisher.onNext("check")
+            viewModel.selectList.add(item)
+
+            dismiss()
+        }
 
 
         return view

@@ -1,12 +1,10 @@
 package com.eunjeong.socialwelfareapplication.adapters
 
-import android.content.DialogInterface
 import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.eunjeong.socialwelfareapplication.R
@@ -17,7 +15,6 @@ import com.eunjeong.socialwelfareapplication.models.Contact
 import com.eunjeong.socialwelfareapplication.viewholders.ContactItemViewHolder
 import com.eunjeong.socialwelfareapplication.viewmodels.UserViewModel
 import com.jakewharton.rxbinding3.view.clicks
-import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.item_contact.view.*
 import kotlinx.android.synthetic.main.item_contact_select.view.*
 import kotlinx.android.synthetic.main.item_contact_simple.view.*
@@ -28,11 +25,6 @@ class ContactItemListAdapter(private val viewModel: UserViewModel, private val l
 
     var contactList: List<Contact> = emptyList()
     var selectVisitPlace = 0
-    private var selectLayout = "normal"
-        set(value) {
-            layoutPublisher.onNext(value)
-        }
-    var layoutPublisher = PublishSubject.create<String>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactItemViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -102,34 +94,16 @@ class ContactItemListAdapter(private val viewModel: UserViewModel, private val l
 
                     })
 
-
-//                val dialogListener = DialogInterface.OnClickListener { _, p1 ->
-//                    when (p1) {
-//                        DialogInterface.BUTTON_POSITIVE -> {
-//                            selectLayout = "check"
-//                            viewModel.selectList.add(item)
-//                        }
-//                        DialogInterface.BUTTON_NEGATIVE -> {
-//                            intent(Intent.ACTION_SENDTO, "sms:${item.phoneNumber}", holder.itemView.context)
-//                        }
-//
-//                    }
-//                }
-
                 holder.itemView.messageButton.setOnClickListener {
 
-                    val messageDialog = SendMessageDialog()
+                    val messageDialog = SendMessageDialog(viewModel)
 
                     if(messageDialog.isAdded) {
                         return@setOnClickListener
                     }
 
-                    messageDialog.sendText = item.name
+                    messageDialog.item = item
                     messageDialog.show((holder.itemView.context as AppCompatActivity).supportFragmentManager, SendMessageDialog.TAG)
-
-//                    val builder = AlertDialog.Builder(holder.itemView.context)
-//                    builder.setPositiveButton("단체문자", dialogListener)
-//                        .setNegativeButton("보내기", dialogListener).show()
 
                 }
 

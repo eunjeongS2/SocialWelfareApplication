@@ -52,7 +52,7 @@ class ContactFragment : Fragment() {
             contactAdapter = ContactItemListAdapter(viewModel, R.layout.item_contact)
             checkContactAdapter = ContactItemListAdapter(viewModel, R.layout.item_contact_select)
 
-            contactAdapter.layoutPublisher.observeOn(AndroidSchedulers.mainThread())
+            viewModel.layoutPublisher.observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ layout ->
                     selectLayout = layout
                     view?.let { view ->
@@ -85,18 +85,17 @@ class ContactFragment : Fragment() {
             setupRecyclerView(it.groupRecyclerView, groupAdapter, RecyclerView.VERTICAL)
 
             it.backButton?.setOnClickListener { _ ->
-                contactAdapter.layoutPublisher.onNext("normal")
+                viewModel.layoutPublisher.onNext("normal")
                 viewModel.selectList.clear()
             }
 
             it.selectAllButton.setOnCheckedChangeListener { _, b ->
                 if (b) {
                     viewModel.selectList = contactAdapter.contactList.toMutableList()
-                    checkContactAdapter.notifyDataSetChanged()
                 } else {
                     viewModel.selectList.clear()
-                    checkContactAdapter.notifyDataSetChanged()
                 }
+                checkContactAdapter.notifyDataSetChanged()
             }
         }
 
