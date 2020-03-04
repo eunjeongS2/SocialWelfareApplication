@@ -14,6 +14,7 @@ import com.eunjeong.socialwelfareapplication.R
 import com.eunjeong.socialwelfareapplication.adapters.ContactGroupItemListAdapter
 import com.eunjeong.socialwelfareapplication.adapters.ContactItemListAdapter
 import com.eunjeong.socialwelfareapplication.viewmodels.UserViewModel
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
@@ -38,6 +39,23 @@ class AddMonitoringSelectContactFragment : Fragment() {
 
         activity?.let {
             viewModel = ViewModelProvider(it).get(UserViewModel::class.java)
+
+            Observable.just(viewModel)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    groupAdapter = ContactGroupItemListAdapter(viewModel)
+                    contactAdapter = ContactItemListAdapter(viewModel, R.layout.item_contact_select)
+
+                    view?.let {view ->
+                        setupRecyclerView(view.groupRecyclerView, groupAdapter, RecyclerView.VERTICAL)
+                        setupRecyclerView(view.contactRecyclerView, contactAdapter, RecyclerView.VERTICAL)
+                    }
+
+                }, { e ->
+                    e.printStackTrace()
+
+                }).addTo(disposeBag)
+
         }
 
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
@@ -46,18 +64,9 @@ class AddMonitoringSelectContactFragment : Fragment() {
             }
         })
 
-        groupAdapter = ContactGroupItemListAdapter(viewModel)
-
-        contactAdapter = ContactItemListAdapter(viewModel, R.layout.item_contact_select)
-
-        view?.let {
-            setupRecyclerView(it.groupRecyclerView, groupAdapter, RecyclerView.VERTICAL)
-            setupRecyclerView(it.contactRecyclerView, contactAdapter, RecyclerView.VERTICAL)
-        }
 
         viewModel.userPublisher.observeOn(AndroidSchedulers.mainThread())
             .subscribe({ contactList ->
-
                 view?.let {
                     setupItems(contactAdapter, contactList)
                     val selectGroupText = "${groupAdapter.selectGroup}(${contactAdapter.itemCount})"
@@ -75,7 +84,11 @@ class AddMonitoringSelectContactFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_contact, container, false)
 
         view.saveButton.visibility = View.GONE
-        view.backButton.setOnClickListener { parentFragmentManager.popBackStackImmediate() }
+        view.backButton.setOnClickListener {
+            view.selectAllButton.isChecked = false
+
+            parentFragmentManager.popBackStackImmediate()
+        }
 
         view.addButton.setOnClickListener {
             if (viewModel.selectList.size == 0) {
@@ -89,6 +102,15 @@ class AddMonitoringSelectContactFragment : Fragment() {
             transaction.replace(R.id.fragmentContainer, fragment)
             transaction.addToBackStack(null)
             transaction.commit()
+        }
+
+        view.selectAllButton.setOnCheckedChangeListener { _, b ->
+            if (b) {
+                viewModel.selectList = contactAdapter.contactList.toMutableList()
+            } else {
+                viewModel.selectList.clear()
+            }
+            contactAdapter.notifyDataSetChanged()
         }
 
         return view

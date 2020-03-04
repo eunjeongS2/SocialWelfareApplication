@@ -29,6 +29,7 @@ class ContactItemListAdapter(private val viewModel: UserViewModel, private val l
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactItemViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(layout, parent, false)
+
         return ContactItemViewHolder(view)
     }
 
@@ -44,6 +45,7 @@ class ContactItemListAdapter(private val viewModel: UserViewModel, private val l
         when (layout) {
             R.layout.item_contact_select -> {
                 holder.itemView.checkBox.setOnCheckedChangeListener(null)
+                println(viewModel.selectList)
                 holder.itemView.checkBox.isChecked = viewModel.selectList.contains(item)
 
                 holder.itemView.checkBox.setOnCheckedChangeListener { _, b ->

@@ -22,11 +22,12 @@
             android:layout_marginBottom="5dp"/>
 
     <ImageView
+            android:padding="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ic_back"
             android:id="@+id/backButton"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="18dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="2dp"
             android:contentDescription="@string/back_button"
             app:layout_constraintTop_toTopOf="@+id/comment" app:layout_constraintBottom_toBottomOf="@+id/comment"/>
 
