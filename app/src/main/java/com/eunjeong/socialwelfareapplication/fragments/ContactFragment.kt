@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -44,6 +45,17 @@ class ContactFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (selectLayout == "check") {
+                    viewModel.layoutPublisher.onNext("normal")
+                    viewModel.selectList.clear()
+                    view?.selectAllButton?.isChecked = false
+
+                }
+            }
+        })
 
         activity?.let {
             viewModel = ViewModelProvider(it).get(UserViewModel::class.java)
@@ -87,6 +99,8 @@ class ContactFragment : Fragment() {
             it.backButton?.setOnClickListener { _ ->
                 viewModel.layoutPublisher.onNext("normal")
                 viewModel.selectList.clear()
+                it.selectAllButton.isChecked = false
+
             }
 
             it.selectAllButton.setOnCheckedChangeListener { _, b ->

@@ -7,12 +7,13 @@
         android:layout_height="match_parent"
         android:background="@color/colorWhite">
     <ImageView
+            android:padding="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ic_back"
             android:id="@+id/backButton"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="18dp"
+            android:layout_marginStart="2dp"
             app:layout_constraintTop_toTopOf="@+id/detail"
             android:contentDescription="@string/back_button" app:layout_constraintBottom_toBottomOf="@+id/view"
             android:layout_marginBottom="8dp"/>

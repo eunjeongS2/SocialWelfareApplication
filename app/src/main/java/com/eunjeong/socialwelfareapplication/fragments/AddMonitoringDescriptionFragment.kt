@@ -48,7 +48,6 @@ class AddMonitoringDescriptionFragment(private val viewModel: UserViewModel) : F
 
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                viewModel.selectList.clear()
                 parentFragmentManager.popBackStackImmediate()
 
                 context?.let {
@@ -79,7 +78,6 @@ class AddMonitoringDescriptionFragment(private val viewModel: UserViewModel) : F
         view.date.text = dateText
 
         view.backButton.setOnClickListener {
-            viewModel.selectList.clear()
             parentFragmentManager.popBackStackImmediate()
 
             context?.let {
@@ -211,7 +209,6 @@ class AddMonitoringDescriptionFragment(private val viewModel: UserViewModel) : F
 
         view.visitPurpose.text.clear()
         view.visitImage.text.clear()
-        view.remark.text.clear()
         view.radioGroup.check(R.id.stateComplete)
         view.purposeRadioGroup.check(R.id.lunchBox)
         view.visitorRadioGroup.check(R.id.socialWorker)
